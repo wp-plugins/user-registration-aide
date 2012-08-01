@@ -7,7 +7,7 @@
  * supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with 
  * handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain 
  * alot more features and options for those of you who wish to get more control over users and user access to your site.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -62,7 +62,7 @@ global $csds_userRegAide_knownFields, $seperator, $csds_userRegAide_getOptions, 
 		{
 			$results = array(	"additionalFields" => $_POST['additionalFields']);
 			update_option("csds_userRegAide", $results);
-			echo '<div id="message" class="updated fade"><p>'. __('Options updated successfully.', 'csds_userRegAide') .'</p></div>';					//Report to the user that the data has been updated successfully
+			echo '<div id="message" class="updated fade"><p>'. __('Registration Form New Required Field Options updated successfully.', 'csds_userRegAide') .'</p></div>';					//Report to the user that the data has been updated successfully
 		}
 		
 		else
@@ -124,7 +124,7 @@ global $csds_userRegAide_knownFields, $seperator, $csds_userRegAide_getOptions, 
 			update_option('csds_userRegAide_support', $csds_userRegAide_support );
 			update_option("csds_display_link", $csds_display_link );
 			update_option("csds_display_name", $csds_display_name );
-			echo '<div id="message" class="updated fade"><p>'. __('Options updated successfully.', 'csds_userRegAide') .'</p></div>';					//Report to the user that the data has been updated successfully
+			echo '<div id="message" class="updated fade"><p>'. __('Support Options updated successfully.', 'csds_userRegAide') .'</p></div>';					//Report to the user that the data has been updated successfully
 		}
 		
 		else

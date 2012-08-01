@@ -6,7 +6,7 @@ Plugin Description: Forces new users to register additional fields with the opti
 supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with 
 handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain 
 alot more features and options for those of you who wish to get more control over users and user access to your site.
-Version: 1.0.0
+Version: 1.0.1
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 
@@ -52,6 +52,23 @@ add_action('show_user_profile', 'csds_show_user_profile');
 add_action('edit_user_profile', 'csds_show_user_profile');
 add_action('personal_options_update', 'csds_update_user_profile');
 add_action('edit_user_profile_update', 'csds_update_user_profile');
+add_action('profile_update', 'csds_update_user_profile');
+add_filter('pre_user_first_name','esc_html');
+add_filter('pre_user_first_name','strip_tags');
+add_filter('pre_user_first_name','trim');
+add_filter('pre_user_first_name','wp_filter_kses');
+add_filter('pre_user_last_name','esc_html');
+add_filter('pre_user_last_name','strip_tags');
+add_filter('pre_user_last_name','trim');
+add_filter('pre_user_last_name','wp_filter_kses');
+add_filter('pre_user_nickname','esc_html');
+add_filter('pre_user_nickname','strip_tags');
+add_filter('pre_user_nickname','trim');
+add_filter('pre_user_nickname','wp_filter_kses');
+add_filter('pre_user_description','esc_html');
+add_filter('pre_user_description','strip_tags');
+add_filter('pre_user_description','trim');
+add_filter('pre_user_description','wp_filter_kses');
 register_deactivation_hook(__FILE__, 'csds_userRegAide_deactivation');
 
 $csds_userRegAide_getOptions = get_option("csds_userRegAide");
@@ -154,7 +171,27 @@ function csds_userRegAide_updateFields($user_id){
 	
 	foreach($csds_userRegAide_getOptions["additionalFields"] as $thisValue){
 		if($_POST[$thisValue] != ''){
-			update_user_meta( $user_id, $thisValue, esc_attr(stripslashes($_POST[$thisValue])));
+			if($thisValue == "first_name"){
+				$newValue = apply_filters('pre_user_first_name', $_POST[$thisValue]);
+				//update_user_meta( $user_id, $thisValue, $newValue);
+			}
+			else{
+			}
+			if($thisValue == "last_name"){
+				$newValue = apply_filters('pre_user_last_name', $_POST[$thisValue]);
+				//update_user_meta( $user_id, $thisValue, $newValue);
+			}
+			else{
+			}
+			if($thisValue == "nickname"){
+				$newValue = apply_filters('pre_user_nickname', $_POST[$thisValue]);
+				//update_user_meta( $user_id, $thisValue, $newValue);
+			}
+			else{
+				$newValue = apply_filters('pre_user_description', $_POST[$thisValue]);
+				//update_user_meta( $user_id, $thisValue, $newValue);
+			}
+				update_user_meta( $user_id, $thisValue, $newValue);
 		}
 		else{
 		
@@ -208,6 +245,7 @@ function csds_show_user_profile($user)
 	$csds_display_name = get_option('csds_display_name');
 	
 		echo '<h3>User Registration Aide Additional Fields</h3>';
+		if($csds_userRegAide_NewFields != ''){
 			foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){
 			
 				?>
@@ -217,36 +255,47 @@ function csds_show_user_profile($user)
 				<td><input type="text" name="<?php echo $fieldKey ?>" id="<?php echo $fieldKey ?>" value="<?php echo esc_attr(get_user_meta($user_id, $fieldKey, TRUE)) ?>" class="regular-text" /></td>
 				</tr>
 				<?php
-				}
+			}
 				echo '</table>';
 				
 				echo '<br/>';				
-				if($csds_userRegAide_support == "1"){
-				echo '<a target="_blank" href="'.$csds_display_link.'">' . $csds_display_name . '</a>';
-				echo '<br/>';
+					if($csds_userRegAide_support == "1"){
+						echo '<a target="_blank" href="'.$csds_display_link.'">' . $csds_display_name . '</a>';
+						echo '<br/>';
 				
-				}
-						
+					}
+		}
+			
 }
  
  /**
  * Updates the additional fields data added to the user profile page
  *
- * @since 1.0.0
+ * @updated  1.0.1
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
+?>
+
+<?php
  
  function csds_update_user_profile($user_id)
  {
- 
+	global $wpdb;
+	global $csds_userRegAide_knownFields, $csds_userRegAide_getOptions, $csds_userRegAide_NewFields;
+	$userID = $user_id;
+	
 	$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
 	
 		foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){
-		
-			update_user_meta($user_id, $fieldKey, esc_attr(stripslashes($_POST[$thisValue])));
+			$newValue = $_POST[$fieldKey];
+			if($newValue != ''){
+			update_user_meta($userID, $fieldKey, $newValue);
+			}
+			else{
 			
+			}
 		}
 }
 
