@@ -6,7 +6,7 @@ Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registr
 Tags: user, registration, force, field, register, name, nickname, AIM, AOL, instant messenger, Yahoo, Jabber, Google Talk, Facebook, wordpress, plugin, extra, add, new, fields, profile
 Requires at least: 2.5
 Tested up to: 3.4.1
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 
 Adds new fields and forces new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
@@ -101,3 +101,9 @@ New improved version for Force Users Field Registrations with some added feature
 Second version. Final 8/1/2012
 
 Added a few updates to looks, more importantly fixed profile update bug so it works with new fields now and updates them properly. Also added filters to new user registrations for new fields.
+
+1.0.2
+
+Third Version 8/1/2012 9 PM EST
+
+Fixed bug of open line between PHP stop and start points which created header errors
