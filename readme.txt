@@ -6,7 +6,7 @@ Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registr
 Tags: user, registration, force, field, register, name, nickname, AIM, AOL, instant messenger, Yahoo, Jabber, Google Talk, Facebook, wordpress, plugin, extra, add, new, fields, profile
 Requires at least: 2.5
 Tested up to: 3.4.1
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 
 Adds new fields and forces new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
@@ -22,6 +22,8 @@ Forces new users to register additional fields. Available fields are:
 *	AIM screen name
 *	Yahoo IM screen name
 *	Jabber/Google Talk user name
+*	Biographical Info (Description)
+
 
 Wordpress User Registration Aide Force & Add New User Fields on Registration Form, as the title implies, allows you to force or require more fields when a new user registers. This not only can help to stop spammers, but it can also increase your user management capabilities and services. All the new fields that you add will also be added to existing users profiles, but the users will have to fill them out of course, but any new users will be required to fill out these fields.
 
@@ -44,6 +46,10 @@ Plugin Features:
     New fields are added to existing users profiles!
     Increase your knowledge of, and interaction with your customers & users!
 
+New In Version 1.1.0
+	Delete New Fields
+	Change New Field Order
+	Added Security
 
 Read more: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/#ixzz22CCABfOx
 
@@ -107,3 +113,27 @@ Added a few updates to looks, more importantly fixed profile update bug so it wo
 Third Version 8/1/2012 9 PM EST
 
 Fixed bug of open line between PHP stop and start points which created header errors
+
+1.1.0
+
+Major Revision Final 8/14/2012 5PM EST
+
+a) Added the option to delete additional new fields that you added and don't want or need
+
+b) Added the option to change the order of the new fields at any time which will be reflected on both the registration page and the profile page
+
+c) Changed the looks somewhat by adding tables to make it more orderly
+
+d) Fix some minor bugs and oversights on my part
+
+e) Made the code more easy to read and added more comments
+
+f) Added more security features like nonce and updated filtering new content being added and also checking user levels and making sure they have access to features
+
+g) Changed menu location to it's own menu instead of in the users menu, giving me the option to add more pages and located it right below the users menu tab
+
+h) Upgraded the delete plugin function so it will delete all the options, so if you aren't sure whether you'll use it again or not, you may want to avoid deleting it untill you are sure otherwise all user inputs into new fields will be lost as well as all your options, settings and new fields
+
+i) Added internationalization, so now users from foreign countries should have translated versions available, at least if I did it right, I hope so, if not give us a holler!
+
+
