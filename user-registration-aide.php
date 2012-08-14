@@ -6,7 +6,7 @@ Plugin Description: Forces new users to register additional fields with the opti
 supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with 
 handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain 
 alot more features and options for those of you who wish to get more control over users and user access to your site.
-Version: 1.1.0
+Version: 1.1.1
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: user-registration-aide
