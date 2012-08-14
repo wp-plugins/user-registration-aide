@@ -14,8 +14,8 @@
 
 //For Debugging and Testing Purposes ------------
 
-//error_reporting(E_ALL);
-//ini_set('display_errors', '1');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 //$ebitd = ini_get('error_reporting');
 //error_reporting($ebits ^ E_NOTICE);
 
@@ -176,7 +176,7 @@ function csds_userRegAide_update_field_order(){
 
 function csds_userRegAide_myOptionsSubpanel(){
 
-global $csds_userRegAide_knownFields, $csds_userRegAide_registrationFields, $csds_userRegAide_NewFields, $csds_userRegAideFields_getOptions, $csds_userRegAide_fieldOrder;
+global $csds_userRegAide_knownFields, $csds_mainMenuErrors, $csds_userRegAide_registrationFields, $csds_userRegAide_NewFields, $csds_userRegAideFields_getOptions, $csds_userRegAide_fieldOrder;
 	
 	if(empty($csds_userRegAide_registrationFields)){
 		csds_userRegAide_updateRegistrationFields();
@@ -186,7 +186,6 @@ global $csds_userRegAide_knownFields, $csds_userRegAide_registrationFields, $csd
 	
 	$regFields = '';
 	$seperator = '';
-	$csds_mainMenuErrors = '';
 	$csds_userRegAide_newFieldKey = '';
 	$csds_userRegAide_newField = '';
 	$csds_userRegMod_fields_missing = '';
@@ -268,6 +267,8 @@ global $csds_userRegAide_knownFields, $csds_userRegAide_registrationFields, $csd
 				}elseif($_POST['csds_userRegAide_newField'] == ''){
 					$csds_userRegMod_fields_missing2 = " New Field Name ";
 				}elseif($_POST['csds_userRegAide_newFieldKey'] == '' && $_POST['csds_userRegAide_newField'] == ''){
+					$csds_userRegMod_fields_missing1 = " New Field Key ";
+					$csds_userRegMod_fields_missing2 = " New Field Name ";
 					$seperator = " & ";
 				}
 				else{
@@ -328,16 +329,18 @@ global $csds_userRegAide_knownFields, $csds_userRegAide_registrationFields, $csd
 						$cnt = count($csds_userRegAide_NewFields);
 						$csds_userRegAide_fieldOrder[$results] = $cnt;
 						update_option("csds_userRegAide_fieldOrder", $csds_userRegAide_fieldOrder);
-				
+						echo '<div id="message" class="updated fade"><p>Add New Fields Options updated successfully! </p></div>';
 						// Displaying results of operation, whether successful or in error
+						
+						}else{
+						echo '<div id="message" class="updated fade"><p>'?><?php _e('You do not have adequate permissions to edit this plugin! Please check with Administrator to get additional permissions.', 'csds_userRegAide') .'</p></div>';
+						exit();
+					}
 				
-							if($csds_mainMenuErrors = FALSE){
-								echo '<div id="message" class="updated fade"><p>'. __('Add New Fields Options updated successfully.', 'csds_userRegAide') .'</p></div>';
-							}
-				}else{
-					echo '<div id="message" class="updated fade"><p>'. __('You do not have adequate permissions to edit this plugin! Please check with Administrator to get additional permissions.', 'csds_userRegAide') .'</p></div>';
-					exit();
-				}
+				//if($csds_mainMenuErrors = FALSE){
+					
+				//}
+				
 			}
 			
 		// Handles showing support for plugin
