@@ -14,8 +14,8 @@
 
 //For Debugging and Testing Purposes ------------
 
-//error_reporting(E_ALL);
-//ini_set('display_errors', '1');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 //$ebitd = ini_get('error_reporting');
 //error_reporting($ebits ^ E_NOTICE);
 
@@ -33,7 +33,7 @@
 
 function csds_userRegAide_fill_known_fields(){
 	
-	if(!empty($csds_userRegAide_knownFields)){
+	if(!empty($csds_userRegAide_knownFields) && !empty($csds_userRegAide)){
 		$csds_userRegAide_knownFields = array();
 		$csds_userRegAideFields = array();
 	}
@@ -184,7 +184,7 @@ global $csds_userRegAide_knownFields, $csds_userRegAide_registrationFields, $csd
 	
 	// Declaring - Defining Variables
 	
-	$regFields = array();
+	$regFields = '';
 	$seperator = '';
 	$csds_mainMenuErrors = '';
 	$csds_userRegAide_newFieldKey = '';
@@ -360,8 +360,8 @@ global $csds_userRegAide_knownFields, $csds_userRegAide_registrationFields, $csd
 		}
 	
 	// Makes sure that if upgrading, the new known fields are added
-	$cnts = count($csds_userRegAide_knownFields);
-	if($cnts < 7){
+	
+	if($csds_userRegAide_knownFields_count < 7){
 		csds_userRegAide_fill_known_fields();
 	}
 
@@ -404,8 +404,30 @@ echo '<div id="wpbody">';
 						$csds_userRegAide_knownFields = get_option('csds_userRegAide_knownFields');
 						$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
 						$regFields = $csds_userRegAide_registrationFields;
-						if(is_array($regFields)){
-                            foreach($csds_userRegAide_knownFields as $key1 => $value1){
+						if(!empty($csds_userRegAide_registrationFields)){
+							if(is_array($regFields)){
+								foreach($csds_userRegAide_knownFields as $key1 => $value1){
+									if(in_array("$value1",$regFields)){
+										$selected = "selected=\"selected\"";
+									}else{
+										$selected = NULL;
+									}
+								echo "<option value=\"$key1\" $selected >$value1</option>";
+								}
+								
+								foreach($csds_userRegAide_NewFields as $key2 => $value2){
+									if(in_array("$value2",$regFields)){
+										$selected = "selected=\"selected\"";
+									}else{
+										$selected = NULL;
+									}
+								echo "<option value=\"$key2\" $selected >$value2</option>";
+								}
+							}else{
+								exit();
+							}
+						}else{
+							foreach($csds_userRegAide_knownFields as $key1 => $value1){
 								if(in_array("$value1",$regFields)){
 									$selected = "selected=\"selected\"";
 								}else{
@@ -422,8 +444,6 @@ echo '<div id="wpbody">';
 								}
 							echo "<option value=\"$key2\" $selected >$value2</option>";
 							}
-						}else{
-							exit();
 						}
 							                        
 						echo '</select>';
@@ -436,9 +456,9 @@ echo '<div id="wpbody">';
 					</div>
 				</div>
 				
-<?php			// Form for adding new fields for users profile and registration ?>
+<?php			// Form for adding new fields for users profile and registration 
 
-				<div class="stuffbox">
+				echo '<div class="stuffbox">'; ?>
 				<h3><?php _e('Add New Field', 'csds_userRegAide');?></h3>
 				<?php
 					echo '<div class="inside">';
@@ -497,9 +517,9 @@ echo '<div id="wpbody">';
 	echo '</div>';
 echo '</div>';
 	 
-	}else{
-		csds_userRegAide_fill_known_fields();
-	}
+}else{
+	csds_userRegAide_fill_known_fields();
+}
 }
 
 ?>

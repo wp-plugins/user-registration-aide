@@ -1,11 +1,9 @@
 <?php
 
-
-
 //For Debugging and Testing Purposes ------------
 
-//error_reporting(E_ALL);
-//ini_set('display_errors', '1');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 //$ebitd = ini_get('error_reporting');
 //error_reporting($ebits ^ E_NOTICE);
 
