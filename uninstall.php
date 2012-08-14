@@ -1,11 +1,6 @@
 <?php
 
-/* Plugin Name: User Registration Aide Uninstall File
-* Added Version 1.1.0
-* Brian Novotny
-* Creative Software Design Solutions
-* http://creative-software-design-solutions.com
-*/
+
 
 //For Debugging and Testing Purposes ------------
 
