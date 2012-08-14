@@ -360,14 +360,14 @@ global $csds_userRegAide_knownFields, $csds_userRegAide_registrationFields, $csd
 		}
 	
 	// Makes sure that if upgrading, the new known fields are added
-	
-	if($csds_userRegAide_knownFields_count < 7){
+	$cnts = count($csds_userRegAide_knownFields);
+	if($cnts < 7){
 		csds_userRegAide_fill_known_fields();
 	}
 
 	// Makes sure that the field order is updated before showing administration page
 	
-	if(!empty($csds_userRegAide_knownFields)){
+	
 		if(!empty($csds_userRegAide_NewFields)){
 			if(empty($csds_userRegAide_fieldOrder)){
 				csds_userRegAide_update_field_order();
@@ -382,6 +382,8 @@ $csds_userRegAide_registrationFields = get_option('csds_userRegAide_registration
 $csds_userRegAide_knownFields = get_option('csds_userRegAide_knownFields');
 $csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
 $csds_userRegAide_fieldOrder = get_option('csds_userRegAide_fieldOrder');
+
+if(!empty($csds_userRegAide_knownFields)){
 
 // Shows Aministration Page 
 		
