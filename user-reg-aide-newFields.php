@@ -7,7 +7,7 @@
  * supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with 
  * handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain 
  * alot more features and options for those of you who wish to get more control over users and user access to your site.
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -264,6 +264,7 @@ echo '<div id="wpbody">';
 								echo '<td align="center">';
 								$fieldKeyUpper = strtoupper($fieldKey);
 								echo '<label for="'.$fieldKey.'">'.$fieldKeyUpper.'</label>';
+								//Changed from check box to label here
 								//echo '<input  style="width: 150px;" type="text" title="Enter the database name for your field here, like dob for Date of Birth or full_name, use lower case letters and _ (underscores) ONLY! Keep it short and simple and relative to the field you are creating!" value="'.$fieldKey . '" name="'.$fieldKey.'" id="'.$fieldKey.'" />';
 								echo '</td>';
 								echo '<td align="center">';

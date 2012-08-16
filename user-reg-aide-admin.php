@@ -7,7 +7,7 @@
  * supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with 
  * handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain 
  * alot more features and options for those of you who wish to get more control over users and user access to your site.
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -201,7 +201,8 @@ global $csds_userRegAide_knownFields, $csds_mainMenuErrors, $csds_userRegAide_re
 	$field = '';
 	$new_field = '';
 	$results2 = array();
-	//$additionalFields = array();
+	
+	
 	// Updating Arrays from options db
 	
 	$csds_userRegAideFields = get_option('csds_userRegAideFields');
@@ -216,6 +217,8 @@ global $csds_userRegAide_knownFields, $csds_mainMenuErrors, $csds_userRegAide_re
 		
 		if (isset($_POST['info_update']))
 		{
+			$csds_userRegAide_knownFields = get_option('csds_userRegAide_knownFields');
+			$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
 			$csds_userRegAide_registrationFields = array();
 			$csds_current_user = wp_get_current_user();
 				if($csds_current_user->has_cap('edit_plugins')){
@@ -223,20 +226,23 @@ global $csds_userRegAide_knownFields, $csds_mainMenuErrors, $csds_userRegAide_re
 						$results2 =  $_POST['additionalFields'];
 							if(!empty($results2)){
 								foreach($results2 as $key => $value){
-								
-									foreach($csds_userRegAide_knownFields as $key1 => $value1){
-										if($value == $key1){
-											$csds_userRegAide_registrationFields[$key1] = $value1;
-											$csds_userRegAide_registrationFields = $csds_userRegAide_registrationFields;
-											update_option("csds_userRegAide_registrationFields", $csds_userRegAide_registrationFields);
-										}															
+									if(!empty($csds_userRegAide_knownFields)){
+										foreach($csds_userRegAide_knownFields as $key1 => $value1){
+											if($value == $key1){
+												$csds_userRegAide_registrationFields[$key1] = $value1;
+												$csds_userRegAide_registrationFields = $csds_userRegAide_registrationFields;
+												update_option("csds_userRegAide_registrationFields", $csds_userRegAide_registrationFields);
+											}															
+										}
 									}
-									foreach($csds_userRegAide_NewFields as $key2 => $value2){
-										if($value == $key2){
-											$csds_userRegAide_registrationFields[$key2] = $value2;
-											$csds_userRegAide_registrationFields = $csds_userRegAide_registrationFields;
-											update_option("csds_userRegAide_registrationFields", $csds_userRegAide_registrationFields);
-										}		
+									if(!empty($csds_userRegAide_NewFields)){
+										foreach($csds_userRegAide_NewFields as $key2 => $value2){
+											if($value == $key2){
+												$csds_userRegAide_registrationFields[$key2] = $value2;
+												$csds_userRegAide_registrationFields = $csds_userRegAide_registrationFields;
+												update_option("csds_userRegAide_registrationFields", $csds_userRegAide_registrationFields);
+											}		
+										}
 									}
 								}
 							}else{

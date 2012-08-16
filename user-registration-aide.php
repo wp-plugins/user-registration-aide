@@ -6,7 +6,7 @@ Plugin Description: Forces new users to register additional fields with the opti
 supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with 
 handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain 
 alot more features and options for those of you who wish to get more control over users and user access to your site.
-Version: 1.1.1
+Version: 1.1.2
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: user-registration-aide
@@ -38,8 +38,8 @@ include ("user-reg-aide-newFields.php");
 
 //For Debugging and Testing Purposes ------------
 
-//error_reporting(E_ALL);
-//ini_set('display_errors', '1');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 //$ebitd = ini_get('error_reporting');
 //error_reporting($ebits ^ E_NOTICE);
 
@@ -165,7 +165,7 @@ function csds_userRegAide_install()
 	
 	// Creates a database version for future upgrades to make for easier changes to old options and settings
 	
-	$csds_userRegAide_dbVersion = '1.1.0';
+	$csds_userRegAide_dbVersion = '1.1.2';
 	update_option("csds_userRegAide_dbVersion", $csds_userRegAide_dbVersion);
 	
 	// Updates the Fields and Know Fields options array
@@ -179,7 +179,7 @@ function csds_userRegAide_install()
  * Add fields to the new user registration page that the user must fill out when they register
  *
  * @since 1.0.0
- * @updated 1.1.0
+ * @updated 1.1.2
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -190,21 +190,21 @@ function csds_userRegAide_addFields(){
 	global $csds_userRegAideFields, $csds_userRegAide_registrationFields;
 	$fieldKey = '';
 	$fieldName = '';
-	$cnt = 2;
+	
 	$csds_userRegAide_support = get_option('csds_userRegAide_support');
 	$csds_display_link = get_option('csds_display_link');
 	$csds_display_name = get_option('csds_display_name');
 	$csds_userRegAide_registrationFields = get_option('csds_userRegAide_registrationFields');
 	$csds_userRegAide_knownFields = get_option('csds_userRegAide_knownFields');
 	$csds_userRegAideFields = get_option('csds_userRegAideFields');
-	
+	$cnt = 31;
 	if(!empty($csds_userRegAide_registrationFields)){
 		foreach($csds_userRegAide_registrationFields as $fieldKey => $fieldName){
 			
 			echo '<p>';?>
 			<label><?php _e($csds_userRegAide_registrationFields[$fieldKey], 'csds_userRegAide') ?><br />
 			
-			<input type="text" name="<?php echo $fieldKey; ?>" id="<?php echo $fieldKey; ?>" class="input" value="" size="25" tabindex="<?php $cnt ?>" style="font-size: 20px; width: 97%;	padding: 3px; margin-right: 6px;" /></label>
+			<input type="text" name="<?php echo $fieldKey; ?>" id="<?php echo $fieldKey; ?>" class="input" value="" size="25" tabindex="20" style="font-size: 20px; width: 97%;	padding: 3px; margin-right: 6px;" /></label>
 		<?php // above value="" => <?php echo esc_attr(stripslashes($_POST[$fieldKey])); 
 			//echo '<input type="text" name="'.$fieldKey.'" id="'.$fieldKey.'" class="input" value="'.esc_attr(stripslashes($_POST[$fieldKey])).'" size="25" tabindex="10" style="font-size: 20px; width: 97%;	padding: 3px; margin-right: 6px;" /></label>';
 			echo '</p>';
@@ -260,7 +260,7 @@ function csds_userRegAide_updateFields($user_id){
 			}
 		}
 	}else{
-		exit('Failed Security Verification');
+		exit(__('Failed Security Verification', 'csds_userRegAide'));
 	}
 }
 
@@ -293,87 +293,93 @@ function csds_userRegAide_checkFields($user_login, $user_email, $errors){
  * Add the additional fields added to the user profile page
  *
  * @since 1.0.0
- * @updated 1.1.0
+ * @updated 1.1.2
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
 	
-function csds_show_user_profile($user)
-{
+function csds_show_user_profile($user){
  
- global $csds_userRegAide_knownFields, $csds_userRegAide_registrationFields, $csds_userRegAide_NewFields;
+ global $csds_userRegAide_NewFields;
 	
 	$user_id = $user->ID;
 	$fieldKey = '';
 	$fieldName = '';
-	$csds_userRegAide_registrationFields = get_option('csds_userRegAide_registrationFields');
-	$csds_userRegAide_knownFields = get_option('csds_userRegAide_knownFields');
 	$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
 	$csds_userRegAide_support = get_option('csds_userRegAide_support');
 	$csds_display_link = get_option('csds_display_link');
 	$csds_display_name = get_option('csds_display_name');
-	
-		echo '<h3>User Registration Aide Additional Fields</h3>';
-		if($csds_userRegAide_NewFields != ''){
-			foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){
-			
-				?>
-				<table class="form-table">
-				<tr>
-				<th><label for="<?php echo $fieldKey ?>"><?php echo $fieldName ?></label></th>
-				<td><input type="text" name="<?php $fieldKey ?>" id="<?php echo $fieldKey ?>" value="<?php echo esc_attr(get_user_meta($user_id, $fieldKey, TRUE)) ?>" class="regular-text" /></td>
-				</tr>
-				<?php
+	echo '<h3>User Registration Aide Additional Fields</h3>';
+	$csds_current_user = wp_get_current_user();
+		if($csds_current_user->has_cap('edit_user')){
+			if(!empty($csds_userRegAide_NewFields)){
+				foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){
 				
+					?>
+					<table class="form-table">
+					<tr>
+					<th><label for="<?php echo $fieldKey ?>"><?php echo $fieldName ?></label></th>
+					<td><input type="text" name="<?php echo $fieldKey ?>" id="<?php echo $fieldKey ?>" value="<?php echo esc_attr(get_user_meta($user_id, $fieldKey, TRUE)) ?>" class="regular-text" /></td>
+					</tr>
+					<?php
+					
+				}
+					echo '</table>';
+					
+			wp_nonce_field("userRegAideProfileForm", "userRegAideProfileNonce");
+					
+			echo '<br/>';				
+				if($csds_userRegAide_support == "1"){
+					echo '<a target="_blank" href="'.$csds_display_link.'">' . $csds_display_name . '</a>';
+					echo '<br/>';
+				}
 			}
-				echo '</table>';
-				
-		wp_nonce_field("userRegAideProfileForm", "userRegAideProfileNonce");
-				
-		echo '<br/>';				
-			if($csds_userRegAide_support == "1"){
-				echo '<a target="_blank" href="'.$csds_display_link.'">' . $csds_display_name . '</a>';
-				echo '<br/>';
-			}
+		}else{
+			exit(__('Naughty, Naughty! You do not havve permissions to do this!', 'csds_userRegAide'));
 		}
-			
 }
  
  /**
  * Updates the additional fields data added to the user profile page
  * @since 1.0.0 
- * @updated  1.1.0
+ * @updated  1.1.2
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
  
- function csds_update_user_profile($user_id)
- {
+ function csds_update_user_profile($user_id){
+ 
 	global $wpdb;
-	global $csds_userRegAide_knownFields, $csds_userRegAide_registrationFields, $csds_userRegAide_NewFields;
+	global $current_user, $csds_userRegAide_NewFields;
+	$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
 	$userID = $user_id;
 	$fieldKey = '';
 	$fieldName = '';
-	$csds_current_user = wp_get_current_user();
-	$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
-	if($csds_current_user->has_cap('edit_user')){
-		if(wp_verify_nonce($_POST["userRegAideProfileNonce"], "userRegAideProfileForm")){
-			foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){
-				$newValue = $_POST[$fieldKey];
-				if($newValue != ''){
-				update_user_meta($userID, $fieldKey, $newValue);
+	$newValue = '';
+	
+	if(!empty($csds_userRegAide_NewFields)){
+		$csds_current_user = wp_get_current_user();
+		if($csds_current_user->has_cap('edit_user')){
+			if(wp_verify_nonce($_POST["userRegAideProfileNonce"], "userRegAideProfileForm")){
+				foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){
+					$newValue = $_POST[$fieldKey];
+					if(!empty($newValue)){
+					update_user_meta($userID, $fieldKey, $_POST[$fieldKey]);
+					}
+					else{
+						//exit(__('New Value empty!'));
+					}
 				}
-				else{
-				
-				}
+			}else{
+				exit(__('Failed Security Check', 'csds_userRegAide'));
 			}
 		}else{
-			wp_die(__('Failed Security Check'));
+			exit(__('You do not have sufficient permissions to edit this user, contact a network administrator if this is an error!', 'csds_userRegAide'));
 		}
 	}else{
-		wp_die(__('You do not have sufficient permissions to edit this user, contact a network administrator if this is an error!'));
+		//exit(__('New Fields Empty'));
 	}
 }
 
@@ -443,24 +449,25 @@ function csds_userRegAide_deactivation()
  * Uninstall Function - Deletes options from the wp-options table
  *
  * @since 1.1.0
+ * @commented out 1.1.1 after addition of uninstall.php
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
 
 function csds_userRegAide_Uninstall() {
-	if(!defined('WP_UNINSTALL_PLUGIN')){
-		exit('Something Bad Happened');
-	}else{
-		delete_option($csds_userRegAide);
-		delete_option($csds_userRegAideFields);
-		delete_option($csds_userRegAide_knownFields);
-		delete_option($csds_userRegAide_NewFields);
-		delete_option($csds_userRegAide_fieldOrder);
-		delete_option($csds_userRegAide_registrationFields);
-		delete_option($csds_userRegAide_newField);
-		delete_option($csds_userRegAide_dbVersion);
-	}
+	// if(!defined('WP_UNINSTALL_PLUGIN')){
+		// exit('Something Bad Happened');
+	// }else{
+		// delete_option($csds_userRegAide);
+		// delete_option($csds_userRegAideFields);
+		// delete_option($csds_userRegAide_knownFields);
+		// delete_option($csds_userRegAide_NewFields);
+		// delete_option($csds_userRegAide_fieldOrder);
+		// delete_option($csds_userRegAide_registrationFields);
+		// delete_option($csds_userRegAide_newField);
+		// delete_option($csds_userRegAide_dbVersion);
+	// }
 }
 	
 ?>
