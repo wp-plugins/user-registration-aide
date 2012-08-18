@@ -6,7 +6,7 @@ Plugin Description: Forces new users to register additional fields with the opti
 supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with 
 handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain 
 alot more features and options for those of you who wish to get more control over users and user access to your site.
-Version: 1.1.3
+Version: 1.1.4
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: user-registration-aide
@@ -312,7 +312,7 @@ function csds_show_user_profile($user){
 	$csds_display_name = get_option('csds_display_name');
 	echo '<h3>User Registration Aide Additional Fields</h3>';
 	$csds_current_user = wp_get_current_user();
-		if($csds_current_user->has_cap('edit_user')){
+		//if($csds_current_user->has_cap('edit_user')){
 			if(!empty($csds_userRegAide_NewFields)){
 				foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){
 				
@@ -335,9 +335,9 @@ function csds_show_user_profile($user){
 					echo '<br/>';
 				}
 			}
-		}else{
-			exit(__('Naughty, Naughty! You do not havve permissions to do this!', 'csds_userRegAide'));
-		}
+		//}else{
+		//	exit(__('Naughty, Naughty! You do not havve permissions to do this!', 'csds_userRegAide'));
+		//}
 }
  
  /**
@@ -361,7 +361,7 @@ function csds_show_user_profile($user){
 	
 	if(!empty($csds_userRegAide_NewFields)){
 		$csds_current_user = wp_get_current_user();
-		if($csds_current_user->has_cap('edit_user')){
+		//if($csds_current_user->has_cap('edit_user')){
 			if(wp_verify_nonce($_POST["userRegAideProfileNonce"], "userRegAideProfileForm")){
 				foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){
 					$newValue = $_POST[$fieldKey];
@@ -375,9 +375,9 @@ function csds_show_user_profile($user){
 			}else{
 				exit(__('Failed Security Check', 'csds_userRegAide'));
 			}
-		}else{
-			exit(__('You do not have sufficient permissions to edit this user, contact a network administrator if this is an error!', 'csds_userRegAide'));
-		}
+		//}else{
+		//	exit(__('You do not have sufficient permissions to edit this user, contact a network administrator if this is an error!', 'csds_userRegAide'));
+		//}
 	}else{
 		//exit(__('New Fields Empty'));
 	}
