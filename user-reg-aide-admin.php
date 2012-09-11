@@ -3,17 +3,14 @@
 /*
  * User Registration Aide - Plugin Main Administration Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
 
 //For Debugging and Testing Purposes ------------
 
-//error_reporting(E_ALL);
-//ini_set('display_errors', '1');
-//$ebitd = ini_get('error_reporting');
-//error_reporting($ebits ^ E_NOTICE);
+
 
 // ----------------------------------------------
 

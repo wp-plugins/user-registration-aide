@@ -4,7 +4,7 @@ Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain alot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.2.0
+Version: 1.2.1
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: user-registration-aide
@@ -38,10 +38,7 @@ include_once ("user-reg-aide-regForm.php");
 
 //For Debugging and Testing Purposes ------------
 
-//error_reporting(E_ALL);
-//ini_set('display_errors', '1');
-//$ebitd = ini_get('error_reporting');
-//error_reporting($ebits ^ E_NOTICE);
+
 
 // ----------------------------------------------
 
