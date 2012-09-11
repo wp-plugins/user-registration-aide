@@ -4,9 +4,9 @@ Donate link: http://creative-software-design-solutions.com/
 Author URI: http://creative-software-design-solutions.com/
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Tags: user, registration, force, field, register, name, nickname, AIM, AOL, instant messenger, Yahoo, Jabber, Google Talk, Facebook, wordpress, plugin, extra, add, new, fields, profile
-Requires at least: 2.5
-Tested up to: 3.4.1
-Stable tag: 1.1.4
+Requires at least: 2.8
+Tested up to: 3.4.2
+Stable tag: 1.2.0
 
 Adds new fields and forces new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
@@ -14,15 +14,16 @@ Note: WordPress 2.5 or higher is definite required due to new error handling pro
 
 == Description ==
 
-Forces new users to register additional fields. Available fields are:
+When new users register, this plugin forces new users to register additional fields of your choosing. Available fields are:
 
 *	First Name
 *	Last Name
 *	Nickname
+*	Website
 *	AIM screen name
 *	Yahoo IM screen name
 *	Jabber/Google Talk user name
-*	Biographical Info/Description
+*	Password
 
 Wordpress User Registration Aide Force & Add New User Fields on Registration Form, as the title implies, allows you to force or require more fields when a new user registers. This not only can help to stop spammers, but it can also increase your user management capabilities and services. All the new fields that you add will also be added to existing users profiles, but the users will have to fill them out of course, but any new users will be required to fill out these fields.
 
@@ -44,6 +45,8 @@ Plugin Features:
     Get better control over your user base
     New fields are added to existing users profiles!
     Increase your knowledge of, and interaction with your customers & users!
+	Add Custom Logo to REgistration & Login Pages!
+	Add Custom Background Image or Background Color to Login & Registration Pages!
 
 
 Read more: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/#ixzz22CCABfOx
@@ -66,7 +69,7 @@ Method 2 (WordPress Add New Plugin):
 [See Installation Instruction and Configuration information and Demo](Read more: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/#ixzz22CDaarHi)	
 
 
-To configure what fields are required for new users to register an account, login to the WordPress Dashboard. Then go to the Dashboard Home Screen -> Administration → Users → User Registration Aide
+To configure what fields are required for new users to register an account, login to the WordPress Dashboard. Then go to the Dashboard Home Screen -> Administration → User Registration Aide → User Registration Aide - Edit New Fields
 
 Add Additional Fields to User Registration Form Option:
 
@@ -134,23 +137,56 @@ i) Added internationalization, so now users from foreign countries should have t
 1.1.1
 
 Fifth Revision
-Minor Revision
+Minor Revison
 
-a) Fixed some minor bugs that appeared after release of 1.1.0
+a) Fixed some minor bugs taht appeared after release of 1.1.0
 
 1.1.2
 
 Sixth Revision - Minor Revision
 
-a) Fixed tabbing index in registration page
+a) Fixed tabbing index in regisstration page
 
 b) Minor updates and fixed potential problem with profile updates
 
-
 1.1.3
 
-a) minor bug error reporting left on
+Seventh Revision - Minor Revision
 
-1.1.4
+a) Fixed minor bug with error reporting
 
-a) Fixed bug when viewing/editing user profiles for users
+1.1.4 
+
+Eighth Revision – Minor Revision
+
+a) Fixed minor bug with non-admin users editing profile
+
+1.2.0
+
+Ninth Revision - Major Revision
+
+a) Updated options and items and consolidated database usage
+
+b) Added Website to existing fields
+
+c) Added Password and Password Confirm to existing fields
+
+d) Added FUNCTIONAL Password Strength Meter!
+
+e) Users can login right after registering with new password!
+
+f) Option to change message to user when registering if they can enter their own password instead of default a password will be mailed to you
+
+g) Added option to change login/registration page logo and background image or color to your own logo, image, or color!
+
+h) Change the label/nav colors of login/registration forms so they better work with your custom background images/colors
+
+i) Added option to add message and check box and link to agreement/policy form if user must submit and agree to certain conditions when registering
+	for website. (User Requested)
+
+i) Other code upgrades and modifications and button enhancements
+
+
+
+
+
