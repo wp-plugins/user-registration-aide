@@ -4,7 +4,7 @@ Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain alot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.2.2
+Version: 1.2.3
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: user-registration-aide
@@ -36,6 +36,8 @@ include_once ("user-reg-aide-newFields.php");
 include_once ("user-reg-aide-options.php");
 include_once ("user-reg-aide-regForm.php");
 
+
+
 //For Debugging and Testing Purposes ------------
 
 
@@ -51,88 +53,63 @@ include_once ("user-reg-aide-regForm.php");
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
-
-class CSDS_USER_REG_AIDE{
-		public static $instance;
-		protected $retrieve_password_for   = '';
-		public    $during_user_creation    = false; // hack
-		
-		/**
-		* Constructor
-		*/
-		public function __construct() {
-			$this->CSDS_USER_REG_AIDE();
-		}
-		
-		function CSDS_USER_REG_AIDE() { //constructor
-		
-			global $wp_version;
-			self::$instance = $this;
-			$this->plugin_dir = dirname(__FILE__);
-			$this->plugin_url = trailingslashit(get_option('siteurl')) . 'wp-content/plugins/' . basename(dirname(__FILE__)) .'/';
-			$this->ref = explode('?',$_SERVER['REQUEST_URI']);
-			$this->ref = $this->ref[0];
-			
-					
-			if( isset($_GET['page']) && $_GET['page'] == 'user-reg-aide-admin' ){
-					add_action( 'init',  array($this, 'csds_userRegAide_fill_known_fields' ));
-				}
-			if(isset($_GET['action']) && $_GET['action'] == 'admin_init'){
-				add_action( 'init', array($this, 'csds_userRegAide_DefaultOptions' ));
-			}
-			
-			add_action( 'login_head', array($this, 'csds_userRegAide_Password_Header') );
-			add_action( 'login_head', array($this, 'csds_userRegAide_Logo_Header') );
-			add_action( 'login_head', array($this, 'csds_userRegAide_Logo_Header_Bckgrd_Image') );
-			add_action( 'login_head', array($this, 'csds_userRegAide_Logo_Header_Bckgrd_Color') );
-			add_action( 'login_head', array($this, 'csds_userRegAide_Logo_Header_Page_Bckgrd_Image') );
-			add_action( 'login_head', array($this, 'csds_userRegAide_Logo_Header_Page_Bckgrd_Color') );
-			add_filter('login_headerurl', array($this, 'csds_userRegAide_CustomLoginLink') );
-			add_filter('login_headertitle', array($this, 'csds_userRegAide_Login_HeaderTitle') );
-			add_filter('login_headertitle', array($this, 'csds_userRegAide_Logo_Header_Label_Color') );
-									
-			if(isset($_GET['action']) && $_GET['action'] == 'register'){
-				add_action('register_form', array($this, 'csds_userRegAide_addFields'));
-				add_action('register_post', array($this, 'csds_userRegAide_checkFields', 10, 2));
-				add_action('user_register', array($this, 'csds_userRegAide_updateFields'));
-				add_filter( 'registration_errors', array($this, 'csds_userRegAide_checkFields'), 10, 2 );
-			}
-			
-			add_filter('get_user_option_default_password_nag', array($this, 'remove_default_password_nag'));
-			add_action('admin_menu', array($this, 'csds_userRegAide_optionsPage'));
-			add_action('admin_menu', array($this, 'csds_userRegAide_editNewFields_optionsPage'));
-			add_action('admin_menu', array($this, 'csds_userRegAide_regFormOptionsPage'));
-			add_action('show_user_profile', array($this, 'csds_show_user_profile'));
-			add_action('edit_user_profile', array($this, 'csds_show_user_profile'));
-			add_action('personal_options_update', array($this, 'csds_update_user_profile'));
-			add_action('edit_user_profile_update', array($this, 'csds_update_user_profile'));
-			add_action('profile_update', array($this, 'csds_update_user_profile'));
-			add_action('init', array($this, 'csds_userRegAide_translationFile'));
-			add_filter('pre_user_first_name', 'esc_html');
-			add_filter('pre_user_first_name', 'strip_tags');
-			add_filter('pre_user_first_name', 'trim');
-			add_filter('pre_user_first_name', 'wp_filter_kses');
-			add_filter('pre_user_last_name', 'esc_html');
-			add_filter('pre_user_last_name', 'strip_tags');
-			add_filter('pre_user_last_name', 'trim');
-			add_filter('pre_user_last_name', 'wp_filter_kses');
-			add_filter('pre_user_nickname', 'esc_html');
-			add_filter('pre_user_nickname', 'strip_tags');
-			add_filter('pre_user_nickname', 'trim');
-			add_filter('pre_user_nickname', 'wp_filter_kses');
-			add_filter('pre_user_url', 'esc_url');
-			add_filter('pre_user_url', 'strip_tags');
-			add_filter('pre_user_url', 'trim');
-			add_filter('pre_user_url', 'wp_filter_kses');
-			add_filter('pre_user_description', 'esc_html');
-			add_filter('pre_user_description', 'strip_tags');
-			add_filter('pre_user_description', 'trim');
-			add_filter('pre_user_description', 'wp_filter_kses');
-			add_filter('random_password',  array($this, 'csds_userRegAide_CreatePassword'));
-			register_deactivation_hook(__FILE__, array($this, 'csds_userRegAide_deactivation'));
-			
-}
-
+	if( isset($_GET['page']) && $_GET['page'] == 'user-reg-aide-admin' ){
+			add_action( 'init',  'csds_userRegAide_fill_known_fields' );
+	}
+	if(isset($_GET['action']) && $_GET['action'] == 'admin_init'){
+		add_action( 'init', 'csds_userRegAide_DefaultOptions' );
+	}
+	register_activation_hook( __FILE__, 'csds_userRegAide_install' );
+	add_action( 'login_head','csds_userRegAide_Password_Header');
+	add_action( 'login_head', 'csds_userRegAide_Logo_Header') ;
+	add_action( 'login_head', 'csds_userRegAide_Logo_Header_Bckgrd_Image');
+	add_action( 'login_head', 'csds_userRegAide_Logo_Header_Bckgrd_Color');
+	add_action( 'login_head', 'csds_userRegAide_Logo_Header_Page_Bckgrd_Image');
+	add_action( 'login_head', 'csds_userRegAide_Logo_Header_Page_Bckgrd_Color');
+	add_filter('login_headerurl', 'csds_userRegAide_CustomLoginLink');
+	add_filter('login_headertitle', 'csds_userRegAide_Login_HeaderTitle');
+	add_filter('login_headertitle', 'csds_userRegAide_Logo_Header_Label_Color');
+							
+	if(isset($_GET['action']) && $_GET['action'] == 'register'){
+		add_action('register_form', 'csds_userRegAide_addFields');
+		//add_action('register_post', array($this, 'csds_userRegAide_checkFields', 10, 3));
+		add_action('user_register', 'csds_userRegAide_updateFields', 10, 1);
+		add_filter( 'registration_errors', 'csds_userRegAide_checkFields', 10, 3);
+	}
+	
+	add_filter('get_user_option_default_password_nag', 'remove_default_password_nag');
+	add_action('admin_menu', 'csds_userRegAide_optionsPage');
+	add_action('admin_menu', 'csds_userRegAide_editNewFields_optionsPage');
+	add_action('admin_menu', 'csds_userRegAide_regFormOptionsPage');
+	add_action('show_user_profile', 'csds_show_user_profile');
+	add_action('edit_user_profile', 'csds_show_user_profile');
+	add_action('personal_options_update', 'csds_update_user_profile');
+	add_action('edit_user_profile_update', 'csds_update_user_profile');
+	add_action('profile_update', 'csds_update_user_profile');
+	add_action('init', 'csds_userRegAide_translationFile');
+	add_filter('pre_user_first_name', 'esc_html');
+	add_filter('pre_user_first_name', 'strip_tags');
+	add_filter('pre_user_first_name', 'trim');
+	add_filter('pre_user_first_name', 'wp_filter_kses');
+	add_filter('pre_user_last_name', 'esc_html');
+	add_filter('pre_user_last_name', 'strip_tags');
+	add_filter('pre_user_last_name', 'trim');
+	add_filter('pre_user_last_name', 'wp_filter_kses');
+	add_filter('pre_user_nickname', 'esc_html');
+	add_filter('pre_user_nickname', 'strip_tags');
+	add_filter('pre_user_nickname', 'trim');
+	add_filter('pre_user_nickname', 'wp_filter_kses');
+	add_filter('pre_user_url', 'esc_url');
+	add_filter('pre_user_url', 'strip_tags');
+	add_filter('pre_user_url', 'trim');
+	add_filter('pre_user_url', 'wp_filter_kses');
+	add_filter('pre_user_description', 'esc_html');
+	add_filter('pre_user_description', 'strip_tags');
+	add_filter('pre_user_description', 'trim');
+	add_filter('pre_user_description', 'wp_filter_kses');
+	add_filter('random_password',  'csds_userRegAide_CreatePassword');
+	register_deactivation_hook(__FILE__, 'csds_userRegAide_deactivation');
+	
 /**
  * Installs stuff for plugin
  *
@@ -384,11 +361,7 @@ function csds_userRegAide_Logo_Header_Label_Color(){
 			echo '.login #backtoblog a { color:'.$text_color.' !important; }';
 			echo '.login #nav a:hover { color:'.$hover_color.' !important;  }';
 			echo '.login #backtoblog a:hover { color:'.$hover_color.' !important; } </style>';
-			//echo '<style type="text/css">#nav a, #backtoblog a { color: '.$text_color.' !important; text-decoration:none;  }';
-			//echo '<style type="text/css">#nav a:hover, #backtoblog a:hover { color: '.$text_color.' !important; text-decoration:none; }';
-			//echo '<style type="text/css">#nav a { color: '.$text_color.' !important; } </style>';
-			//echo '<style type="text/css">#backtoblog a { color: '.$text_color.' !important; } </style>';
-			//echo '<style type="text/css">#nav a:hover { color: '.$text_color.' !important; text-decoration:underline; font-weight:bold;} </style>';
+			
 		}
 }
 
@@ -711,7 +684,7 @@ function csds_userRegAide_updateFields($user_id){
 					$wpdb->query($addData);
 				}elseif($thisValue == "user_pass"){
 					$newPass = $_POST['pass1'];
-					wp_new_user_notification($user_id, $newPass);
+					csds_new_user_notification($user_id, $newPass);
 					add_action('phpmailer_init', array(&$this, 'phpmailer_init'), 99999);
 					$addData = $wpdb->prepare("UPDATE $wpdb->users SET user_pass = md5('$newPass') WHERE ID = $user_id");
 					$wpdb->query($addData);
@@ -758,7 +731,7 @@ function csds_userRegAide_updateFields($user_id){
 
 // Emails registration confirmation to new user
 
-function wp_new_user_notification($user_id, $plaintext_pass = '') {
+function csds_new_user_notification($user_id, $plaintext_pass = '') {
 	
 	$user = new WP_User($user_id);
 	
@@ -802,7 +775,7 @@ function wp_new_user_notification($user_id, $plaintext_pass = '') {
  * @website http://creative-software-design-solutions.com
 */
 
-function csds_userRegAide_checkFields($errors, $login, $email){
+function csds_userRegAide_checkFields($errors, $username, $email){
 
 	global $csds_userRegAide_registrationFields;
 	$thisValue = '';
@@ -812,35 +785,35 @@ function csds_userRegAide_checkFields($errors, $login, $email){
 	$csds_userRegAide_Options = array();
 	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
 	//$csds_userRegAide_knownFields = get_option('csds_userRegAide_knownFields');
-
-	foreach($csds_userRegAide_registrationFields as $thisValue => $fieldName1){
-		if($thisValue != "user_pass"){
-			if (empty($_POST[$thisValue]) ||  $_POST[$thisValue] == '' ) {
-				$errors->add('empty_'.$thisValue , __("<strong>ERROR</strong>: Please type your ".$csds_userRegAide_registrationFields[$thisValue], 'csds_userRegAide'));
-				//return $errors;
-			}
-		}elseif($thisValue == "user_pass"){
-			// //to check password
-			if(empty($_POST['pass1']) || $_POST['pass1'] == '' || empty($_POST['pass2']) || $_POST['pass2'] == ''){
-					$errors->add('empty_password', __("<strong>ERROR</strong>: Please type your ".$csds_userRegAide_registrationFields[$thisValue], 'csds_userRegAide'));
-					
-			}elseif($_POST['pass1'] != $_POST['pass2']){
-					$errors->add('password_mismatch', __("<strong>ERROR</strong>:  Passwords do not match!", 'csds_userRegAide'));
-					
-			}elseif(strlen($_POST['pass1'])<7){
-					$errors->add('password_length', __("<strong>ERROR</strong>: Password too short!", 'csds_userRegAide'));
-					
-			}else{
-				//exit('Blow Up');//$_POST['user_pw'] = $_POST['pass1'];
+	if(!empty($csds_userRegAide_registrationFields)){
+		foreach($csds_userRegAide_registrationFields as $thisValue => $fieldName1){
+			if($thisValue != "user_pass"){
+				if ($_POST[$thisValue] == '') {
+					$errors->add('empty_'.$thisValue , __("<strong>ERROR</strong>: Please type your ".$csds_userRegAide_registrationFields[$thisValue].".",'csds_userRegAide'));
+				}
+						//return $errors;
+				
+			}elseif($thisValue == "user_pass"){
+				// //to check password
+				if(empty($_POST['pass1']) || $_POST['pass1'] == '' || empty($_POST['pass2']) || $_POST['pass2'] == ''){
+						$errors->add('empty_password', __("<strong>ERROR</strong>: Please type your Password!", 'csds_userRegAide'));
+						
+				}elseif($_POST['pass1'] != $_POST['pass2']){
+						$errors->add('password_mismatch', ___("<strong>ERROR</strong>: Password too short!", 'csds_userRegAide'));
+						
+				}else{
+					//exit('Blow Up');//$_POST['user_pw'] = $_POST['pass1'];
+				}
 			}
 		}
+		
+			if($csds_userRegAide_Options['show_custom_agreement_checkbox'] == 1){
+				if($_POST['csds_userRegAide_agree'] == 2){
+					$errors->add('agreement_confirmation', __("<strong>ERROR</strong>: You must agree to the terms and conditions!", 'csds_userRegAide'));
+					
+				}
+			}
 	}
-	
-		if($csds_userRegAide_Options['show_custom_agreement_checkbox'] == 1){
-			if($_POST['csds_userRegAide_agree'] == 2){
-				$errors->add('agreement_confirmation', __("<strong>ERROR</strong>: You must agree to the terms and conditions!", 'csds_userRegAide'));
-			}
-		}
 	return $errors;
 }
 
@@ -996,17 +969,19 @@ function csds_userRegAide_deactivation()
 	
 }
 
-} //end CSDS_USER_REG_AIDE class
+//end CSDS_USER_REG_AIDE class
 
 # Run The Plugin!
-if( class_exists('CSDS_USER_REG_AIDE') ){
-	$csds_userRegAide_Instance = new CSDS_USER_REG_AIDE();
-	if(isset($csds_userRegAide_Instance)){
-		if(function_exists('csds_userRegAide_install')){
-			register_activation_hook( __FILE__, array(  &$csds_userRegAide_Instance, 'csds_userRegAide_install' ) );
-		}
+// if( class_exists('CSDS_USER_REG_AIDE') ){
+	// $csds_userRegAide_Instance = new CSDS_USER_REG_AIDE();
+	// if(isset($csds_userRegAide_Instance)){
+		// if(function_exists('csds_userRegAide_install')){
+			
+		// }
 		
-	}
-}
+	// }
+// }
+
+
 	
 ?>
