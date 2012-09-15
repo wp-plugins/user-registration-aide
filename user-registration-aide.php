@@ -4,7 +4,7 @@ Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain alot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.2.3
+Version: 1.2.4
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: user-registration-aide
@@ -48,68 +48,199 @@ include_once ("user-reg-aide-regForm.php");
  * Creates Class CSDS_USER_REG_AIDE & Adds Actions and Hooks to register 
  *
  * @since 1.2.0
- * @updated 1.2.0
+ * @updated 1.2.4
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
-	if( isset($_GET['page']) && $_GET['page'] == 'user-reg-aide-admin' ){
-			add_action( 'init',  'csds_userRegAide_fill_known_fields' );
+
+class CSDS_USER_REG_AIDE{
+
+	public static $instance;
+	protected $retrieve_password_for   = '';
+	public    $during_user_creation    = false; // hack
+	
+	/**
+	* Constructor
+	*/
+		
+	public function __construct() {
+		$this->CSDS_USER_REG_AIDE();
 	}
-	if(isset($_GET['action']) && $_GET['action'] == 'admin_init'){
-		add_action( 'init', 'csds_userRegAide_DefaultOptions' );
-	}
-	register_activation_hook( __FILE__, 'csds_userRegAide_install' );
-	add_action( 'login_head','csds_userRegAide_Password_Header');
-	add_action( 'login_head', 'csds_userRegAide_Logo_Header') ;
-	add_action( 'login_head', 'csds_userRegAide_Logo_Header_Bckgrd_Image');
-	add_action( 'login_head', 'csds_userRegAide_Logo_Header_Bckgrd_Color');
-	add_action( 'login_head', 'csds_userRegAide_Logo_Header_Page_Bckgrd_Image');
-	add_action( 'login_head', 'csds_userRegAide_Logo_Header_Page_Bckgrd_Color');
-	add_filter('login_headerurl', 'csds_userRegAide_CustomLoginLink');
-	add_filter('login_headertitle', 'csds_userRegAide_Login_HeaderTitle');
-	add_filter('login_headertitle', 'csds_userRegAide_Logo_Header_Label_Color');
-							
-	if(isset($_GET['action']) && $_GET['action'] == 'register'){
-		add_action('register_form', 'csds_userRegAide_addFields');
-		//add_action('register_post', array($this, 'csds_userRegAide_checkFields', 10, 3));
-		add_action('user_register', 'csds_userRegAide_updateFields', 10, 1);
-		add_filter( 'registration_errors', 'csds_userRegAide_checkFields', 10, 3);
+		
+		function CSDS_USER_REG_AIDE() { //constructor
+		
+			global $wp_version;
+			self::$instance = $this;
+			$this->plugin_dir = dirname(__FILE__);
+			$this->plugin_url = trailingslashit(get_option('siteurl')) . 'wp-content/plugins/' . basename(dirname(__FILE__)) .'/';
+			$this->ref = explode('?',$_SERVER['REQUEST_URI']);
+			$this->ref = $this->ref[0];
+			
+			// Filling existing WordPress profile fields into options db			
+			if( isset($_GET['page']) && $_GET['page'] == 'user-reg-aide-admin' ){
+				add_action( 'init',  array(&$this, 'csds_userRegAide_fill_known_fields' ));
+			}
+			
+			// Filling default User Registration Aide options db
+			if(isset($_GET['action']) && $_GET['action'] == 'admin_init'){
+				add_action( 'init', array(&$this, 'csds_userRegAide_DefaultOptions' ));
+			}
+			
+			// Customize Registration & Login Forms
+			add_action( 'login_head', array(&$this, 'csds_userRegAide_Password_Header'));
+			add_filter('login_headerurl', array(&$this, 'csds_userRegAide_CustomLoginLink'));
+			add_filter('login_headertitle', array(&$this, 'csds_userRegAide_Logo_Title_Color'));
+			add_action( 'login_head', array(&$this, 'csds_userRegAide_Logo_Head'));
+			
+			// Handles new fields for registration form
+			if(isset($_GET['action']) && $_GET['action'] == 'register'){
+				add_action('register_form', array(&$this, 'csds_userRegAide_addFields'));
+				//add_action('register_post','csds_userRegAide_checkFields', 10, 3); Keeps messing up registration form so leave out
+				add_action('user_register', array(&$this, 'csds_userRegAide_updateFields'), 10, 1);
+				add_filter( 'registration_errors',  array(&$this, 'csds_userRegAide_checkFields'), 10, 3 );
+			}
+			
+			// Sets new password if user can enter own password on registration
+			add_filter('random_password',  array(&$this, 'csds_userRegAide_CreatePassword'));
+			
+			// Attempts to remove password nag if user enters own password
+			add_filter('get_user_option_default_password_nag', array(&$this, 'remove_default_password_nag'));
+			
+			// Administration Pages
+			add_action('admin_menu', array(&$this, 'csds_userRegAide_optionsPage'));
+			add_action('admin_menu', array(&$this, 'csds_userRegAide_editNewFields_optionsPage'));
+			add_action('admin_menu', array(&$this, 'csds_userRegAide_regFormOptionsPage'));
+			
+			// Handles user profiles and extra fields
+			add_action('show_user_profile', array(&$this, 'csds_show_user_profile'));
+			add_action('edit_user_profile', array(&$this, 'csds_show_user_profile'));
+			add_action('personal_options_update', array(&$this, 'csds_update_user_profile'));
+			add_action('edit_user_profile_update', array(&$this, 'csds_update_user_profile'));
+			add_action('profile_update', array(&$this, 'csds_update_user_profile'));
+			
+			// Translation File - Still in Works
+			add_action('init', array(&$this, 'csds_userRegAide_translationFile'));
+			
+			// Filters for user input into extra and new fields
+			add_filter('pre_user_first_name', 'esc_html');
+			add_filter('pre_user_first_name', 'strip_tags');
+			add_filter('pre_user_first_name', 'trim');
+			add_filter('pre_user_first_name', 'wp_filter_kses');
+			add_filter('pre_user_last_name', 'esc_html');
+			add_filter('pre_user_last_name', 'strip_tags');
+			add_filter('pre_user_last_name', 'trim');
+			add_filter('pre_user_last_name', 'wp_filter_kses');
+			add_filter('pre_user_nickname', 'esc_html');
+			add_filter('pre_user_nickname', 'strip_tags');
+			add_filter('pre_user_nickname', 'trim');
+			add_filter('pre_user_nickname', 'wp_filter_kses');
+			add_filter('pre_user_url', 'esc_url');
+			add_filter('pre_user_url', 'strip_tags');
+			add_filter('pre_user_url', 'trim');
+			add_filter('pre_user_url', 'wp_filter_kses');
+			add_filter('pre_user_description', 'esc_html');
+			add_filter('pre_user_description', 'strip_tags');
+			add_filter('pre_user_description', 'trim');
+			add_filter('pre_user_description', 'wp_filter_kses');
+			
+			// Deactivation hook for deactivation of User Registration Aide Plugin
+			register_deactivation_hook(__FILE__, array(&$this, 'csds_userRegAide_deactivation'));
+		}
+		
+/**
+ * Sets the text color and logo links & shadows in registration/login pages
+ *
+ * @since 1.2.0
+ * @updated 1.2.4
+ * @access private
+ * @author Brian Novotny
+ * @website http://creative-software-design-solutions.com
+*/
+
+function csds_userRegAide_Logo_Title_Color(){
+	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
+	$show_text_color = $csds_userRegAide_Options['show_login_text_color'];
+	$text_color = $csds_userRegAide_Options['login_text_color'];
+	$hover_color = $csds_userRegAide_Options['hover_text_color'];
+	$show_shadow = $csds_userRegAide_Options['show_shadow'];
+	$shadow_size = $csds_userRegAide_Options['shadow_size'];
+	$shadow_color = $csds_userRegAide_Options['shadow_color'];
+	
+	if($show_text_color == "1" && $show_shadow == "2"){
+		echo '<style type="text/css">#loginform label{ font-family: verdana,arial; font-size:1.0em; color: '.$text_color.'; font-weight:bold;}';
+		echo '#registerform label{font-family: verdana,arial; font-size:1.0em; color: '.$text_color.'; font-weight:bold;} ';
+		echo 'body.login #nav a  {color:'.$text_color.' !important; font-weight:bold; font-size:1.4em; margin-left:-9999; text-shadow:rgba(0,0,0,1) 0 0px 0;}';
+		echo '.login #backtoblog a { color:'.$text_color.' !important; font-weight:bold; font-size:1.5em; text-shadow:rgba(0,0,0,1) 0 0px 0;}';
+		echo '.login #nav a:hover { color:'.$hover_color.' !important; font-weight:bold; font-size:1.4em;}';
+		echo '.login #backtoblog a:hover { color:'.$hover_color.' !important; font-weight:bold; font-size:1.5em;} </style>';
+		
+	}elseif($show_text_color == "1" && $show_shadow == "1"){
+		echo '<style type="text/css">#loginform label{ font-family: verdana,arial; font-size:1.0em; color: '.$text_color.'; font-weight:bold;}';
+		echo '#registerform label{font-family: verdana,arial; font-size:1.0em; color: '.$text_color.'; font-weight:bold;} ';
+		echo 'body.login #nav a  {color:'.$text_color.' !important; font-weight:bold; font-size:1.4em; margin-left:-9999; text-shadow:'.$shadow_size.' '.$shadow_size.' '.$shadow_size.' '.$shadow_color.';}';
+		echo '.login #backtoblog a { color:'.$text_color.' !important; font-weight:bold; font-size:1.5em; text-shadow:'.$shadow_size.' '.$shadow_size.' '.$shadow_size.' '.$shadow_color.';}';
+		echo '.login #nav a:hover { color:'.$hover_color.' !important; font-weight:bold; font-size:1.4em;}';
+		echo '.login #backtoblog a:hover { color:'.$hover_color.' !important; font-weight:bold; font-size:1.5em;} </style>';
 	}
 	
-	add_filter('get_user_option_default_password_nag', 'remove_default_password_nag');
-	add_action('admin_menu', 'csds_userRegAide_optionsPage');
-	add_action('admin_menu', 'csds_userRegAide_editNewFields_optionsPage');
-	add_action('admin_menu', 'csds_userRegAide_regFormOptionsPage');
-	add_action('show_user_profile', 'csds_show_user_profile');
-	add_action('edit_user_profile', 'csds_show_user_profile');
-	add_action('personal_options_update', 'csds_update_user_profile');
-	add_action('edit_user_profile_update', 'csds_update_user_profile');
-	add_action('profile_update', 'csds_update_user_profile');
-	add_action('init', 'csds_userRegAide_translationFile');
-	add_filter('pre_user_first_name', 'esc_html');
-	add_filter('pre_user_first_name', 'strip_tags');
-	add_filter('pre_user_first_name', 'trim');
-	add_filter('pre_user_first_name', 'wp_filter_kses');
-	add_filter('pre_user_last_name', 'esc_html');
-	add_filter('pre_user_last_name', 'strip_tags');
-	add_filter('pre_user_last_name', 'trim');
-	add_filter('pre_user_last_name', 'wp_filter_kses');
-	add_filter('pre_user_nickname', 'esc_html');
-	add_filter('pre_user_nickname', 'strip_tags');
-	add_filter('pre_user_nickname', 'trim');
-	add_filter('pre_user_nickname', 'wp_filter_kses');
-	add_filter('pre_user_url', 'esc_url');
-	add_filter('pre_user_url', 'strip_tags');
-	add_filter('pre_user_url', 'trim');
-	add_filter('pre_user_url', 'wp_filter_kses');
-	add_filter('pre_user_description', 'esc_html');
-	add_filter('pre_user_description', 'strip_tags');
-	add_filter('pre_user_description', 'trim');
-	add_filter('pre_user_description', 'wp_filter_kses');
-	add_filter('random_password',  'csds_userRegAide_CreatePassword');
-	register_deactivation_hook(__FILE__, 'csds_userRegAide_deactivation');
+	if ($csds_userRegAide_Options['change_logo_link'] == "2"){
+		return;
+	}elseif($csds_userRegAide_Options['change_logo_link'] == "1"){
+		return get_bloginfo('name');
+	}
+	//return get_bloginfo('name');
+}
+
+/**
+ * Sets up head for custom login and registration pages
+ *
+ * @since 1.2.0
+ * @updated 1.2.4
+ * @access private
+ * @author Brian Novotny
+ * @website http://creative-software-design-solutions.com
+*/
+
+function csds_userRegAide_Logo_Head(){
+	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
+	$show_logo = $csds_userRegAide_Options['show_logo'];
+	$logo_url = $csds_userRegAide_Options['logo_url'];
+	$show_background_image = $csds_userRegAide_Options['show_background_image'];
+	$background_image = $csds_userRegAide_Options['background_image_url'];
+	$show_background_color = $csds_userRegAide_Options['show_background_color'];
+	$background_color = $csds_userRegAide_Options['reg_background_color'];
+	$show_page_image = $csds_userRegAide_Options['show_reg_form_page_image'];
+	$page_image = $csds_userRegAide_Options['reg_form_page_image'];
+	$show_page_color = $csds_userRegAide_Options['show_reg_form_page_color'];
+	$page_color = $csds_userRegAide_Options['reg_form_page_color'];
 	
+	if ($show_logo == "1"){
+		echo '<style type="text/css">h1 a { background-image:url('.$logo_url.') !important; height:150px; margin-bottom:20px; } </style>';
+	}
+	
+	if($show_background_image =="1"){
+		echo '<style type="text/css">#loginform{background:url('.$background_image.') no-repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
+		echo '<style type="text/css">#registerform{background:url('.$background_image.') no-repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
+	}
+		
+	if($show_background_color == "1"){
+		 echo '<style type="text/css">#loginform{background-color:'.$background_color.' !important;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;} </style>';
+		 echo '<style type="text/css">#registerform{background-color:'.$background_color.' !important;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;} </style>';
+	}
+			
+	if($show_page_image == "1"){
+		echo '<style type="text/css">body.login{height:350%; background:url('.$page_image.') repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
+		echo '<style type="text/css">body.register{background:url('.$page_image.') repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
+	}
+		
+	if($show_page_color == "1"){
+		echo '<style type="text/css">body.login{height:350%; overflow:scroll; background-color:'.$page_color.' !important;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;} </style>';
+		
+	}
+		
+}		
+
 /**
  * Installs stuff for plugin
  *
@@ -119,7 +250,7 @@ include_once ("user-reg-aide-regForm.php");
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
-	
+
 function csds_userRegAide_install(){
 	
 	if(function_exists('csds_userRegAide_fill_known_fields')){
@@ -173,7 +304,6 @@ function csds_userRegAide_translationFile(){
 	load_plugin_textdomain('user-registration-aide', '', $plugin_path );
 }
 
-
 /**
  * Add the management page to the user settings bar
  *
@@ -182,6 +312,7 @@ function csds_userRegAide_translationFile(){
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
+
 
 function csds_userRegAide_optionsPage(){
 	
@@ -196,11 +327,12 @@ function csds_userRegAide_optionsPage(){
 /**
  * Add options page for the Registration Form options
  *
- * @since 1.0.0
+ * @since 1.2.0
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
+
 
 function csds_userRegAide_regFormOptionsPage(){
 	
@@ -212,6 +344,7 @@ function csds_userRegAide_regFormOptionsPage(){
 	
 }
 
+
 /**
  * Add the Add-Edit New Fields management page to the user settings bar
  *
@@ -221,6 +354,7 @@ function csds_userRegAide_regFormOptionsPage(){
  * @website http://creative-software-design-solutions.com
 */
 
+
 function csds_userRegAide_editNewFields_optionsPage(){
 	
 	if(function_exists('add_submenu_page')){
@@ -229,140 +363,6 @@ function csds_userRegAide_editNewFields_optionsPage(){
     
 	}
 	
-}
-
-/**
- * Add custom logo to the registration page instead of wordpress logo
- *
- * @since 1.2.0
- * @updated 1.2.0
- * @access private
- * @author Brian Novotny
- * @website http://creative-software-design-solutions.com
-*/
-
-function csds_userRegAide_Logo_Header(){
-	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-	$show_logo = $csds_userRegAide_Options['show_logo'];
-	$logo_url = $csds_userRegAide_Options['logo_url'];
-	 
-	if ($show_logo == "1"){
-		echo '<style type="text/css">h1 a { background-image:url('.$logo_url.') !important; height:150px; margin-bottom:20px; } </style>';
-	}
-	
-	
-}
-
-/**
- * Add custom background image to the registration and login forms instead of default wordpress white
- *
- * @since 1.2.0
- * @updated 1.2.0
- * @access private
- * @author Brian Novotny
- * @website http://creative-software-design-solutions.com
-*/
-
-function csds_userRegAide_Logo_Header_Bckgrd_Image(){
-	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-	$show_background_image = $csds_userRegAide_Options['show_background_image'];
-	$background_image = $csds_userRegAide_Options['background_image_url'];
-	
-	if($show_background_image =="1"){
-		echo '<style type="text/css">#loginform{background:url('.$background_image.') no-repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
-		echo '<style type="text/css">#registerform{background:url('.$background_image.') no-repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
-	}
-	
-}
-
-/**
- * Add custom background color to the registration and login forms instead of default wordpress white
- *
- * @since 1.2.0
- * @updated 1.2.0
- * @access private
- * @author Brian Novotny
- * @website http://creative-software-design-solutions.com
-*/
-
-function csds_userRegAide_Logo_Header_Bckgrd_Color(){
-	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-	$show_background_color = $csds_userRegAide_Options['show_background_color'];
-	$background_color = $csds_userRegAide_Options['reg_background_color'];
-	
-	if($show_background_color == "1"){
-		 echo '<style type="text/css">#loginform{background-color:'.$background_color.' !important;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;} </style>';
-		 echo '<style type="text/css">#registerform{background-color:'.$background_color.' !important;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;} </style>';
-	}
-	
-}
-
-/**
- * Add custom background color to the registration and login pages instead of default wordpress white
- *
- * @since 1.2.0
- * @updated 1.2.0
- * @access private
- * @author Brian Novotny
- * @website http://creative-software-design-solutions.com
-*/
-
-function csds_userRegAide_Logo_Header_Page_Bckgrd_Color(){
-	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-	$show_page_color = $csds_userRegAide_Options['show_reg_form_page_color'];
-	$page_color = $csds_userRegAide_Options['reg_form_page_color'];
-	if($show_page_color == "1"){
-		echo '<style type="text/css">body.login{height:350%; overflow:scroll; background-color:'.$page_color.' !important;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;} </style>';
-		// echo '<style type="text/css">body.register{overflow:scroll;  background-color:'.$page_color.' repeat !important; padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } #content {background-color:'.$page_color.' ;} </style>';
-	}
-}
-
-/**
- * Add custom background image to the registration and login pages instead of default wordpress white
- *
- * @since 1.2.0
- * @updated 1.2.0
- * @access private
- * @author Brian Novotny
- * @website http://creative-software-design-solutions.com
-*/
-
-function csds_userRegAide_Logo_Header_Page_Bckgrd_Image(){
-	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-	$show_page_image = $csds_userRegAide_Options['show_reg_form_page_image'];
-	$page_image = $csds_userRegAide_Options['reg_form_page_image'];
-		
-		if($show_page_image == "1"){
-		echo '<style type="text/css">body.login{height:350%; background:url('.$page_image.') repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
-		echo '<style type="text/css">body.register{background:url('.$page_image.') repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
-	}
-}
-
-/**
- * Add custom label text colors to the registration and login forms instead of default wordpress colors
- *
- * @since 1.2.0
- * @updated 1.2.0
- * @access private
- * @author Brian Novotny
- * @website http://creative-software-design-solutions.com
-*/
-
-function csds_userRegAide_Logo_Header_Label_Color(){
-	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-	$show_text_color = $csds_userRegAide_Options['show_login_text_color'];
-	$text_color = $csds_userRegAide_Options['login_text_color'];
-	$hover_color = $csds_userRegAide_Options['hover_text_color'];
-		
-		if($show_text_color == "1"){
-			echo '<style type="text/css">#loginform label{ font-family: verdana,arial; font-size:1.0em; color: '.$text_color.'; font-weight:bold;}';
-			echo '#registerform label{font-family: verdana,arial; font-size:1.0em; color: '.$text_color.'; font-weight:bold;} ';
-			echo 'body.login #nav a  { color:'.$text_color.' !important;  }';
-			echo '.login #backtoblog a { color:'.$text_color.' !important; }';
-			echo '.login #nav a:hover { color:'.$hover_color.' !important;  }';
-			echo '.login #backtoblog a:hover { color:'.$hover_color.' !important; } </style>';
-			
-		}
 }
 
 /**
@@ -384,29 +384,6 @@ function csds_userRegAide_CustomLoginLink(){
 	if ($csds_userRegAide_Options['change_logo_link'] == "1"){
 		return site_url();
 	}
-}
-
-/**
- * Sets hover title for Custom Logo if option chosen to add custom logo
- *
- * @since 1.2.0
- * @updated 1.2.0
- * @access private
- * @author Brian Novotny
- * @website http://creative-software-design-solutions.com
-*/
-
-function csds_userRegAide_Login_HeaderTitle(){
-
-	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-	if ($csds_userRegAide_Options['change_logo_link'] == "2"){
-		return;
-	}
-	if ($csds_userRegAide_Options['change_logo_link'] == "1"){
-		return get_bloginfo('name');
-	}
-	//return get_bloginfo('name');
-	
 }
 
 /**
@@ -534,6 +511,8 @@ function csds_userRegAide_addFields(){
 	}
 }
 
+
+
 function csds_userRegAide_Password_Header(){
 
 	if(function_exists('csds_userRegAide_Password_Options')){
@@ -637,18 +616,16 @@ function csds_userRegAide_Password_Header(){
  * Add the additional metadata into the database after the new user is created
  *
  * @since 1.0.0
- * @updated 1.1.0
+ * @updated 1.2.4
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
 
-
 function csds_userRegAide_updateFields($user_id){
 
 	global $csds_userRegAide_registrationFields, $wpdb, $table_prefix;
-	
-	
+		
 	//$user_id = $current_user->id;
 	$thisValue = '';
 	$fieldName = '';
@@ -666,18 +643,13 @@ function csds_userRegAide_updateFields($user_id){
 		foreach($csds_userRegAide_registrationFields as $thisValue => $fieldName){
 			if($_POST[$thisValue] != ''){
 				if($thisValue == "first_name"){
-							$newValue = apply_filters('pre_user_first_name', $_POST[$thisValue]);
-							//update_user_meta( $user_id, $thisValue, $newValue);
-							//wp_insert_user(array ('ID' => $user_id, 'first_name' => $newValue ) );
+					$newValue = apply_filters('pre_user_first_name', $_POST[$thisValue]);
 				}elseif($thisValue == "last_name"){
 					$newValue = apply_filters('pre_user_last_name', $_POST[$thisValue]);
-					//update_user_meta( $user_id, $thisValue, $newValue);
 				}elseif($thisValue == "nickname"){
 					$newValue = apply_filters('pre_user_nickname', $_POST[$thisValue]);
-					//update_user_meta( $user_id, $thisValue, $newValue);
 				}elseif($thisValue == "description"){
 					$newValue = apply_filters('pre_user_description', $_POST[$thisValue]);
-					//update_user_meta( $user_id, $thisValue, $newValue);
 				}elseif($thisValue == "user_url"){
 					$newWebsite = apply_filters('pre_user_url', $_POST[$thisValue]);
 					$addData = $wpdb->prepare("UPDATE $wpdb->users SET user_url =('$newWebsite') WHERE ID = '$user_id'");
@@ -690,11 +662,9 @@ function csds_userRegAide_updateFields($user_id){
 					$wpdb->query($addData);
 				}else{
 					$newValue = apply_filters('pre_user_description', $_POST[$thisValue]);
-					//update_user_meta( $user_id, $thisValue, $newValue);
 				}
 				if($thisValue != 'user_url' || $thisValue != "user_pass"){
 					update_user_meta( $user_id, $thisValue, $newValue);
-					//exit('Fucking shit');
 				}
 				}else{
 					//exit('Empty NOOO Fucking shit');
@@ -715,19 +685,11 @@ function csds_userRegAide_updateFields($user_id){
 
 // Remove default password message if user entered own password
 
-//if(function_exists('remove_default_password_nag')){
-	function remove_default_password_nag() {
+function remove_default_password_nag() {
 
-		//global $user_ID;
-		//$csds_userRegAide_registrationFields = get_option('csds_userRegAide_registrationFields');
-		//if(in_array("Password", $csds_userRegAide_registrationFields)){
-			//delete_user_setting('default_password_nag', $user_ID);
-			//update_user_option($user_ID, 'default_password_nag', true, true);
-			return 0;
-		//}
+		return 0;
 		
-	}
-//}
+}
 
 // Emails registration confirmation to new user
 
@@ -751,7 +713,6 @@ function csds_new_user_notification($user_id, $plaintext_pass = '') {
 	    @wp_mail(get_option('admin_email'), sprintf(__('[%s] New User Registration Alert'), $blogname), $message);
 	 
 	    if ( empty($plaintext_pass) ){
-	 
 	        return;
 		}
 	 	
@@ -769,13 +730,14 @@ function csds_new_user_notification($user_id, $plaintext_pass = '') {
  * Check the new user registration form for errors
  *
  * @since 1.0.0
- * @updated 1.1.0
+ * @updated 1.2.4
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
 
 function csds_userRegAide_checkFields($errors, $username, $email){
+//function csds_userRegAide_checkFields($login, $email, $errors){
 
 	global $csds_userRegAide_registrationFields;
 	$thisValue = '';
@@ -791,8 +753,6 @@ function csds_userRegAide_checkFields($errors, $username, $email){
 				if ($_POST[$thisValue] == '') {
 					$errors->add('empty_'.$thisValue , __("<strong>ERROR</strong>: Please type your ".$csds_userRegAide_registrationFields[$thisValue].".",'csds_userRegAide'));
 				}
-						//return $errors;
-				
 			}elseif($thisValue == "user_pass"){
 				// //to check password
 				if(empty($_POST['pass1']) || $_POST['pass1'] == '' || empty($_POST['pass2']) || $_POST['pass2'] == ''){
@@ -821,7 +781,7 @@ function csds_userRegAide_checkFields($errors, $username, $email){
  * Add the additional fields added to the user profile page
  *
  * @since 1.0.0
- * @updated 1.1.2
+ * @updated 1.2.4
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -869,7 +829,7 @@ function csds_show_user_profile($user){
  /**
  * Updates the additional fields data added to the user profile page
  * @since 1.0.0 
- * @updated  1.1.2
+ * @updated  1.2.4
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -966,22 +926,22 @@ function csds_delete_field_from_users_meta($field){
 
 function csds_userRegAide_deactivation()
 {
-	
+	// Do nothing here in case user wants to reactivate at a later time
 }
 
-//end CSDS_USER_REG_AIDE class
+} //end CSDS_USER_REG_AIDE class
 
 # Run The Plugin!
-// if( class_exists('CSDS_USER_REG_AIDE') ){
-	// $csds_userRegAide_Instance = new CSDS_USER_REG_AIDE();
-	// if(isset($csds_userRegAide_Instance)){
+if( class_exists('CSDS_USER_REG_AIDE') ){
+	$csds_userRegAide_Instance = new CSDS_USER_REG_AIDE();
+	if(isset($csds_userRegAide_Instance)){
 		// if(function_exists('csds_userRegAide_install')){
-			
+			register_activation_hook( __FILE__, array(  &$csds_userRegAide_Instance, 'csds_userRegAide_install' ) );
 		// }
-		
-	// }
-// }
-
-
-	
+		// if(function_exists('csds_userRegAide_DefaultOptions')){
+			// register_activation_hook( __FILE__, array(  &$csds_userRegAide_Instance, 'csds_userRegAide_DefaultOptions' ) );
+		// }
+		//register_deactivation_hook( __FILE__, array(  &$csds_userRegAide_Instance, 'Uninstall' ) );
+	}
+}
 ?>

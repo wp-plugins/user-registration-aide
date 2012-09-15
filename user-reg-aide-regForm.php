@@ -3,7 +3,7 @@
 /*
  * User Registration Aide - Registration Form Options
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.2.3
+ * Version: 1.2.4
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -18,7 +18,7 @@
  * Couple of includes for functionality
  *
  * @since 1.2.0
- * @updated 1.2.0
+ * @updated 1.2.4
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -34,13 +34,13 @@ include_once ("user-reg-aide-admin.php");
  * Loads and displays the User Registration Aide administration page
  *
  * @since 1.2.0
- * @updated 1.2.0
+ * @updated 1.2.4
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
 
-//if(!function_exists('csds_userRegAide_regFormOptions')){
+if(!function_exists('csds_userRegAide_regFormOptions')){
 function csds_userRegAide_regFormOptions(){
 
 	global $csds_userRegAide_knownFields, $csds_userRegAide_Options, $csds_userRegAide_registrationFields, $csds_userRegAide_NewFields, $csds_userRegAide_fieldOrder;
@@ -65,6 +65,7 @@ function csds_userRegAide_regFormOptions(){
 		update_option("csds_userRegAide_Options", $update);
 		echo '<div id="message" class="updated fade"><p>'. __('New Registration Form Message Options updated successfully.', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
 						
+		// Updates registration form agreement message options
 	}elseif (isset($_POST['reg_form_agreement_message_update'])){
 		$update = array();
 		$update = get_option('csds_userRegAide_Options');
@@ -76,8 +77,10 @@ function csds_userRegAide_regFormOptions(){
 		$update['agreement_message'] = esc_attr(stripslashes($_POST['csds_RegForm_Agreement_Message']));
 		update_option("csds_userRegAide_Options", $update);
 		echo '<div id="message" class="updated fade"><p>'. __('New Registration Form Agreement Message Options updated successfully.', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
+		
+		//updates login/registration form custom options
 	
-	}elseif (isset($_POST['csds_userRegAide_logo_update'])){
+	}elseif (isset($_POST['csds_userRegAide_logo_update'])){ 
 		$update = array();
 		$update = get_option('csds_userRegAide_Options');
 		$update['show_logo'] = esc_attr(stripslashes($_POST['csds_userRegAide_logo']));
@@ -94,10 +97,15 @@ function csds_userRegAide_regFormOptions(){
 		$update['show_login_text_color'] = esc_attr(stripslashes($_POST['csds_userRegAide_text_color']));
 		$update['login_text_color'] = esc_attr(stripslashes($_POST['csds_userRegAide_newTextColor']));
 		$update['hover_text_color'] = esc_attr(stripslashes($_POST['csds_userRegAide_newHoverTextColor']));
+		$update['show_shadow'] = esc_attr(stripslashes($_POST['csds_userRegAide_show_shadow']));
+		$update['shadow_size'] = esc_attr(stripslashes($_POST['csds_userRegAide_shadowSize']));
+		$update['shadow_color'] = esc_attr(stripslashes($_POST['csds_userRegAide_shadowColor']));
 		update_option("csds_userRegAide_Options", $update);
 		echo '<div id="message" class="updated fade"><p>'. __('New Registration Form Logo Options updated successfully.', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
 	
 	}
+	
+	// Loading options prior to loading registration form options page
 	
 	$csds_userRegAide_getOptions = get_option('csds_userRegAide');
 	$csds_userRegAide_registrationFields = get_option('csds_userRegAide_registrationFields');
@@ -113,17 +121,23 @@ function csds_userRegAide_regFormOptions(){
 		}
 	}
 	
-	if(!empty($csds_userRegAide_knownFields)){
-		if(!empty($csds_userRegAide_Options)){
-
-		
-		
-		// Shows Aministration Page 
-				
+	// Just checking to make sure options are installed before loading admin page
+	if(empty($csds_userRegAide_knownFields)){
+		if(function_exists('csds_userRegAide_fill_known_fields')){
+			csds_userRegAide_fill_known_fields();
+		}
+	}elseif(empty($csds_userRegAide_Options)){
+		if(function_exists('csds_userRegAide_DefaultOptions')){
+			csds_userRegAide_DefaultOptions();
+		}
+	}
+	
+	// Shows Aministration Page 
+	if(current_user_can('activate_plugins')){			
 	echo '<div id="wpbody">';
 		echo '<div class=wrap>';
 			echo '<form method="post" name="csds_userRegAide">';
-				echo '<h2>'. __('User Registration Aide: Force New User Registration Fields', 'csds_userRegAide') .'</h2>';
+				echo '<h2>'. __('User Registration Aide: Custom Registration Form Options', 'csds_userRegAide') .'</h2>';
 				echo '<div id="poststuff">';
 				
 				//Form for adding different message to registration form
@@ -160,7 +174,7 @@ function csds_userRegAide_regFormOptions(){
 							<td colspan="3"><?php _e('Choose to add a special message to bottom of registration form for new users requiring them to read and agree to terms and conditions of the website:', 'csds_userRegAide'); ?></td>
 						</tr>
 						<tr>
-							<td width="25%"><?php _e('Show Custom Link for Agreement/Guidelines/Policy Page: ', 'csds_userRegAide'); ?><input type="radio" id="csds_userRegAide_agreement_link" name="csds_userRegAide_agreement_link" value="1" <?php
+							<td width="25%"><?php _e('Show Custom Link for Agreement/Guidelines/Policy Page: ', 'csds_userRegAide');?><br/><input type="radio" id="csds_userRegAide_agreement_link" name="csds_userRegAide_agreement_link" value="1" <?php
 								if ($csds_userRegAide_Options['show_custom_agreement_link'] == 1) echo 'checked' ;?>/> Yes
 								<input type="radio" id="csds_userRegAide_agreement_link" name="csds_userRegAide_agreement_link"  value="2" <?php
 								if ($csds_userRegAide_Options['show_custom_agreement_link'] == 2) echo 'checked' ;?>/> No
@@ -168,12 +182,12 @@ function csds_userRegAide_regFormOptions(){
 							echo '<td width="25%">'. __('Enter a title to display for link to Agreement/Guidelines/Policies URL: ', 'csds_userRegAide').'<input  style="width: 200px;" type="text" title="Enter the title for the URL where your agreement/guidelines/policy page is located (http://mysite.com/agreement.php)" value="' . $csds_userRegAide_Options['agreement_title'] . '" name="csds_userRegAide_newAgreementTitle" id="csds_userRegAide_newAgreementTitle" /></td>';
 							echo '<td width="50%">'. __('Enter Link to Agreement/Guidelines/Policies URL: ', 'csds_userRegAide') .'<input  style="width: 450px;" type="text" title="Enter the URL where your agreement/guidelines/policy page is located (http://mysite.com/agreement.php)" value="' . $csds_userRegAide_Options['agreement_link'] . '" name="csds_userRegAide_newAgreementURL" id="csds_userRegAide_newAgreementURL" /></td>';?></tr>
 						<tr>
-							<td width="25%"><?php _e('Show Message Confirming Agreement for Agreement/Guidelines/Policy Page: ', 'csds_userRegAide'); ?><input type="radio" id="csds_userRegAide_show_agreement_message" name="csds_userRegAide_show_agreement_message" value="1" <?php
+							<td width="25%"><?php _e('Show Message Confirming Agreement for Agreement/Guidelines/Policy Page: ', 'csds_userRegAide');?><br/><input type="radio" id="csds_userRegAide_show_agreement_message" name="csds_userRegAide_show_agreement_message" value="1" <?php
 								if ($csds_userRegAide_Options['show_custom_agreement_message'] == 1) echo 'checked' ;?>/> Yes
 								<input type="radio" id="csds_userRegAide_show_agreement_message" name="csds_userRegAide_show_agreement_message"  value="2" <?php
 								if ($csds_userRegAide_Options['show_custom_agreement_message'] == 2) echo 'checked' ;?>/> No
 							</td>
-							<td width="25%"><?php _e('Show Checkbox Confirming Agreement for Agreement/Guidelines/Policy Page: ', 'csds_userRegAide'); ?><input type="radio" id="csds_userRegAide_agreement_checkbox" name="csds_userRegAide_agreement_checkbox" value="1" <?php
+							<td width="25%"><?php _e('Show Checkbox Confirming Agreement for Agreement/Guidelines/Policy Page: ', 'csds_userRegAide');?><br/><input type="radio" id="csds_userRegAide_agreement_checkbox" name="csds_userRegAide_agreement_checkbox" value="1" <?php
 								if ($csds_userRegAide_Options['show_custom_agreement_checkbox'] == 1) echo 'checked' ;?>/> Yes
 								<input type="radio" id="csds_userRegAide_agreement_checkbox" name="csds_userRegAide_agreement_checkbox"  value="2" <?php
 								if ($csds_userRegAide_Options['show_custom_agreement_checkbox'] == 2) echo 'checked' ;?>/> No
@@ -205,32 +219,28 @@ function csds_userRegAide_regFormOptions(){
 						<?php _e('Change Custom Logo Link: ', 'csds_userRegAide');?><input type="radio" id="csds_userRegAide_change_logo_link" name="csds_userRegAide_change_logo_link" value="1" <?php
 						if ($csds_userRegAide_Options['change_logo_link'] == 1) echo 'checked' ;?>/> Yes
 						<input type="radio" id="csds_userRegAide_change_logo_link" name="csds_userRegAide_change_logo_link"  value="2" <?php
-						if ($csds_userRegAide_Options['change_logo_link'] == 2) echo 'checked' ;?>/> No
-						</td>
-						<?php
+						if ($csds_userRegAide_Options['change_logo_link'] == 2) echo 'checked' ;?><?php echo'/> No';
+						echo '</td>';
 						echo '<td width="50%">'. __('New Logo URL: ', 'csds_userRegAide') .'<input  style="width: 450px;" type="text" title="Enter the URL where your new logo is for your register/login page -- (http://mysite.com/wp-content/uploads/9/5/thislogo.png)" value="' . $csds_userRegAide_Options['logo_url'] . '" name="csds_userRegAide_newLogoURL" id="csds_userRegAide_newLogoURL" /></td>';
 						echo '</tr>';
 						
 						// Form Background Image
 						
 						echo '<tr>';
-						echo '<td>';?>
-						<?php _e('Show Custom Background Image: ', 'csds_userRegAide'); ?>
-						<br/>
+						echo '<td>'.__('Show Custom Background Image: ', 'csds_userRegAide');
+						echo '<br/>';?>
 						<input type="radio" id="csds_userRegAide_background_image" name="csds_userRegAide_background_image" value="1" <?php
-						if ($csds_userRegAide_Options['show_background_image'] == 1) echo 'checked' ; ?> /> Yes
-						<input type="radio" id="csds_userRegAide_background_image" name="csds_userRegAide_background_image" value="2"
-						<?php
-						if ($csds_userRegAide_Options['show_background_image'] == 2) echo 'checked' ; ?> /> No
-						</td>
-						<?php echo '<td colspan="2">'. __('New Background Image URL: ', 'csds_userRegAide') .'<input  style="width: 450px;" type="text" title="Enter the URL where your new background image is for your login/register forms --  (http://mysite.com/wp-content/uploads/9/5/this-background-image.png)" value="' . $csds_userRegAide_Options['background_image_url'] . '" name="csds_userRegAide_newBackgroundImageURL" id="csds_userRegAide_newBackgroundImageURL" /></td>';
+						if ($csds_userRegAide_Options['show_background_image'] == 1) echo 'checked' ; ?><?php echo '/> Yes';
+						?><input type="radio" id="csds_userRegAide_background_image" name="csds_userRegAide_background_image" value="2"
+						<?php if ($csds_userRegAide_Options['show_background_image'] == 2) echo 'checked' ; ?><?php echo '/> No';
+						echo '</td>';
+						echo '<td colspan="2">'. __('New Background Image URL: ', 'csds_userRegAide') .'<input  style="width: 450px;" type="text" title="Enter the URL where your new background image is for your login/register forms --  (http://mysite.com/wp-content/uploads/9/5/this-background-image.png)" value="' . $csds_userRegAide_Options['background_image_url'] . '" name="csds_userRegAide_newBackgroundImageURL" id="csds_userRegAide_newBackgroundImageURL" /></td>';
 						echo '</tr>';
 						
 						// Page Background Image
 						
-						?><tr>
-						<td>
-						<?php _e('Show Custom Page Background Image: ', 'csds_userRegAide');?><input type="radio" id="csds_userRegAide_page_background_image" name="csds_userRegAide_page_background_image" value="1"
+						echo '<tr>';
+						echo '<td>'.__('Show Custom Page Background Image: ', 'csds_userRegAide');?><br/><input type="radio" id="csds_userRegAide_page_background_image" name="csds_userRegAide_page_background_image" value="1"
 						<?php if ($csds_userRegAide_Options['show_reg_form_page_image'] == 1) echo 'checked';?>/> Yes
 						<input type="radio" id="csds_userRegAide_page_background_image" name="csds_userRegAide_page_background_image" value="2" 
 						<?php if ($csds_userRegAide_Options['show_reg_form_page_image'] == 2) echo 'checked' ;?>/> No
@@ -238,56 +248,58 @@ function csds_userRegAide_regFormOptions(){
 						
 						// Form Background Color
 						
-						echo '<tr>';?>
-						<td>
-						<?php _e('Show Custom Background Color: ', 'csds_userRegAide');?><input type="radio" id="csds_userRegAide_background_color" name="csds_userRegAide_background_color" value="1"
+						echo '<tr>';
+						echo '<td>'.__('Show Custom Background Color: ', 'csds_userRegAide');?><br/><input type="radio" id="csds_userRegAide_background_color" name="csds_userRegAide_background_color" value="1"
 						<?php if ($csds_userRegAide_Options['show_background_color'] == 1) echo 'checked';?>/> Yes
 						<input type="radio" id="csds_userRegAide_background_color" name="csds_userRegAide_background_color" value="2" 
 						<?php if ($csds_userRegAide_Options['show_background_color'] == 2) echo 'checked' ;?>/> No
-						</td><?php echo '<td colspan="2">'. __('New Background Color: ', 'csds_userRegAide') .'<input  style="width: 150px;" type="text" title="Enter the new background color for your login/register form (#FFFFFF)" value="' . $csds_userRegAide_Options['reg_background_color'] . '" name="csds_userRegAide_newBackgroundColor" id="csds_userRegAide_newBackgroundColor" />';?>
-						</td>
-						</tr>
+						</td><?php echo '<td colspan="2">'. __('New Background Color: ', 'csds_userRegAide') .'<input  style="width: 150px;" type="text" title="Enter the new background color for your login/register form (#FFFFFF)" value="' . $csds_userRegAide_Options['reg_background_color'] . '" name="csds_userRegAide_newBackgroundColor" id="csds_userRegAide_newBackgroundColor" />';
+						echo '</td>';
+						echo '</tr>';
 						
-						<?php // Page Background Color?>
+							// Page Background Color
 						
-						<tr>
-						<td>
-						<?php _e('Show Custom Page Background Color: ', 'csds_userRegAide');?><input type="radio" id="csds_userRegAide_page_background_color" name="csds_userRegAide_page_background_color" value="1"
+						echo '<tr>';
+						echo '<td>'.__('Show Custom Page Background Color: ', 'csds_userRegAide');?><br/><input type="radio" id="csds_userRegAide_page_background_color" name="csds_userRegAide_page_background_color" value="1"
 						<?php if ($csds_userRegAide_Options['show_reg_form_page_color'] == 1) echo 'checked';?>/> Yes
 						<input type="radio" id="csds_userRegAide_page_background_color" name="csds_userRegAide_page_background_color" value="2" 
 						<?php if ($csds_userRegAide_Options['show_reg_form_page_color'] == 2) echo 'checked' ;?>/> No
-						</td><?php echo '<td colspan="2">'. __('New Page Background Color: ', 'csds_userRegAide') .'<input  style="width: 150px;" type="text" title="Enter the new page background color for your register/login form (#FFFFFF)" value="' . $csds_userRegAide_Options['reg_form_page_color'] . '" name="csds_userRegAide_newPageBackgroundColor" id="csds_userRegAide_newPageBackgroundColor" /></td></tr>';?>
+						</td><?php echo '<td colspan="2">'. __('New Page Background Color: ', 'csds_userRegAide') .'<input  style="width: 150px;" type="text" title="Enter the new page background color for your register/login form (#FFFFFF)" value="' . $csds_userRegAide_Options['reg_form_page_color'] . '" name="csds_userRegAide_newPageBackgroundColor" id="csds_userRegAide_newPageBackgroundColor" /></td></tr>';
 						
-						<?php // Text label and link colors?>
-						<tr>
-						<td>
-						<?php _e('Show Custom Text/Links Colors: ', 'csds_userRegAide');?><input type="radio" id="csds_userRegAide_text_color" name="csds_userRegAide_text_color" value="1"
+							// Text label and link colors
+						echo '<tr>';
+						echo '<td>'.__('Show Custom Text/Links Colors: ', 'csds_userRegAide');?><br/><input type="radio" id="csds_userRegAide_text_color" name="csds_userRegAide_text_color" value="1"
 						<?php if ($csds_userRegAide_Options['show_login_text_color'] == 1) echo 'checked';?>/> Yes
 						<input type="radio" id="csds_userRegAide_text_color" name="csds_userRegAide_text_color" value="2" 
 						<?php if ($csds_userRegAide_Options['show_login_text_color'] == 2) echo 'checked' ;?>/> No
-						</td><?php echo '<td>'. __('New Text/Links Color: ', 'csds_userRegAide') .'<input  style="width: 100px;" type="text" title="Enter the new text/links color for your site (#FFFFFF)" value="' . $csds_userRegAide_Options['login_text_color'] . '" name="csds_userRegAide_newTextColor" id="csds_userRegAide_newTextColor" />';?>
-						</td><?php echo '<td>'. __('New Links Hover Color: ', 'csds_userRegAide') .'<input  style="width: 100px;" type="text" title="Enter the new hover color for your login page links (#FFFFFF)" value="' . $csds_userRegAide_Options['hover_text_color'] . '" name="csds_userRegAide_newHoverTextColor" id="csds_userRegAide_newHoverTextColor" />';
+						</td><?php echo '<td>'. __('New Text/Links Color: ', 'csds_userRegAide') .'<input  style="width: 100px;" type="text" title="Enter the new text/links color for your site (#FFFFFF)" value="' . $csds_userRegAide_Options['login_text_color'] . '" name="csds_userRegAide_newTextColor" id="csds_userRegAide_newTextColor" /></td>';
+						echo '<td>'. __('New Links Hover Color: ', 'csds_userRegAide') .'<input  style="width: 100px;" type="text" title="Enter the new hover color for your login page links (#FFFFFF)" value="' . $csds_userRegAide_Options['hover_text_color'] . '" name="csds_userRegAide_newHoverTextColor" id="csds_userRegAide_newHoverTextColor" />';
+						echo '</td>';
+						echo '</tr>';
+						
+						// Link Shadow Size & colors
+						
+						echo '<tr>';
+						echo '<td>'.__('Show Link Shadows: ', 'csds_userRegAide');?><input type="radio" id="csds_userRegAide_show_shadow" name="csds_userRegAide_show_shadow" value="1"
+						<?php if ($csds_userRegAide_Options['show_shadow'] == 1) echo 'checked';?>/> Yes
+						<input type="radio" id="csds_userRegAide_show_shadow" name="csds_userRegAide_show_shadow" value="2" 
+						<?php if ($csds_userRegAide_Options['show_shadow'] == 2) echo 'checked' ;?>/> No
+						</td><?php echo '<td>'. __('Shadow Size in PX: ', 'csds_userRegAide') .'<input  style="width: 100px;" type="text" title="Enter the new size of shadow for login/registration page links in PX for your site (2px)" value="' . $csds_userRegAide_Options['shadow_size'] . '" name="csds_userRegAide_shadowSize" id="csds_userRegAide_newTextColor" /></td>';
+						echo '<td>'. __('Shadow Color: ', 'csds_userRegAide') .'<input  style="width: 100px;" type="text" title="Enter the new color for your login page links shadows (#FFFFFF)" value="' . $csds_userRegAide_Options['shadow_color'] . '" name="csds_userRegAide_shadowColor" id="csds_userRegAide_shadowColor" />';
 						echo '</td>';
 						echo '</tr>';
 						echo '</table>';
 						echo '<br/>';
-						echo '<input type="submit" class="button-primary" name="csds_userRegAide_logo_update" value="'. __('Add Logo', 'csds_userRegAide').'" />';
+						echo '<input type="submit" class="button-primary" name="csds_userRegAide_logo_update" value="'. __('Update Login-Reg Form Style Options', 'csds_userRegAide').'" />';
 						echo '</div>';
 					echo '</div>';
 				echo '</div>';   
 			echo '</form>';
 		echo '</div>';
 	echo '</div>';
-		}else{
-			if(function_exists('csds_userRegAide_DefaultOptions')){
-				csds_userRegAide_DefaultOptions();
-			}
-		}
-		 
 	}else{
-		if(function_exists('csds_userRegAide_fill_known_fields')){
-			csds_userRegAide_fill_known_fields();
-		}
+		wp_die(__('You do not have permissions to activate this plugin, sorry, check with site administrator to resolve this issue please!'));
 	}
+}
 }
 ?>

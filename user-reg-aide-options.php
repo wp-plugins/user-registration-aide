@@ -2,7 +2,7 @@
 /*
  * User Registration Aide - Edit New Fields Administration Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.2.3
+ * Version: 1.2.4
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -23,12 +23,13 @@ include_once ("user-reg-aide-regForm.php");
  * Adds the new default options for the options fields on admin forms
  *
  * @since 1.2.0
- * @updated 1.2.0
+ * @updated 1.2.4
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
 
+if(!function_exists('csds_userRegAide_DefaultOptions')){
 function csds_userRegAide_DefaultOptions(){
 
 	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
@@ -61,6 +62,9 @@ function csds_userRegAide_DefaultOptions(){
 			"show_login_text_color" => "2",
 			"login_text_color" => "#BBBBBB",
 			"hover_text_color" => "#FF0000",
+			"show_shadow" => "2",
+			"shadow_size" => "0px",
+			"shadow_color" => "#FFFFFF",
 			"change_logo_link" => "2",
 			"show_custom_agreement_link" => "2",
 			"agreement_title" => " ",
@@ -81,14 +85,11 @@ function csds_userRegAide_DefaultOptions(){
 		delete_option('csds_userRegAide_dbVersion');
 		
 		
-		if(function_exists('csds_userRegAide_myOptionsSubpanel')){
-			csds_userRegAide_myOptionsSubpanel();
-		}
-		
 	}else{
 		$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
 	}
 	return $csds_userRegAide_Options;
+}
 }
 
 /**
@@ -145,9 +146,9 @@ if(!function_exists('csds_userRegAide_fill_known_fields')){
 		
 		// Redirects back to admin page after fields are loaded or reloaded
 		
-		if(function_exists('csds_userRegAide_myOptionsSubpanel')){
-			csds_userRegAide_myOptionsSubpanel();
-		}
+		// if(function_exists('csds_userRegAide_myOptionsSubpanel')){
+			// csds_userRegAide_myOptionsSubpanel();
+		// }
 	}
 }
 
@@ -212,7 +213,7 @@ if(!function_exists('csds_userRegAide_updateRegistrationFields')){
 
 if(!function_exists('csds_userRegAide_update_field_order')){
 	function csds_userRegAide_update_field_order(){
-		$csds_userRegAide_fieldOrder = get_option('csds_userRegAide_fieldOrder');
+		
 		$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
 		$csds_userRegAide_knownFields = get_option('csds_userRegAide_knownFields');
 		$csds_userRegAideFields = get_option('csds_userRegAideFields');
@@ -227,9 +228,21 @@ if(!function_exists('csds_userRegAide_update_field_order')){
 			}
 			$csds_userRegAideFields = array();
 			$csds_userRegAideFields = $csds_userRegAide_knownFields + $csds_userRegAide_NewFields;
+			update_option("csds_userRegAide_fieldOrder", $csds_userRegAide_fieldOrder);
+		}else{
+			$csds_userRegAide_fieldOrder = array();
+			update_option("csds_userRegAide_fieldOrder", $csds_userRegAide_fieldOrder);
+			if(!empty($csds_userRegAide_NewFields)){
+				$i = 1;
+				foreach($csds_userRegAide_NewFields as $key => $field){
+					$csds_userRegAide_fieldOrder[$key] = $i;
+					$i++;
+				}
+			}
+			$csds_userRegAideFields = array();
+			$csds_userRegAideFields = $csds_userRegAide_knownFields + $csds_userRegAide_NewFields;
+			update_option("csds_userRegAide_fieldOrder", $csds_userRegAide_fieldOrder);
 		}
-		
-		update_option("csds_userRegAide_fieldOrder", $csds_userRegAide_fieldOrder);
 	}
 }
 ?>

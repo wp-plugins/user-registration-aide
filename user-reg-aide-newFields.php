@@ -3,7 +3,7 @@
 /*
  * User Registration Aide - Edit New Fields Administration Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.2.3
+ * Version: 1.2.4
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -24,7 +24,7 @@ include_once ("user-reg-aide-regForm.php");
  * Loads and displays the User Registration Aide Edit New Fields Administration Page
  *
  * @since 1.1.0
- * @updated 1.1.0
+ * @updated 1.2.4
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -57,8 +57,8 @@ if(!function_exists('csds_userRegAide_editNewFields')){
 	// Double checks to see that the new field order is updated
 	
 	if(!empty($csds_userRegAide_NewFields)){
-		if(empty($csds_userRegAide_fieldOrder)){
-			include("user-reg-aide-admin.php");
+		if(function_exists('csds_userRegAide_update_field_order')){
+			//include("user-reg-aide-admin.php");
 			csds_userRegAide_update_field_order();
 		}
 	}
@@ -97,6 +97,10 @@ if(!function_exists('csds_userRegAide_editNewFields')){
 			update_option("csds_userRegAideFields", $csds_userRegAideFields);
 			update_option("csds_userRegAide_fieldOrder", $csds_userRegAide_fieldOrder);
 			update_option("csds_userRegAide_registrationFields", $csds_userRegAide_registrationFields);
+			
+			if(function_exists('csds_userRegAide_update_field_order')){
+				csds_userRegAide_update_field_order();
+			}
 			
 			if(function_exists('csds_delete_field_from_users_meta')){
 				csds_delete_field_from_users_meta($results1);  // Deletes field from user meta
@@ -190,7 +194,10 @@ if(!function_exists('csds_userRegAide_editNewFields')){
 	// Checks to make sure that the known fields were loaded on installation 
 
 	if(!empty($csds_userRegAide_knownFields)){
-		
+		if(function_exists('csds_userRegAide_fill_known_fields')){
+			csds_userRegAide_fill_known_fields();
+		}
+	}
 		// Loads additional options needed for page just in case
 		
 		$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
@@ -217,14 +224,10 @@ echo '<div id="wpbody">';
 			
             echo '<div id="poststuff">';       
                 echo '<div class="stuffbox">';
-                    ?><h3><?php _e('Edit Additional Fields for Profile &  Registration Form: Delete Field', 'csds_userRegAide'); ?>
-					</h3>
-						<div class="inside">
-                        
-						<p><?php _e('Here you can select the new additional fields you added that you want to delete.', 'csds_userRegAide'); ?>
-						</p>
-						<?php
-                        echo '<select name="deleteNewFields" id="csds_userRegMod_delete_Select" size="8"  style="height:100px">';
+                    echo '<h3>'.__('Edit Additional Fields for Profile &  Registration Form: Delete Field', 'csds_userRegAide').'</h3>';
+						echo '<div class="inside">';
+                        echo '<p>'.__('Here you can select the new additional fields you added that you want to delete.', 'csds_userRegAide').'</p>';
+						echo '<select name="deleteNewFields" id="csds_userRegMod_delete_Select" size="8"  style="height:100px">';
                        
                             foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){
 								echo '<option value="'.$fieldKey.'">'.$fieldName.'</option>';
@@ -234,20 +237,18 @@ echo '<div id="wpbody">';
 						
                     	echo '<br/>';
 						
-						?>
+						echo '<div class="submit"><input type="submit" class="button-primary" name="delete_field" value="'.__('Delete New Field', 'csds_userRegAide').'"/></div>';
+						echo '</div>';
+					    echo '</div>';
 						
-					   	<div class="submit"><input type="submit" class="button-primary" name="delete_field" value="<?php _e('Delete New Field', 'csds_userRegAide'); ?>"  /></div>
-						</div>
-					    </div>
-						
-		<?php 	// Edit new field order form ?>
+				// Edit new field order form 
 		
-				<div class="stuffbox">
-				<h3><?php _e('Edit New Field Order', 'csds_userRegAide');?></h3>
-				<div class="inside">
-					<?php 
+				echo '<div class="stuffbox">';
+				echo '<h3>'.__('Edit New Field Order', 'csds_userRegAide').'</h3>';
+				echo '<div class="inside">';
 						$csds_userRegAide_fieldOrder = get_option('csds_userRegAide_fieldOrder');
-						echo '<p>'?><?php _e('Here you can select or change the order for the new additional fields on the registration form and profile. You must not have the same number twice, so make sure you change all fields accordingly so there are no duplicates or you will generate an error!', 'csds_userRegAide') .'</p>';
+						$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
+						echo '<p>'.__('Here you can select or change the order for the new additional fields on the registration form and profile. You must not have the same number twice, so make sure you change all fields accordingly so there are no duplicates or you will generate an error!', 'csds_userRegAide') .'</p>';
 						
 						$i = '';
 						$cnt = '';
@@ -255,7 +256,7 @@ echo '<div id="wpbody">';
 						$fieldOrder = '';
 						$fieldKeyUpper = '';
 						
-						$i = count($csds_userRegAide_fieldOrder);
+						$i = count($csds_userRegAide_NewFields);
 						$cnt = 1;
 						
 						// Table for field order
@@ -298,15 +299,13 @@ echo '<div id="wpbody">';
 						echo '<div class="stuffbox">';
 						echo '<h3><a href="http://creative-software-design-solutions.com" target="_blank">Creative Software Design Solutions</a></h3>';
 						echo '<div class="inside">';
-						echo '<p>';?>
-						<?php _e('Show Plugin Support: ', 'csds_userRegAide'); ?><input type="radio" id="csds_userRegAide_support" name="csds_userRegAide_support"  value="1"<?php
+						echo '<p>'.__('Show Plugin Support: ', 'csds_userRegAide').'<input type="radio" id="csds_userRegAide_support" name="csds_userRegAide_support"  value="1"';
 						if ($csds_userRegAide_Options['show_support'] == 1) echo 'checked' ;?>/> Yes
 						<input type="radio" id="csds_userRegAide_support" name="csds_userRegAide_support"  value="2" <?php
-						if ($csds_userRegAide_Options['show_support'] == 2) echo 'checked' ;?>/> No
-						<br/>
-						<br/>
-
-							<?php
+						if ($csds_userRegAide_Options['show_support'] == 2) echo 'checked' ;?>/> No<?php
+						echo '<br/>';
+						echo '<br/>';
+					
 								echo '<input name="csds_userRegAide_support_submit" id="csds_userRegAide_support_submit" lang="publish" class="button-primary" value="Update" type="Submit" />';?><h2><?php _e('Plugin Configuration Help', 'csds_userRegAide');?></h2>
 								<ul>
 									<li><a href="http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/" target="_blank">Plugin Page & Screenshots</a></li>
@@ -319,24 +318,18 @@ echo '<div id="wpbody">';
 									<input type="hidden" name="hosted_button_id" value="6BCZESUXLS9NN">
 									<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 									<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-									</form>
+									</form><?php
 
-							    </ul>
-				<?php	echo '</div>';
+							    echo '</ul>';
+						echo '</div>';
 					echo '</div>';
 				echo '</div>';   
 			echo '</form>';
 		echo '</div>';
 	echo '</div>';
-	 }
-	else{
-		// loads known fields if they havent been loaded yet as a safety 
-		// measure as I ran into some instances where they dont show up when page loads after install
-		if(function_exists('csds_userRegAide_fill_known_fields')){
-			csds_userRegAide_fill_known_fields();
-		}
+	
 	}
-	}
-}
-
+	}else{
+		wp_die(__('You do not have permissions to activate this plugin, sorry, check with site administrator to resolve this issue please!'));
+	}	
 ?>
