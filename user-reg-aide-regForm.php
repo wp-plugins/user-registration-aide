@@ -52,6 +52,9 @@ function csds_userRegAide_regFormOptions(){
 		}
 	}
 		
+	if(function_exists('csds_userRegAide_DefaultOptions')){
+		csds_userRegAide_DefaultOptions();
+	}
 	if (isset($_POST['reg_form_message_update'])){
 			
 		// add code to handle new registration form message
