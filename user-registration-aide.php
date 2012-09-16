@@ -4,7 +4,7 @@ Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain alot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.2.4
+Version: 1.2.5
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: user-registration-aide
@@ -48,7 +48,7 @@ include_once ("user-reg-aide-regForm.php");
  * Creates Class CSDS_USER_REG_AIDE & Adds Actions and Hooks to register 
  *
  * @since 1.2.0
- * @updated 1.2.4
+ * @updated 1.2.5
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -102,8 +102,9 @@ class CSDS_USER_REG_AIDE{
 			}
 			
 			// Sets new password if user can enter own password on registration
-			add_filter('random_password',  array(&$this, 'csds_userRegAide_CreatePassword'));
-			
+			if(isset($_GET['action']) && $_GET['action'] == 'register'){
+				add_filter('random_password',  array(&$this, 'csds_userRegAide_createNewPassword'));
+			}
 			// Attempts to remove password nag if user enters own password
 			add_filter('get_user_option_default_password_nag', array(&$this, 'remove_default_password_nag'));
 			
@@ -170,8 +171,8 @@ function csds_userRegAide_Logo_Title_Color(){
 	if($show_text_color == "1" && $show_shadow == "2"){
 		echo '<style type="text/css">#loginform label{ font-family: verdana,arial; font-size:1.0em; color: '.$text_color.'; font-weight:bold;}';
 		echo '#registerform label{font-family: verdana,arial; font-size:1.0em; color: '.$text_color.'; font-weight:bold;} ';
-		echo 'body.login #nav a  {color:'.$text_color.' !important; font-weight:bold; font-size:1.4em; margin-left:-9999; text-shadow:rgba(0,0,0,1) 0 0px 0;}';
-		echo '.login #backtoblog a { color:'.$text_color.' !important; font-weight:bold; font-size:1.5em; text-shadow:rgba(0,0,0,1) 0 0px 0;}';
+		echo 'body.login #nav a  {color:'.$text_color.' !important; font-weight:bold; font-size:1.4em; margin-left:-9999; text-shadow: 0px 0px 0px #000000;}';
+		echo '.login #backtoblog a { color:'.$text_color.' !important; font-weight:bold; font-size:1.5em; text-shadow: 0px 0px 0px #000000;}';
 		echo '.login #nav a:hover { color:'.$hover_color.' !important; font-weight:bold; font-size:1.4em;}';
 		echo '.login #backtoblog a:hover { color:'.$hover_color.' !important; font-weight:bold; font-size:1.5em;} </style>';
 		
@@ -235,7 +236,7 @@ function csds_userRegAide_Logo_Head(){
 	}
 		
 	if($show_page_color == "1"){
-		echo '<style type="text/css">body.login{height:350%; overflow:scroll; background-color:'.$page_color.' !important;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;} </style>';
+		echo '<style type="text/css">body.login{height:350%; background-color:'.$page_color.' !important;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;} </style>';
 		
 	}
 		
@@ -267,26 +268,47 @@ function csds_userRegAide_install(){
  * Inserts password entered by user if option chosen to let users enter own password instead of using default random password emailing
  *
  * @since 1.2.0
- * @updated 1.2.0
+ * @updated 1.2.5
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
 
-function csds_userRegAide_CreatePassword($password) {
+function csds_userRegAide_createNewPassword($password){
 	global $wpdb;
-	
-	$pswd = '';
 
-		if (!is_multisite()) {
-			if (isset($_POST['pass1'])){
-				$pswd = $_POST['pass1'];
+	if (!is_multisite()) {
+		if (isset($_POST["pass1"]))
+			$password = $_POST["pass1"];
+	}
+	else {
+		if (!empty($_GET['key']))
+			$key = $_GET['key'];
+		else if (!empty($_POST['key']))
+			$key = $_POST['key'];
+
+		if (!empty($key)) {
+			// seems useless since this code cannot be reached with a bad key anyway you never know
+			$key = $wpdb->escape($key);
+
+			$sql = "SELECT active, meta FROM ".$wpdb->signups." WHERE activation_key='".$key."'";
+			$data = $wpdb->get_results($sql);
+
+			// Getting Data from new user signup
+			if (isset($data[0])) {
+				// if not already active
+				if (!$data[0]->active) {
+					$meta = unserialize($data[0]->meta);
+
+					if (!empty($meta["pass1"])) {
+						$password = $meta["pass1"];
+					}
+				}
 			}
-		}else{
-			$pswd = $_POST['pass1'];
 		}
-	
-	return $pswd;
+	}
+
+	return $password;
 }
 
 /**
@@ -484,7 +506,7 @@ function csds_userRegAide_addFields(){
 			}
 			
 			
-			wp_nonce_field('userRegAideRegForm', 'userRegAideNonce');
+			wp_nonce_field('userRegAideRegForm_Nonce', 'userRegAide_RegFormNonce');
 			if ( in_array("Password", $csds_userRegAide_registrationFields )){
 				if($csds_userRegAide_Options['select_pass_message'] == 1){
 					echo '<div style="margin:10px 0;border:1px solid #e5e5e5;padding:10px">';
@@ -625,8 +647,7 @@ function csds_userRegAide_Password_Header(){
 function csds_userRegAide_updateFields($user_id){
 
 	global $csds_userRegAide_registrationFields, $wpdb, $table_prefix;
-		
-	//$user_id = $current_user->id;
+	
 	$thisValue = '';
 	$fieldName = '';
 	$newValue = '';
@@ -639,48 +660,48 @@ function csds_userRegAide_updateFields($user_id){
 	$csds_userRegAide_Options = array();
 	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
 	
-	if (wp_verify_nonce($_POST["userRegAideNonce"], 'userRegAideRegForm')){
-		foreach($csds_userRegAide_registrationFields as $thisValue => $fieldName){
-			if($_POST[$thisValue] != ''){
-				if($thisValue == "first_name"){
-					$newValue = apply_filters('pre_user_first_name', $_POST[$thisValue]);
-				}elseif($thisValue == "last_name"){
-					$newValue = apply_filters('pre_user_last_name', $_POST[$thisValue]);
-				}elseif($thisValue == "nickname"){
-					$newValue = apply_filters('pre_user_nickname', $_POST[$thisValue]);
-				}elseif($thisValue == "description"){
-					$newValue = apply_filters('pre_user_description', $_POST[$thisValue]);
-				}elseif($thisValue == "user_url"){
-					$newWebsite = apply_filters('pre_user_url', $_POST[$thisValue]);
-					$addData = $wpdb->prepare("UPDATE $wpdb->users SET user_url =('$newWebsite') WHERE ID = '$user_id'");
-					$wpdb->query($addData);
-				}elseif($thisValue == "user_pass"){
-					$newPass = $_POST['pass1'];
-					csds_new_user_notification($user_id, $newPass);
-					add_action('phpmailer_init', array(&$this, 'phpmailer_init'), 99999);
-					$addData = $wpdb->prepare("UPDATE $wpdb->users SET user_pass = md5('$newPass') WHERE ID = $user_id");
-					$wpdb->query($addData);
-				}else{
-					$newValue = apply_filters('pre_user_description', $_POST[$thisValue]);
-				}
-				if($thisValue != 'user_url' || $thisValue != "user_pass"){
-					update_user_meta( $user_id, $thisValue, $newValue);
-				}
-				}else{
-					//exit('Empty NOOO Fucking shit');
-					// Havent figured out what to do here yet as nothing really need to be done
-				}
-				if($csds_userRegAide_Options['show_custom_agreement_checkbox'] == 1){
-					if($_POST['csds_userRegAide_agree'] == 1){
-						update_user_meta( $user_id, new_user_agree, "Yes");
+	if(!empty($csds_userRegAide_registrationFields)){
+		if (wp_verify_nonce($_POST['userRegAide_RegFormNonce'], 'userRegAideRegForm_Nonce')){
+			foreach($csds_userRegAide_registrationFields as $thisValue => $fieldName){
+				if($_POST[$thisValue] != ''){
+					if($thisValue == "first_name"){
+						$newValue = apply_filters('pre_user_first_name', $_POST[$thisValue]);
+					}elseif($thisValue == "last_name"){
+						$newValue = apply_filters('pre_user_last_name', $_POST[$thisValue]);
+					}elseif($thisValue == "nickname"){
+						$newValue = apply_filters('pre_user_nickname', $_POST[$thisValue]);
+					}elseif($thisValue == "description"){
+						$newValue = apply_filters('pre_user_description', $_POST[$thisValue]);
+					}elseif($thisValue == "user_url"){
+						$newWebsite = apply_filters('pre_user_url', $_POST[$thisValue]);
+						$addData = $wpdb->prepare("UPDATE $wpdb->users SET user_url =('$newWebsite') WHERE ID = '$user_id'");
+						$wpdb->query($addData);
+					}elseif($thisValue == "user_pass"){
+						$newPass = $_POST['pass1'];
+						csds_new_user_notification($user_id, $newPass);
+						add_action('phpmailer_init', array(&$this, 'phpmailer_init'), 99999);
+						$addData = $wpdb->prepare("UPDATE $wpdb->users SET user_pass = md5('$newPass') WHERE ID = $user_id");
+						$wpdb->query($addData);
+					}else{
+						$newValue = apply_filters('pre_user_description', $_POST[$thisValue]);
+					}
+					if($thisValue != 'user_url' || $thisValue != "user_pass"){
+						update_user_meta( $user_id, $thisValue, $newValue);
+					}
+					}else{
+						//exit('Empty NOOO Fucking shit');
+						// Havent figured out what to do here yet as nothing really need to be done
+					}
+					if($csds_userRegAide_Options['show_custom_agreement_checkbox'] == 1){
+						if($_POST['csds_userRegAide_agree'] == 1){
+							update_user_meta( $user_id, new_user_agree, "Yes");
+						}
 					}
 				}
-			}
-					
-	}else{
-		exit(__('Failed Security Verification', 'csds_userRegAide'));
+			}else{
+			exit(__('Failed Security Verification', 'csds_userRegAide'));
+		}
 	}
-	
 }
 
 // Remove default password message if user entered own password
@@ -789,7 +810,7 @@ function csds_userRegAide_checkFields($errors, $username, $email){
 	
 function csds_show_user_profile($user){
  
- global $csds_userRegAide_NewFields;
+ global $csds_userRegAide_NewFields, $current_user;
 	
 	$user_id = $user->ID;
 	$fieldKey = '';
@@ -797,7 +818,7 @@ function csds_show_user_profile($user){
 	$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
 	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
 	echo '<h3>User Registration Aide Additional Fields</h3>';
-	$csds_current_user = wp_get_current_user();
+	$current_user = wp_get_current_user();
 		if(current_user_can('edit_user', $user_id)){
 			if(!empty($csds_userRegAide_NewFields)){
 				foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){
@@ -837,7 +858,7 @@ function csds_show_user_profile($user){
  
  function csds_update_user_profile($user_id){
  
-	global $wpdb;
+	global $wpdb, $current_user;
 	global $current_user, $csds_userRegAide_NewFields;
 	$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
 	$userID = $user_id;
@@ -846,7 +867,7 @@ function csds_show_user_profile($user){
 	$newValue = '';
 	
 	if(!empty($csds_userRegAide_NewFields)){
-		$csds_current_user = wp_get_current_user();
+		$current_user = wp_get_current_user();
 		if(current_user_can('edit_user', $userID)){
 			if(wp_verify_nonce($_POST["userRegAideProfileNonce"], 'userRegAideProfileForm')){
 				foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){

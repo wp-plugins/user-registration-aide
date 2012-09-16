@@ -2,7 +2,7 @@
 /*
  * User Registration Aide - Edit New Fields Administration Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.2.4
+ * Version: 1.2.5
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -23,73 +23,90 @@ include_once ("user-reg-aide-regForm.php");
  * Adds the new default options for the options fields on admin forms
  *
  * @since 1.2.0
- * @updated 1.2.4
+ * @updated 1.2.5
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
 
 if(!function_exists('csds_userRegAide_DefaultOptions')){
-function csds_userRegAide_DefaultOptions(){
+	function csds_userRegAide_DefaultOptions(){
 
-	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-
-	if(empty($csds_userRegAide_Options)){
-
-		$csds_userRegAide_Options = array(
-			"csds_userRegAide_db_Version" => "1.2.0",
-			"select_pass_message" => "2",
-			"registration_form_message" => "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
-			"agreement_message" => "I have read and understand and agree to the terms and conditions of the guidelines/agreement policy required for this website provided in the link below",
-			"short" => "Password Entered is too Short!",
-			"bad" => "Password Entered is Bad, Too Weak",
-			"good" => "Password Entered is fairly tough and is good to accept",
-			"strong" => "Password Entered is very strong!",
-			"mismatch" => "Password Entered does not match Password Confirm! Try Again Please!",
-			"show_support" => "2",
-			"support_display_link" => "http://creative-software-design-solutions.com/#axzz24C84ExPC",
-			"support_display_name" => "Creative Software Design Solutions",
-			"show_logo" => "2",
-			"logo_url" => "wp-admin/images/wordpress-logo.png",
-			"show_background_image" => "2",
-			"background_image_url" => "",
-			"show_background_color" => "2",
-			"reg_background_color" => "#FFFFFF",
-			"show_reg_form_page_color" => "2",
-			"reg_form_page_color" => "#FFFFFF",
-			"show_reg_form_page_image" => "2",
-			"reg_form_page_image" => "",
-			"show_login_text_color" => "2",
-			"login_text_color" => "#BBBBBB",
-			"hover_text_color" => "#FF0000",
-			"show_shadow" => "2",
-			"shadow_size" => "0px",
-			"shadow_color" => "#FFFFFF",
-			"change_logo_link" => "2",
-			"show_custom_agreement_link" => "2",
-			"agreement_title" => " ",
-			"show_custom_agreement_message" => "2",
-			"show_custom_agreement_checkbox" => "2",
-			"new_user_agree" => "2",
-			"agreement_link" => site_url()
-						
-		);
-		
-		update_option("csds_userRegAide_Options", $csds_userRegAide_Options);
-		
-		// For updates from older versions
-		
-		delete_option('csds_userRegAide_support');
-		delete_option('csds_display_link');
-		delete_option('csds_display_name');
-		delete_option('csds_userRegAide_dbVersion');
-		
-		
-	}else{
 		$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
+		$csds_userRegAide_Options = array();
+		if(empty($csds_userRegAide_Options)){
+			if(function_exists('csds_userRegAide_defaultOptionsArray')){
+				$csds_userRegAide_Options = csds_userRegAide_defaultOptionsArray();
+			}
+			
+			
+			update_option("csds_userRegAide_Options", $csds_userRegAide_Options);
+			
+			// For updates from older versions
+			
+			delete_option('csds_userRegAide_support');
+			delete_option('csds_display_link');
+			delete_option('csds_display_name');
+			delete_option('csds_userRegAide_dbVersion');
+			
+			
+		}else{
+			$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
+		}
+		return $csds_userRegAide_Options;
 	}
-	return $csds_userRegAide_Options;
 }
+
+/**
+ * Array for all the new default options for the options fields on admin forms
+ *
+ * @since 1.2.5
+ * @updated 1.2.5
+ * @access private
+ * @author Brian Novotny
+ * @website http://creative-software-design-solutions.com
+*/
+
+function csds_userRegAide_defaultOptionsArray(){
+	$csds_userRegAide_Options = array(
+				"csds_userRegAide_db_Version" => "1.2.5",
+				"select_pass_message" => "2",
+				"registration_form_message" => "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
+				"agreement_message" => "I have read and understand and agree to the terms and conditions of the guidelines/agreement policy required for this website provided in the link below",
+				"short" => "Password Entered is too Short!",
+				"bad" => "Password Entered is Bad, Too Weak",
+				"good" => "Password Entered is fairly tough and is good to accept",
+				"strong" => "Password Entered is very strong!",
+				"mismatch" => "Password Entered does not match Password Confirm! Try Again Please!",
+				"show_support" => "2",
+				"support_display_link" => "http://creative-software-design-solutions.com/#axzz24C84ExPC",
+				"support_display_name" => "Creative Software Design Solutions",
+				"show_logo" => "2",
+				"logo_url" => "wp-admin/images/wordpress-logo.png",
+				"show_background_image" => "2",
+				"background_image_url" => "",
+				"show_background_color" => "2",
+				"reg_background_color" => "#FFFFFF",
+				"show_reg_form_page_color" => "2",
+				"reg_form_page_color" => "#FFFFFF",
+				"show_reg_form_page_image" => "2",
+				"reg_form_page_image" => "",
+				"show_login_text_color" => "2",
+				"login_text_color" => "#BBBBBB",
+				"hover_text_color" => "#FF0000",
+				"show_shadow" => "2",
+				"shadow_size" => "0px",
+				"shadow_color" => "#FFFFFF",
+				"change_logo_link" => "2",
+				"show_custom_agreement_link" => "2",
+				"agreement_title" => " ",
+				"show_custom_agreement_message" => "2",
+				"show_custom_agreement_checkbox" => "2",
+				"new_user_agree" => "2",
+				"agreement_link" => site_url()
+							
+			);
+			return $csds_userRegAide_Options;
 }
 
 /**
@@ -143,12 +160,7 @@ if(!function_exists('csds_userRegAide_fill_known_fields')){
 		if(empty($csds_userRegAide_registrationFields)){
 			csds_userRegAide_updateRegistrationFields();
 		}
-		
-		// Redirects back to admin page after fields are loaded or reloaded
-		
-		// if(function_exists('csds_userRegAide_myOptionsSubpanel')){
-			// csds_userRegAide_myOptionsSubpanel();
-		// }
+				
 	}
 }
 
@@ -242,6 +254,27 @@ if(!function_exists('csds_userRegAide_update_field_order')){
 			$csds_userRegAideFields = array();
 			$csds_userRegAideFields = $csds_userRegAide_knownFields + $csds_userRegAide_NewFields;
 			update_option("csds_userRegAide_fieldOrder", $csds_userRegAide_fieldOrder);
+		}
+	}
+}
+
+if(!function_exists('csds_userRegAide_updateOptions')){
+	function csds_userRegAide_updateOptions(){
+		$csds_userRegAide_oldOptions = get_option('csds_userRegAide_Options');
+		$csds_userRegAide_defOptions = array();
+		$csds_userRegAide_defOptions = csds_userRegAide_defaultOptionsArray();
+		$update = array();
+		if(empty($csds_userRegAide_oldOptions)){
+			if(function_exists('csds_userRegAide_defaultOptionsArray')){
+				update_option("sds_userRegAide_defOptions", $csds_userRegAide_defOptions);
+			}
+		}else{
+			foreach($csds_userRegAide_defOptions as $key => $value){
+				if(!in_array("$value", $csds_userRegAide_oldOptions)){
+					$update[$key] = $value;
+				}
+			}
+			update_option("csds_userRegAide_Options", $update);
 		}
 	}
 }
