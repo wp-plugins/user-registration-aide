@@ -2,7 +2,7 @@
 /*
  * User Registration Aide - Edit New Fields Administration Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.2.5
+ * Version: 1.2.6
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -61,7 +61,7 @@ if(!function_exists('csds_userRegAide_DefaultOptions')){
  * Array for all the new default options for the options fields on admin forms
  *
  * @since 1.2.5
- * @updated 1.2.5
+ * @updated 1.2.6
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -69,7 +69,7 @@ if(!function_exists('csds_userRegAide_DefaultOptions')){
 
 function csds_userRegAide_defaultOptionsArray(){
 	$csds_userRegAide_Options = array(
-				"csds_userRegAide_db_Version" => "1.2.5",
+				"csds_userRegAide_db_Version" => "1.2.6",
 				"select_pass_message" => "2",
 				"registration_form_message" => "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
 				"agreement_message" => "I have read and understand and agree to the terms and conditions of the guidelines/agreement policy required for this website provided in the link below",
@@ -258,6 +258,16 @@ if(!function_exists('csds_userRegAide_update_field_order')){
 	}
 }
 
+/**
+ * Updates Database Options
+ *
+ * @since 1.2.5
+ * @updated 1.2.6
+ * @access private
+ * @author Brian Novotny
+ * @website http://creative-software-design-solutions.com
+*/
+
 if(!function_exists('csds_userRegAide_updateOptions')){
 	function csds_userRegAide_updateOptions(){
 		$csds_userRegAide_oldOptions = get_option('csds_userRegAide_Options');
@@ -265,13 +275,21 @@ if(!function_exists('csds_userRegAide_updateOptions')){
 		$csds_userRegAide_defOptions = csds_userRegAide_defaultOptionsArray();
 		$update = array();
 		if(empty($csds_userRegAide_oldOptions)){
-			if(function_exists('csds_userRegAide_defaultOptionsArray')){
-				update_option("sds_userRegAide_defOptions", $csds_userRegAide_defOptions);
+			if(function_exists('csds_userRegAide_DefaultOptions')){
+				csds_userRegAide_DefaultOptions();
 			}
 		}else{
 			foreach($csds_userRegAide_defOptions as $key => $value){
-				if(!in_array("$value", $csds_userRegAide_oldOptions)){
-					$update[$key] = $value;
+				foreach($csds_userRegAide_oldOptions as $key1 => $value1){
+					if($key1[$value1] != $key[$value]){
+						$update[$key1] = $value1;
+					}else{
+						$update[$key] = $value;
+					}
+					if(!in_array("$value", $csds_userRegAide_oldOptions)){
+						$update[$key] = $value;
+					}
+					
 				}
 			}
 			update_option("csds_userRegAide_Options", $update);

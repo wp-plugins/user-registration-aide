@@ -3,7 +3,7 @@
 /*
  * User Registration Aide - Registration Form Options
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.2.5
+ * Version: 1.2.6
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -34,7 +34,7 @@ include_once ("user-reg-aide-admin.php");
  * Loads and displays the User Registration Aide administration page
  *
  * @since 1.2.0
- * @updated 1.2.5
+ * @updated 1.2.4
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -46,7 +46,7 @@ function csds_userRegAide_regFormOptions(){
 	global $csds_userRegAide_knownFields, $csds_userRegAide_Options, $csds_userRegAide_registrationFields, $csds_userRegAide_NewFields, $csds_userRegAide_fieldOrder, $current_user;
 	
 	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-	if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.2.5"){
+	if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.2.6"){
 		if(function_exists('csds_userRegAide_updateOptions')){
 			csds_userRegAide_updateOptions();
 		}
@@ -132,7 +132,8 @@ function csds_userRegAide_regFormOptions(){
 		if(function_exists('csds_userRegAide_fill_known_fields')){
 			csds_userRegAide_fill_known_fields();
 		}
-	}elseif(empty($csds_userRegAide_Options)){
+	}
+	if(empty($csds_userRegAide_Options)){
 		if(function_exists('csds_userRegAide_DefaultOptions')){
 			csds_userRegAide_DefaultOptions();
 		}
