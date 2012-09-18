@@ -2,7 +2,7 @@
 /*
  * User Registration Aide - Edit New Fields Administration Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.2.6
+ * Version: 1.2.7
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -99,7 +99,7 @@ function csds_userRegAide_defaultOptionsArray(){
 				"shadow_color" => "#FFFFFF",
 				"change_logo_link" => "2",
 				"show_custom_agreement_link" => "2",
-				"agreement_title" => " ",
+				"agreement_title" => "Agreement Policy",
 				"show_custom_agreement_message" => "2",
 				"show_custom_agreement_checkbox" => "2",
 				"new_user_agree" => "2",
@@ -262,7 +262,7 @@ if(!function_exists('csds_userRegAide_update_field_order')){
  * Updates Database Options
  *
  * @since 1.2.5
- * @updated 1.2.6
+ * @updated 1.2.7
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -270,6 +270,7 @@ if(!function_exists('csds_userRegAide_update_field_order')){
 
 if(!function_exists('csds_userRegAide_updateOptions')){
 	function csds_userRegAide_updateOptions(){
+		$csds_userRegAide_oldOptions = array();
 		$csds_userRegAide_oldOptions = get_option('csds_userRegAide_Options');
 		$csds_userRegAide_defOptions = array();
 		$csds_userRegAide_defOptions = csds_userRegAide_defaultOptionsArray();
@@ -279,13 +280,20 @@ if(!function_exists('csds_userRegAide_updateOptions')){
 				csds_userRegAide_DefaultOptions();
 			}
 		}else{
-			foreach($csds_userRegAide_defOptions as $key => $value){
-				foreach($csds_userRegAide_oldOptions as $key1 => $value1){
-					if($key1[$value1] != $key[$value]){
-						$update[$key1] = $value1;
-					}else{
-						$update[$key] = $value;
+			foreach($csds_userRegAide_oldOptions as $key1 => $value1){
+				foreach($csds_userRegAide_defOptions as $key => $value){
+					if($key1 == $key){
+						if(!empty($value1)){
+							if($value1 != $value){
+								$update[$key1] = $value1;
+							}else{
+								$update[$key] = $value;
+							}
+						}else{
+							$update[$key] = $value;
+						}
 					}
+				
 					if(!in_array("$value", $csds_userRegAide_oldOptions)){
 						$update[$key] = $value;
 					}

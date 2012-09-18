@@ -4,7 +4,7 @@ Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain alot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.2.6
+Version: 1.2.7
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: user-registration-aide
@@ -412,7 +412,7 @@ function csds_userRegAide_CustomLoginLink(){
  * Add fields to the new user registration page that the user must fill out when they register
  *
  * @since 1.0.0
- * @updated 1.1.2
+ * @updated 1.2.7
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -481,55 +481,61 @@ function csds_userRegAide_addFields(){
 					
 								
 				}
-			
-			}
-			$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-			if($csds_userRegAide_Options['show_custom_agreement_message'] == "1"){
-				echo $csds_userRegAide_Options['agreement_message'];
-				echo '<br/>';
-			}
-			if($csds_userRegAide_Options['show_custom_agreement_checkbox'] == "1"){
-				echo '<br/>';
-				 _e('I Agree with the Terms and Conditions: ', 'csds_userRegAide'); 
-				 echo '<br/>';
-				 echo '<br/>';
-				 ?><input type="radio" id="csds_userRegAide_agree" name="csds_userRegAide_agree" value="1" <?php
-					if ($csds_userRegAide_Options['new_user_agree'] == 1) echo 'checked' ;?> /> I Agree
-									<input type="radio" id="csds_userRegAide_support" name="csds_userRegAide_agree"  value="2" <?php
-					if ($csds_userRegAide_Options['new_user_agree'] == 2) echo 'checked' ; ?> /> I Do Not Agree
-					<?php
-					echo '<br/>';
-			}
-			if($csds_userRegAide_Options['show_custom_agreement_link'] == "1"){
-				echo '<br/>';
-				echo '<a href="'.$csds_userRegAide_Options['agreement_link'].'" target="_blank">'.$csds_userRegAide_Options['agreement_title'].'</a>';
-			}
-			
-			
-			wp_nonce_field('userRegAideRegForm_Nonce', 'userRegAide_RegFormNonce');
-			if ( in_array("Password", $csds_userRegAide_registrationFields )){
-				if($csds_userRegAide_Options['select_pass_message'] == 1){
-					echo '<div style="margin:10px 0;border:1px solid #e5e5e5;padding:10px">';
-					echo '<p class="message register" style="margin:5px 0;">';
-					echo $csds_userRegAide_Options['registration_form_message'];
-					echo '</p>';
-					echo '</div>';
-					?>
-		<style>
-		#reg_passmail{
-			display:none;
-		}
-		</style>
-		<?php
-				}
-			}
-			$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-			
-			if($csds_userRegAide_Options['show_support'] == "1"){
-					echo '<a target="_blank" href="'.$csds_userRegAide_Options['support_display_link'].'">' . $csds_userRegAide_Options['support_display_name'] . '</a><br/>';
-					echo '<br/>';
 			}
 		}
+	}
+	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
+	if($csds_userRegAide_Options['show_custom_agreement_message'] == "1"){
+		echo $csds_userRegAide_Options['agreement_message'];
+		echo '<br/>';
+	}
+	if($csds_userRegAide_Options['show_custom_agreement_checkbox'] == "1"){
+		echo '<br/>';
+		 _e('I Agree with the Terms and Conditions: ', 'csds_userRegAide'); 
+		 echo '<br/>';
+		 echo '<br/>';
+		 ?><input type="radio" id="csds_userRegAide_agree" name="csds_userRegAide_agree" value="1" <?php
+			if ($csds_userRegAide_Options['new_user_agree'] == 1) echo 'checked' ;?> /> I Agree
+							<input type="radio" id="csds_userRegAide_support" name="csds_userRegAide_agree"  value="2" <?php
+			if ($csds_userRegAide_Options['new_user_agree'] == 2) echo 'checked' ; ?> /> I Do Not Agree
+			<?php
+			echo '<br/>';
+	}
+	if($csds_userRegAide_Options['show_custom_agreement_link'] == "1"){
+		echo '<br/>';
+		echo '<a href="'.$csds_userRegAide_Options['agreement_link'].'" target="_blank">'.$csds_userRegAide_Options['agreement_title'].'</a>';
+	}
+		
+	wp_nonce_field('userRegAideRegForm_Nonce', 'userRegAide_RegFormNonce');
+	
+	$csds_userRegAide_registrationFields = array();
+	$csds_userRegAide_registrationFields = get_option('csds_userRegAide_registrationFields');
+	$csds_userRegAide_Options = array();
+	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
+	
+	if(is_array($csds_userRegAide_registrationFields)){
+		if ( in_array("Password", $csds_userRegAide_registrationFields )){
+			if($csds_userRegAide_Options['select_pass_message'] == 1){
+				echo '<div style="margin:10px 0;border:1px solid #e5e5e5;padding:10px">';
+				echo '<p class="message register" style="margin:5px 0;">';
+				echo $csds_userRegAide_Options['registration_form_message'];
+				echo '</p>';
+				echo '</div>';
+				?>
+			<style>
+			#reg_passmail{
+				display:none;
+			}
+			</style>
+			<?php
+			}
+		}
+	}
+	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
+	
+	if($csds_userRegAide_Options['show_support'] == "1"){
+			echo '<a target="_blank" href="'.$csds_userRegAide_Options['support_display_link'].'">' . $csds_userRegAide_Options['support_display_name'] . '</a><br/>';
+			echo '<br/>';
 	}
 }
 
@@ -638,7 +644,7 @@ function csds_userRegAide_Password_Header(){
  * Add the additional metadata into the database after the new user is created
  *
  * @since 1.0.0
- * @updated 1.2.4
+ * @updated 1.2.7
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -694,7 +700,7 @@ function csds_userRegAide_updateFields($user_id){
 					}
 					if($csds_userRegAide_Options['show_custom_agreement_checkbox'] == 1){
 						if($_POST['csds_userRegAide_agree'] == 1){
-							update_user_meta( $user_id, new_user_agree, "Yes");
+							update_user_meta( $user_id, new_user_agreed, "Yes");
 						}
 					}
 				}
@@ -751,7 +757,7 @@ function csds_new_user_notification($user_id, $plaintext_pass = '') {
  * Check the new user registration form for errors
  *
  * @since 1.0.0
- * @updated 1.2.4
+ * @updated 1.2.7
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -787,13 +793,14 @@ function csds_userRegAide_checkFields($errors, $username, $email){
 				}
 			}
 		}
-		
-			if($csds_userRegAide_Options['show_custom_agreement_checkbox'] == 1){
-				if($_POST['csds_userRegAide_agree'] == 2){
-					$errors->add('agreement_confirmation', __("<strong>ERROR</strong>: You must agree to the terms and conditions!", 'csds_userRegAide'));
-					
-				}
-			}
+	}
+	
+	if($csds_userRegAide_Options['show_custom_agreement_checkbox'] == 1){
+		if($_POST['csds_userRegAide_agree'] == 2){
+			$errors->add('agreement_confirmation', __("<strong>ERROR</strong>: You must agree to the terms and conditions!", 'csds_userRegAide'));
+		}elseif(empty($_POST['csds_userRegAide_agree'])){
+			$errors->add('agreement_confirmation', __("<strong>ERROR</strong>: You must agree to the terms and conditions!", 'csds_userRegAide'));
+		}
 	}
 	return $errors;
 }
