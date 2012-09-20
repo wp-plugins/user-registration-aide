@@ -3,7 +3,7 @@
 /*
  * User Registration Aide - Plugin Main Administration Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.2.7
+ * Version: 1.2.8
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -18,7 +18,7 @@
  * Couple of includes for functionality
  *
  * @since 1.2.0
- * @updated 1.2.4
+ * @updated 1.2.8
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -37,7 +37,7 @@ include_once ("user-reg-aide-regForm.php");
  * Loads and displays the User Registration Aide administration page
  *
  * @since 1.0.0
- * @updated 1.2.7
+ * @updated 1.2.8
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -49,7 +49,7 @@ if(!function_exists('csds_userRegAide_myOptionsSubpanel')){
 	global $csds_userRegAide_knownFields, $csds_userRegAide_Options, $csds_userRegAide_registrationFields, $csds_userRegAide_NewFields, $csds_userRegAide_fieldOrder, $current_user;
 	
 	$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-	if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.2.7"){
+	if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.2.8"){
 		if(function_exists('csds_userRegAide_updateOptions')){
 			csds_userRegAide_updateOptions();
 		}

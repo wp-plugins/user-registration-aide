@@ -4,7 +4,7 @@ Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain alot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.2.7
+Version: 1.2.8
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: user-registration-aide
@@ -48,7 +48,7 @@ include_once ("user-reg-aide-regForm.php");
  * Creates Class CSDS_USER_REG_AIDE & Adds Actions and Hooks to register 
  *
  * @since 1.2.0
- * @updated 1.2.4
+ * @updated 1.2.8
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -495,7 +495,7 @@ function csds_userRegAide_addFields(){
 		 echo '<br/>';
 		 echo '<br/>';
 		 ?><input type="radio" id="csds_userRegAide_agree" name="csds_userRegAide_agree" value="1" <?php
-			if ($csds_userRegAide_Options['new_user_agree'] == 1) echo 'checked' ;?> /> I Agree
+			if ($csds_userRegAide_Options['new_user_agree'] == 1) echo 'checked' ; ?> /> I Agree
 							<input type="radio" id="csds_userRegAide_support" name="csds_userRegAide_agree"  value="2" <?php
 			if ($csds_userRegAide_Options['new_user_agree'] == 2) echo 'checked' ; ?> /> I Do Not Agree
 			<?php
