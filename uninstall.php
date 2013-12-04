@@ -20,7 +20,7 @@
 		delete_option('csds_userRegAide_dbVersion');
 		delete_option('csds_userRegAide');
 		delete_option('csds_userRegAide_Options');
-		delete_option('csds_userRegAide_dbVersion');
+		delete_option('csds_userRegAide_SecurityQuestions');
 		delete_option('csds_userRegAide_support');
 		delete_option('csds_display_link');
 		delete_option('csds_display_name');
