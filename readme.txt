@@ -1,4 +1,4 @@
-=== User Registration Aide ===
+﻿=== User Registration Aide ===
 Contributors: Brian Novotny
 Donate link: http://creative-software-design-solutions.com/
 Author URI: http://creative-software-design-solutions.com/
@@ -6,7 +6,7 @@ Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registr
 Tags: user, registration, force, field, register, name, nickname, AIM, AOL, instant messenger, Yahoo, Jabber, Google Talk, Facebook, wordpress, plugin, extra, add, new, fields, profile
 Requires at least: 2.8
 Tested up to: 3.7.1
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 
 Adds new fields and forces new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
@@ -247,6 +247,10 @@ d) added option to add new fields to administrators add new user page but you ha
 e) fixed a few bugs
 
 f) updated comments and code
+
+1.3.1
+
+a) Added .pot and .mo files to languages
 
 
 
