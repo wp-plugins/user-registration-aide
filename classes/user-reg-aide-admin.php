@@ -79,7 +79,7 @@ class CSDS_URA_ADMIN_SETTINGS
 		
 		// Checking to see that database options are up to date to the latest version
 		
-		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.2"){
+		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.4"){
 			
 				$ura_options->csds_userRegAide_updateOptions();
 			
@@ -156,7 +156,12 @@ class CSDS_URA_ADMIN_SETTINGS
 										foreach($csds_userRegAide_knownFields as $key1 => $value1){
 											if($value == $key1){
 												$csds_userRegAide_registrationFields[$key1] = $value1;
-												if($key1 == 'user_pass'){
+												if($key1 != 'user_pass'){
+													$xwrd = 2;
+													$options['password'] = $xwrd;
+													$options['user_password'] = $xwrd;
+													update_option("csds_userRegAide_Options", $options);
+												}elseif($key1 == 'user_pass'){
 													$xwrd = 1;
 													$options['password'] = $xwrd;
 													$options['user_password'] = $xwrd;

@@ -4,7 +4,7 @@ Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain alot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.3.3
+Version: 1.3.4
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: csds_userRegAide
@@ -1170,7 +1170,7 @@ if(!function_exists('wp_new_user_notification')){
 	function wp_new_user_notification($user_id, $plaintext_pass = '') {
 		
 		$user = new WP_User($user_id);
-		
+		$options = get_option('csds_userRegAide_registrationFields');
 		$user_login = stripslashes($user->user_login);
 		$user_email = stripslashes($user->user_email);
 
@@ -1194,7 +1194,11 @@ if(!function_exists('wp_new_user_notification')){
 		$message .= sprintf(__('Here are your new login credentials for %s:'), $blogname) . "\r\n\n";
 		//$message = sprintf(__($options['wp_user_notification_message'])); not using dont want to confuse users 
 		$message .= sprintf(__('Username: %s'), $user_login) . "\r\n";
-		$message .= sprintf(__('Password: %s'), $xwrd) . "\r\n";
+		if(in_array('Password', $options)){
+			$message .= sprintf(__('Password: %s'), $xwrd) . "\r\n";
+		}elseif(!in_array('Password', $options)){
+			$message .= sprintf(__('Password: %s'), $plaintext_pass) . "\r\n";
+		}
 		$message .= wp_login_url() . "\r\n";
 		 
 		wp_mail($user_email, sprintf(__('[%s] Your username and password'), $blogname), $message);

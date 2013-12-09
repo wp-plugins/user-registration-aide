@@ -113,7 +113,7 @@ class URA_OPTIONS
 			$registered_url = $signup_url;
 		}
 		$csds_userRegAide_Options = array(
-			"csds_userRegAide_db_Version" => "1.3.2",
+			"csds_userRegAide_db_Version" => "1.3.4",
 			"select_pass_message" => "2",
 			"password"			=>	"2",
 			"registration_form_message" => "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
