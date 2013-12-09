@@ -113,7 +113,7 @@ class URA_OPTIONS
 			$registered_url = $signup_url;
 		}
 		$csds_userRegAide_Options = array(
-			"csds_userRegAide_db_Version" => "1.3.0",
+			"csds_userRegAide_db_Version" => "1.3.2",
 			"select_pass_message" => "2",
 			"password"			=>	"2",
 			"registration_form_message" => "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
@@ -392,7 +392,7 @@ class URA_OPTIONS
 					if($key == $key1){
 						if(!empty($value1)){
 							if($key1 == 'csds_userRegAide_db_Version'){
-								$update[$key1] = "1.3.0";
+								$update[$key1] = "1.3.2";
 							}else{
 								if($value1 != $value){
 									$update[$key1] = $value1;

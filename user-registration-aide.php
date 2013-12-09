@@ -4,7 +4,7 @@ Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain alot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.3.1
+Version: 1.3.2
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: csds_userRegAide
@@ -941,7 +941,7 @@ class CSDS_USER_REG_AIDE
 	 * to go in a different place, so either wait for me to inform you where or contact me to make sure
 	 * it is okay, hopefully they will add actions and filters soon so we won't have to do this anymore!
 	 *
-	 * Code to add to line 383 user-new.php just above the </table> tag replacing the <?php } ?> 
+	 * Code to add to line 428 user-new.php just above the </table> tag replacing the <?php } ?> 
 	 <?php } do_action('load_extra_fields');?>
 	 * @handles custom action load_extra_fields line 265 &$this
 	 * 

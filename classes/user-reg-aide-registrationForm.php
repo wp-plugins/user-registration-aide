@@ -87,8 +87,7 @@ class URA_REGISTRATION_FORM
 										<p>
 										<label><?php _e('Confirm Password*:', 'csds_userRegAide');?><br />
 										<input autocomplete="off" name="pass2" id="pass2" value="" type="password" /></label></p>
-										<div><span id="pass-strength-result"><?php _e('No Password Entered', 'csds_userRegAide'); ?></span></div><br />
-										<br />
+										<div id="pass-strength-result"><?php _e('Strength indicator'); ?></div>
 										<p class="description indicator-hint"><?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).'); ?></p>
 										<br class="clear" />
 										<?php
@@ -110,8 +109,7 @@ class URA_REGISTRATION_FORM
 										<p>
 										<label><?php _e('Confirm Password*:', 'csds_userRegAide');?><br />
 										<input autocomplete="off" name="pass2" id="pass2" value="" type="password" /></label></p>
-										<div><span id="pass-strength-result"><?php _e('No Password Entered', 'csds_userRegAide'); ?></span></div><br />
-										<br />
+										<div id="pass-strength-result"><?php _e('Strength indicator'); ?></div>
 										<p class="description indicator-hint"><?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).'); ?></p>
 										<br class="clear" />
 										<?php
@@ -137,8 +135,7 @@ class URA_REGISTRATION_FORM
 								<p>
 								<label><?php _e('Confirm Password*:', 'csds_userRegAide');?><br />
 								<input autocomplete="off" name="pass2" id="pass2" value="" type="password" /></label></p>
-								<div><span id="pass-strength-result"><?php _e('No Password Entered', 'csds_userRegAide'); ?></span></div><br />
-								<br />
+								<div id="pass-strength-result"><?php _e('Strength indicator'); ?></div>
 								<p class="description indicator-hint"><?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).'); ?></p>
 								<br class="clear" />
 								<?php
@@ -161,8 +158,7 @@ class URA_REGISTRATION_FORM
 								<p>
 								<label><?php _e('Confirm Password*:', 'csds_userRegAide');?><br />
 								<input autocomplete="off" name="pass2" id="pass2" value="" type="password" /></label></p>
-								<div><span id="pass-strength-result"><?php _e('No Password Entered', 'csds_userRegAide'); ?></span></div><br />
-								<br />
+								<div id="pass-strength-result"><?php _e('Strength indicator'); ?></div>
 								<p class="description indicator-hint"><?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).'); ?></p>
 								<br class="clear" />
 								<?php
@@ -350,6 +346,7 @@ class URA_REGISTRATION_FORM
 	function csds_userRegAide_checkFields($errors, $username, $email){
 		
 		$error = (int) 0;
+		$pwd = '';
 		$thisValue = '';
 		$fieldName1 = '';
 		$csds_userRegAide_registrationFields = array();
@@ -382,11 +379,23 @@ class URA_REGISTRATION_FORM
 							$errors->add('password_mismatch', __("<strong>ERROR</strong>: Passwords do not match!", 'csds_userRegAide'));
 							$error ++;
 							
-					}elseif(strlen(trim($_POST['pass1'])) <= 6){
+					}elseif(strlen(trim($_POST['pass1'])) <= 8){
 						$errors->add('password_too_short', __("<strong>ERROR</strong>: Password length too short! Should be at least 7 characters long!", 'csds_userRegAide'));
 							$error ++;
 					}elseif($_POST['pass1'] == $_POST['user_login']){
 						$errors->add('password_and_login_match', __("<strong>ERROR</strong>: Username and Password are the same, they must be different!", 'csds_userRegAide'));
+							$error ++;
+					}elseif($_POST['pass1'] == $_POST['pass2'] && !preg_match("/[0-9]/", $_POST['pass1'] )){
+						$errors->add('password_missing_number', __("<strong>ERROR</strong>: There is no number in your password!", 'csds_userRegAide'));
+							$error ++;
+					}elseif($_POST['pass1'] == $_POST['pass2'] && !preg_match("/[a-z]/", $_POST['pass1'] )){
+						$errors->add('password_missing_lower_case_letter', __("<strong>ERROR</strong>: Password missing lower case letter!", 'csds_userRegAide'));
+							$error ++;
+					}elseif($_POST['pass1'] == $_POST['pass2'] && !preg_match("/[A-Z]/", $_POST['pass1'] )){
+						$errors->add('password_missing_upper_case_letter', __("<strong>ERROR</strong>: Password missing upper case letter!", 'csds_userRegAide'));
+							$error ++;
+					}elseif($_POST['pass1'] == $_POST['pass2'] && !preg_match("/.[!,@,#,$,%,^,&,*,?,_,~,-,£,(,)]/", $_POST['pass1'] )){
+						$errors->add('password_missing_symbol', __("<strong>ERROR</strong>: Password missing symbol!", 'csds_userRegAide'));
 							$error ++;
 					}else{
 						//exit('Blow Up');//$_POST['user_pw'] = $_POST['pass1'];

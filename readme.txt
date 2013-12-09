@@ -4,13 +4,13 @@ Donate link: http://creative-software-design-solutions.com/
 Author URI: http://creative-software-design-solutions.com/
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Tags: user, registration, force, field, register, name, nickname, AIM, AOL, instant messenger, Yahoo, Jabber, Google Talk, Facebook, wordpress, plugin, extra, add, new, fields, profile
-Requires at least: 2.8
+Requires at least: 3.2
 Tested up to: 3.7.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 
 Adds new fields and forces new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
-Note: WordPress 2.8 or higher is definite required due to new error handling procedures.
+Note: WordPress 3.2 or higher is definite required due to new error handling procedures.
 
 == Description ==
 
@@ -94,72 +94,76 @@ Read more: http://creative-software-design-solutions.com/wordpress-user-registra
 
 == Changelog ==	
 
-1.0.0		
-	
-First version. Final 7/31/2012
+1.3.2
 
-New improved version for Force Users Field Registrations with some added features. First release stable, has add new field options, add existing and new fields to user registration, adds all new fields to current users profile pages, and gives you the option to require or not require when new members signup.
+a) Redid Password Meter
 
-1.0.1		
-	
-Second version. Final 8/1/2012
+b) renamed .mo file
 
-Added a few updates to looks, more importantly fixed profile update bug so it works with new fields now and updates them properly. Also added filters to new user registrations for new fields.
+1.3.1
 
-1.0.2
+a) Added .pot and .mo files to languages
 
-Third Version 8/1/2012 9 PM EST
+1.3.0
 
-Fixed bug of open line between PHP stop and start points which created header errors
+a) updated interfaces
 
-1.1.0
+b) added anti-spammer math question to registration form
 
-Major Revision Final 8/14/2012 5PM EST
+c) added dashboard widget
 
-a) Added the option to delete additional new fields that you added and don't want or need
+d) added option to add new fields to administrators add new user page but you have to hack the core code at this time to do that.
 
-b) Added the option to change the order of the new fields at any time which will be reflected on both the registration page and the profile page
+e) fixed a few bugs
 
-c) Changed the looks somewhat by adding tables to make it more orderly
+f) updated comments and code
 
-d) Fix some minor bugs and oversights on my part
+1.2.8
 
-e) Made the code more easy to read and added more comments
+a) fixed another potential bug with database options update & with agreement checkbox
 
-f) Added more security features like nonce and updated filtering new content being added and also checking user levels and making sure they have access to features
+1.2.7
 
-g) Changed menu location to it's own menu instead of in the users menu, giving me the option to add more pages and located it right below the users menu tab
+a) fixed another potential bug with database options update & with agreement checkbox
 
-h) Upgraded the delete plugin function so it will delete all the options, so if you aren't sure whether you'll use it again or not, you may want to avoid deleting it untill you are sure otherwise all user inputs into new fields will be lost as well as all your options, settings and new fields
+1.2.6
 
-i) Added internationalization, so now users from foreign countries should have translated versions available, at least if I did it right, I hope so, if not give us a holler!
+a) fixed potential bug with database options update
 
-1.1.1
+1.2.5
 
-Fifth Revision
-Minor Revison
+a) Fixed bug with login/registration form for emailing password & password reset
 
-a) Fixed some minor bugs taht appeared after release of 1.1.0
+1.2.4
 
-1.1.2
+Thirteenth Revision minor
 
-Sixth Revision - Minor Revision
+a) Fixed delete new field bug
 
-a) Fixed tabbing index in regisstration page
+b) Combined code for headers for quicker loads
 
-b) Minor updates and fixed potential problem with profile updates
+c) Got rid of 'unexpected characters' when plugin is activated bug
 
-1.1.3
+d) Made admin pages easier to view
 
-Seventh Revision - Minor Revision
+e) Added login-registration page link shadows options so you can either remove them or adjust them to your liking as the old version looked a little funky to me, so if it does to you to you can now either change the size and color or just dont show the shadow at all.
 
-a) Fixed minor bug with error reporting
+1.2.3
 
-1.1.4 
+Twelfth Revision minor
 
-Eighth Revision – Minor Revision
+a) Fixed registration form bug
 
-a) Fixed minor bug with non-admin users editing profile
+1.2.2 
+
+Eleventh Revision Minor
+
+a) Found missing errors script 
+1.2.1 
+
+Tenth Revision Minor
+
+a) Somehow errors for other plugins were showing up even though I had those error reportings commented out so I deleted them
 
 1.2.0
 
@@ -186,71 +190,97 @@ i) Added option to add message and check box and link to agreement/policy form i
 
 j) Other code upgrades and modifications and button enhancements
 
-1.2.1 
+1.1.4 
 
-Tenth Revision Minor
+Eighth Revision – Minor Revision
 
-a) Somehow errors for other plugins were showing up even though I had those error reportings commented out so I deleted them
+a) Fixed minor bug with non-admin users editing profile
 
-1.2.2 
+1.1.3
 
-Eleventh Revision Minor
+Seventh Revision - Minor Revision
 
-a) Found missing errors script 
+a) Fixed minor bug with error reporting
 
-1.2.3
+1.1.2
 
-Twelth Revision minor
+Sixth Revision - Minor Revision
 
-a) Fixed registration form bug
+a) Fixed tabbing index in registration page
 
-1.2.4
+b) Minor updates and fixed potential problem with profile updates
 
-Thirteenth Revision minor
+1.1.1
 
-a) Fixed delete new field bug
+Fifth Revision
+Minor Revision
 
-b) Combined code for headers for quicker loads
+a) Fixed some minor bugs that appeared after release of 1.1.0
 
-c) Got rid of 'unexpected characters' when plugin is activated bug
+1.1.0
 
-d) Made admin pages easier to view
+Major Revision Final 8/14/2012 5PM EST
 
-e) Added login-registration page link shadows options so you can either remove them or adjust them to your liking as the old version looked a little funky to me, so if it does to you to you can now either change the size and color or just dont show the shadow at all.
+a) Added the option to delete additional new fields that you added and don't want or need
 
-1.2.5
+b) Added the option to change the order of the new fields at any time which will be reflected on both the registration page and the profile page
 
-a) Fixed bug with login/registration form for emailing password & password reset
+c) Changed the looks somewhat by adding tables to make it more orderly
 
-1.2.6
+d) Fix some minor bugs and oversights on my part
 
-a) fixed potential bug with database options update
+e) Made the code more easy to read and added more comments
 
-1.2.7
+f) Added more security features like nonce and updated filtering new content being added and also checking user levels and making sure they have access to features
 
-a) fixed another potential bug with database options update & with agreement checkbox
+g) Changed menu location to it's own menu instead of in the users menu, giving me the option to add more pages and located it right below the users menu tab
 
-1.2.8
+h) Upgraded the delete plugin function so it will delete all the options, so if you aren't sure whether you'll use it again or not, you may want to avoid deleting it until you are sure otherwise all user inputs into new fields will be lost as well as all your options, settings and new fields
 
-a) fixed another potential bug with database options update & with agreement checkbox
+i) Added internationalization, so now users from foreign countries should have translated versions available, at least if I did it right, I hope so, if not give us a holler!
 
-1.3.0
+1.0.2
 
-a) updated interfaces
+Third Version 8/1/2012 9 PM EST
 
-b) added anti-spammer math question to registration form
+Fixed bug of open line between PHP stop and start points which created header errors
 
-c) added dashboard widget
+1.0.1		
+	
+Second version. Final 8/1/2012
 
-d) added option to add new fields to administrators add new user page but you have to hack the core code at this time to do that.
+Added a few updates to looks, more importantly fixed profile update bug so it works with new fields now and updates them properly. Also added filters to new user registrations for new fields.
 
-e) fixed a few bugs
+1.0.0		
+	
+First version. Final 7/31/2012
 
-f) updated comments and code
+New improved version for Force Users Field Registrations with some added features. First release stable, has add new field options, add existing and new fields to user registration, adds all new fields to current users profile pages, and gives you the option to require or not require when new members sign-up.
 
-1.3.1
 
-a) Added .pot and .mo files to languages
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

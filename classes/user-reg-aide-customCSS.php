@@ -171,7 +171,7 @@ class URA_CUSTOM_CSS
 	 * Handles scripts and css for password headers on registration forms
 	 *
 	 * @since 1.0.0
-	 * @updated 1.3.0
+	 * @updated 1.3.2
 	 * @handles action 'login_head' Line 123 &$this
 	 * @access private
 	 * @author Brian Novotny
@@ -188,8 +188,10 @@ class URA_CUSTOM_CSS
 		$user_login = '';
 		$user_email = '';
 		$css = CSS_PATH."user-reg-aide-style.css";
-		$ura_ps_js = JS_PATH."password_strength_meter.js";
-		$ura_psm_mine_js = JS_PATH."pass-strength-meter.mine.js";
+		//$ura_ps_js = JS_PATH."password_strength_meter.js";
+		//$ura_psm_mine_js = JS_PATH."pass-strength-meter.mine.js";
+		$ura_ps_js = admin_url()."password_strength_meter.js";
+		$ura_psm_mine_js = admin_url()."pass-strength-meter.min.js";
 		$wp_pswrd_strength = admin_url().'js/user-profile.js';
 		$wp_admin_psm_js = admin_url().'js/password-strength-meter.js';
 		$wp_incl_jq = includes_url().'js/jquery/jquery.js';
@@ -222,58 +224,22 @@ class URA_CUSTOM_CSS
 			wp_register_style("user-reg-aide-style", $css, false, false);
 			wp_enqueue_style('user-reg-aide-style');
 			
-			wp_register_script("passstrength-calculator", $ura_psm_mine_js, array("pass-strength-meter"), false);
-			wp_enqueue_script('passstrength-calculator');
+			//wp_register_script("passstrength-calculator", $ura_psm_mine_js, array("pass-strength-meter"), false);
+			//wp_enqueue_script('passstrength-calculator');
 			
-			wp_register_script("pass-strength-meter", $ura_ps_js, array("password-strength-meter"), false);
-			wp_enqueue_script('pass-strength-meter');
+			//wp_register_script("pass-strength-meter", $ura_ps_js, array("password-strength-meter"), false);
+			//wp_enqueue_script('pass-strength-meter');
+			//wp_enqueue_script('jquery');
+            wp_enqueue_script('password-strength-meter');
+            wp_enqueue_script('user-profile');
 			
-			wp_register_script('csds_userRegAide_LostPasswordFormAjax', $lost_password_js, array('jquery'));
-			wp_enqueue_script('csds_userRegAide_LostPasswordFormAjax');
-			wp_localize_script('csds_userRegAide_LostPasswordFormAjax', 'csds_userRegAide_ajax_vars', array('csds_ura_lost_password_ajax_nonce' => wp_create_nonce('csds_ura_lost_password_ajax_nonce')));
+			//wp_register_script('csds_userRegAide_LostPasswordFormAjax', $lost_password_js, array('jquery'));
+			//wp_enqueue_script('csds_userRegAide_LostPasswordFormAjax');
+			//wp_localize_script('csds_userRegAide_LostPasswordFormAjax', 'csds_userRegAide_ajax_vars', array('csds_ura_lost_password_ajax_nonce' => wp_create_nonce('csds_ura_lost_password_ajax_nonce')));
 			
 			
-			?>
 			
-			<script type='text/javascript'>
-			/* <![CDATA[ */
-				var ura_pwsL10n = {
-					empty: "No Password Entered!",
-					short: "Password Too Short",
-					bad: "Password Too Weak",
-					good: "Good Password",
-					strong: "Strong Password",
-					mismatch: "Passwords Don't Match!"
-				}
-			/* ]]> */
-			</script>
 			
-			<style type="text/css">
-			#pass-strength-result{
-			padding-top: 3px;
-			padding-right: 5px;
-			padding-bottom: 3px;
-			padding-left: 5px;
-			margin-top: 3px;
-			text-align: center;
-			border-top-width: 1px;
-			border-right-width: 1px;
-			border-bottom-width: 1px;
-			border-left-width: 1px;
-			border-top-style: solid;
-			border-right-style: solid;
-			border-bottom-style: solid;
-			border-left-style: solid;
-			display:block;
-			}
-			
-			</style>
-	
-			<?php
-			
-			if (is_multisite()){
-				wp_print_scripts();
-			}
 		}else{
 		
 		}

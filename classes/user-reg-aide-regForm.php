@@ -73,7 +73,7 @@ class URA_REG_FORM_OPTIONS
 		global $current_user;
 		$ura_options = new URA_OPTIONS(); 
 		$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.0"){
+		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.2"){
 			$ura_options->csds_userRegAide_updateOptions();
 		}
 			

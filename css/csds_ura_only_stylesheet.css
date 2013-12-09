@@ -6,7 +6,7 @@
 input.button-primary, button.button-primary
 {
 padding:1px;
-background: #000099 !important;
+background: #333333 !important;
 }
 
 span#footer-thankyou
@@ -26,11 +26,11 @@ padding:1px;
 
 div#message, div.updated fade
 {
-background-color: #33FFFF !important;
+background-color: #CCCCFF !important;
 border-width:5px;
 padding:2px;
 border-style:ridge;
-border-color: #00009B;
+border-color: #666666;
 text-align: center;
 color: #000000;
 
@@ -38,7 +38,7 @@ color: #000000;
 
 p.my_message
 {
-background-color: #33FFFF;
+background-color: #CCCCFF;
 color: #000000;
 font-size: 18px;
 font-weight: normal;

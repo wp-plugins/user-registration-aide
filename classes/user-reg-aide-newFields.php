@@ -66,7 +66,7 @@ class URA_NEW_FIELDS
 		$count = (int) 0;
 		
 		//$ura_options = new URA_OPTIONS();
-		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.0"){
+		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.2"){
 			//$ura_options->csds_userRegAide_updateOptions();
 			do_action('update_options'); // Line 259 user-registration-aide.php
 		}
