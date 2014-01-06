@@ -3,7 +3,7 @@
 /**
  * User Registration Aide - Edit New Fields Administration Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.1
+ * Version: 1.3.5
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -66,7 +66,7 @@ class URA_NEW_FIELDS
 		$count = (int) 0;
 		
 		//$ura_options = new URA_OPTIONS();
-		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.4"){
+		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.5"){
 			//$ura_options->csds_userRegAide_updateOptions();
 			do_action('update_options'); // Line 259 user-registration-aide.php
 		}

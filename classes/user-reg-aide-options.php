@@ -3,7 +3,7 @@
  * User Registration Aide - Options
  * Handles all options and related functions for plugin
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.1
+ * Version: 1.3.5
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -113,7 +113,7 @@ class URA_OPTIONS
 			$registered_url = $signup_url;
 		}
 		$csds_userRegAide_Options = array(
-			"csds_userRegAide_db_Version" => "1.3.4",
+			"csds_userRegAide_db_Version" => "1.3.5 `",
 			"select_pass_message" => "2",
 			"password"			=>	"2",
 			"registration_form_message" => "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
@@ -183,7 +183,15 @@ class URA_OPTIONS
 			"login_redirect_url"			=>	esc_url_raw(admin_url()),
 			"change_profile_title"			=>	"2",
 			"profile_title"					=>	"User Registration Aide Additional Fields",
-			"show_dashboard_widget"			=>	"1"
+			"show_dashboard_widget"			=>	"1",
+			"default_xwrd_strength"			=>	"1",
+			"custom_xwrd_strength"			=>	"2",
+			"require_xwrd_length"			=>	"1",
+			"xwrd_length"					=>	"8",
+			"xwrd_sc"						=>	"1",
+			"xwrd_numb"						=>	"1",
+			"xwrd_uc"						=>	"1",
+			"xwrd_lc"						=>	"1",
 			
 				
 		);
@@ -193,6 +201,7 @@ class URA_OPTIONS
 	/**
 	 * Fills array of known fields
 	 *
+	 
 	 * @since 1.0.0
 	 * @updated 1.3.0
 	 * @handles action 'init' Line 135 user-registration-aide.php and multiple calls 
@@ -392,7 +401,7 @@ class URA_OPTIONS
 					if($key == $key1){
 						if(!empty($value1)){
 							if($key1 == 'csds_userRegAide_db_Version'){
-								$update[$key1] = "1.3.2";
+								$update[$key1] = "1.3.5";
 							}else{
 								if($value1 != $value){
 									$update[$key1] = $value1;

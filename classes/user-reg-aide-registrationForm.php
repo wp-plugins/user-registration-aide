@@ -2,7 +2,7 @@
 /**
  * User Registration Aide - Registration Form Functions
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.1
+ * Version: 1.3.5
  * Since Version 1.3.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -370,33 +370,54 @@ class URA_REGISTRATION_FORM
 						}
 					}
 				}elseif($thisValue == "user_pass"){
-					// //to check password
+					// //to check password -- password fields empty
 					if(empty($_POST['pass1']) || $_POST['pass1'] == '' || empty($_POST['pass2']) || $_POST['pass2'] == ''){
 							$errors->add('empty_password', __("<strong>ERROR</strong>: Please enter and confirm your Password!", 'csds_userRegAide'));
 							$error ++;
 							
-					}elseif($_POST['pass1'] != $_POST['pass2']){
+					}
+					if($_POST['pass1'] != $_POST['pass2']){ // passwords do not match
 							$errors->add('password_mismatch', __("<strong>ERROR</strong>: Passwords do not match!", 'csds_userRegAide'));
 							$error ++;
-							
-					}elseif(strlen(trim($_POST['pass1'])) <= 8){
-						$errors->add('password_too_short', __("<strong>ERROR</strong>: Password length too short! Should be at least 7 characters long!", 'csds_userRegAide'));
-							$error ++;
-					}elseif($_POST['pass1'] == $_POST['user_login']){
+					}
+					if($_POST['pass1'] == $_POST['user_login']){ // password same as user login
 						$errors->add('password_and_login_match', __("<strong>ERROR</strong>: Username and Password are the same, they must be different!", 'csds_userRegAide'));
 							$error ++;
-					}elseif($_POST['pass1'] == $_POST['pass2'] && !preg_match("/[0-9]/", $_POST['pass1'] )){
-						$errors->add('password_missing_number', __("<strong>ERROR</strong>: There is no number in your password!", 'csds_userRegAide'));
-							$error ++;
-					}elseif($_POST['pass1'] == $_POST['pass2'] && !preg_match("/[a-z]/", $_POST['pass1'] )){
-						$errors->add('password_missing_lower_case_letter', __("<strong>ERROR</strong>: Password missing lower case letter!", 'csds_userRegAide'));
-							$error ++;
-					}elseif($_POST['pass1'] == $_POST['pass2'] && !preg_match("/[A-Z]/", $_POST['pass1'] )){
-						$errors->add('password_missing_upper_case_letter', __("<strong>ERROR</strong>: Password missing upper case letter!", 'csds_userRegAide'));
-							$error ++;
-					}elseif($_POST['pass1'] == $_POST['pass2'] && !preg_match("/.[!,@,#,$,%,^,&,*,?,_,~,-,£,(,)]/", $_POST['pass1'] )){
-						$errors->add('password_missing_symbol', __("<strong>ERROR</strong>: Password missing symbol!", 'csds_userRegAide'));
-							$error ++;
+					// Password strength requirements 	
+					}
+					if(strlen(trim($_POST['pass1'])) < $options['xwrd_length']){ // password length too short
+						if($options['default_xwrd_strength'] == 1 || ($options['custom_xwrd_strength'] == 1 && $options['require_xwrd_length'] == 1)){
+							$errors->add('password_too_short', __("<strong>ERROR</strong>: Password length too short! Should be at least ".$options['xwrd_length']." characters long!", 'csds_userRegAide'));
+								$error ++;
+						}
+					// no number in password
+					}
+					if($_POST['pass1'] == $_POST['pass2'] && !preg_match("/[0-9]/", $_POST['pass1'] )){
+						if($options['default_xwrd_strength'] == 1 || ($options['custom_xwrd_strength'] == 1 && $options['xwrd_numb'] == 1)){
+							$errors->add('password_missing_number', __("<strong>ERROR</strong>: There is no number in your password!", 'csds_userRegAide'));
+								$error ++;
+						}
+					// no lower case letter in password
+					}
+					if($_POST['pass1'] == $_POST['pass2'] && !preg_match("/[a-z]/", $_POST['pass1'] )){
+						if($options['default_xwrd_strength'] == 1 || ($options['custom_xwrd_strength'] == 1 && $options['xwrd_lc'] == 1)){
+							$errors->add('password_missing_lower_case_letter', __("<strong>ERROR</strong>: Password missing lower case letter!", 'csds_userRegAide'));
+								$error ++;
+						}
+					// no upper case letter in password
+					}
+					if($_POST['pass1'] == $_POST['pass2'] && !preg_match("/[A-Z]/", $_POST['pass1'] )){
+						if($options['default_xwrd_strength'] == 1 || ($options['custom_xwrd_strength'] == 1 && $options['xwrd_uc'] == 1)){
+							$errors->add('password_missing_upper_case_letter', __("<strong>ERROR</strong>: Password missing upper case letter!", 'csds_userRegAide'));
+								$error ++;
+						}
+					// no special character in password
+					}
+					if($_POST['pass1'] == $_POST['pass2'] && !preg_match("/.[!,@,#,$,%,^,&,*,?,_,~,-,£,(,)]/", $_POST['pass1'] )){
+						if($options['default_xwrd_strength'] == 1 || ($options['custom_xwrd_strength'] == 1 && $options['xwrd_sc'] == 1)){
+							$errors->add('password_missing_symbol', __("<strong>ERROR</strong>: Password missing symbol!", 'csds_userRegAide'));
+								$error ++;
+						}
 					}else{
 						//exit('Blow Up');//$_POST['user_pw'] = $_POST['pass1'];
 					}
@@ -413,7 +434,7 @@ class URA_REGISTRATION_FORM
 				$error ++;
 			}
 		}
-		
+		// anti-spam math problem
 		if($options['activate_anti_spam'] == "1"){
 			
 			if($_POST['operator'] == "+"){
@@ -490,8 +511,8 @@ class URA_REGISTRATION_FORM
 			$ran_numbs['first'] = $d1;
 			$ran_numbs['second'] = $d2;
 		}
-		$temp_answer = $ran_numbs['first'] .' ' .$ran_numbs['operator'].' ' .$ran_numbs['second'];
-		$math_answer = round($temp_answer, 1);
+		// $temp_answer = $ran_numbs['first'] .' ' .$ran_numbs['operator'].' ' .$ran_numbs['second'];
+		// $math_answer = round($temp_answer, 1);
 		return $ran_numbs;
 		
 	}

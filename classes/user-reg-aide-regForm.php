@@ -3,7 +3,7 @@
 /**
  * User Registration Aide - Registration Form Options Settings Admin Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.1
+ * Version: 1.3.5
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -73,7 +73,7 @@ class URA_REG_FORM_OPTIONS
 		global $current_user;
 		$ura_options = new URA_OPTIONS(); 
 		$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.4"){
+		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.5"){
 			$ura_options->csds_userRegAide_updateOptions();
 		}
 			
@@ -132,7 +132,86 @@ class URA_REG_FORM_OPTIONS
 				echo '<div id="message" class="updated fade"><p class="my_message">'. __('New Bottom Registration Form Message Options empty, not updated successfully.', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
 			}
 			
+		// handles password strength requirement options
+		}elseif(isset($_POST['psr_update'])){
+			$update = array();
+			$ucnt = (int) 0;
+			$field = (string) '';
+			$update = get_option('csds_userRegAide_Options');
 			
+			if(!empty($_POST['csds_select_DefaultPSR']) && !empty($_POST['csds_select_CustomPSR'])){ // Updates default password strength requirements
+				$update['default_xwrd_strength'] = esc_attr(stripslashes($_POST['csds_select_DefaultPSR']));
+				if($_POST['csds_select_DefaultPSR'] == 1){
+					$update['require_xwrd_length'] = 1;
+					$update['xwrd_length'] = 8;
+					$update['xwrd_uc'] = 1;
+					$update['xwrd_lc'] = 1;
+					$update['xwrd_numb'] = 1;
+					$update['xwrd_sc'] = 1;
+					$update['custom_xwrd_strength'] = 2;
+				
+				}elseif($_POST['csds_select_CustomPSR'] == 1){
+					if(!empty($_POST['csds_select_CustomPSR'])){ // Updates custom password strength requirements
+						$update['custom_xwrd_strength'] = esc_attr(stripslashes($_POST['csds_select_CustomPSR']));
+						$update['default_xwrd_strength'] = 2;
+					}else{
+						$ucnt ++;
+						$field .= ' Custom Password Strength Requirement Option ';
+					}
+					
+					if(!empty($_POST['csds_select_MinXwrdLngth'])){ // Updates minimum password length
+						$update['require_xwrd_length'] = esc_attr(stripslashes($_POST['csds_select_MinXwrdLngth']));
+					}else{
+						$ucnt ++;
+						$field .= ' Minimum Password Length Requirement Option ';
+					}
+					
+					if(!empty($_POST['csds_xwrdLength'])){ // Updates minimum password length
+						$update['xwrd_length'] = esc_attr(stripslashes($_POST['csds_xwrdLength']));
+					}else{
+						$ucnt ++;
+						$field .= ' Minimum Password Length Requirement Option ';
+					}
+					
+					if(!empty($_POST['csds_select_UCPSR'])){ // Updates password strength requirement upper case letter
+						$update['xwrd_uc'] = esc_attr(stripslashes($_POST['csds_select_UCPSR']));
+					}else{
+						$ucnt ++;
+						$field .= ' Password Strength Requirement Option Upper Case Letter ';
+					}
+					
+					if(!empty($_POST['csds_select_LCPSR'])){ // Updates password strength requirement lower case letter
+						$update['xwrd_lc'] = esc_attr(stripslashes($_POST['csds_select_LCPSR']));
+					}else{
+						$ucnt ++;
+						$field .= ' Password Strength Requirement Option Lower Case Letter ';
+					}
+					
+					if(!empty($_POST['csds_select_NumbPSR'])){ // Updates password strength requirement number
+						$update['xwrd_numb'] = esc_attr(stripslashes($_POST['csds_select_NumbPSR']));
+					}else{
+						$ucnt ++;
+						$field .= ' Password Strength Requirement Option Number ';
+					}
+					
+					if(!empty($_POST['csds_select_SCPSR'])){ // Updates password strength requirement special character
+						$update['xwrd_sc'] = esc_attr(stripslashes($_POST['csds_select_SCPSR']));
+					}else{
+						$ucnt ++;
+						$field .= ' Password Strength Requirement Option Special Character ';
+					}
+				}
+			}else{
+				$ucnt ++;
+				$field = ' Default Password Strength Requirement Option ';
+			}
+			
+			if($ucnt == 0){
+				update_option("csds_userRegAide_Options", $update);
+				echo '<div id="message" class="updated fade"><p class="my_message">'. __('New Password Strength Requirement Options updated successfully.', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
+			}else{
+				echo '<div id="message" class="updated fade"><p class="my_message">'. __('New Password Strength Requirement Options empty, not updated successfully.', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
+			}
 		// add code to handle new registration & login form redirects
 		}elseif(isset($_POST['redirects_update'])){
 			$update = array();
@@ -357,6 +436,100 @@ class URA_REG_FORM_OPTIONS
 							<div class="submit"><input type="submit" class="button-primary" name="reg_form_message_update" value="<?php _e('Update Registration Form Message Options', 'csds_userRegAide'); ?>"  /></div>
 						</div>
 					</div>
+					<?php
+					//Form for password strength requirements	
+					$i1 = (int) 12; ?>
+						<div class="stuffbox"><span class="regForm"><?php _e('Password Strength Requirements:', 'csds_userRegAide');?></span>
+							<div class="inside">
+							<table class="regForm" width="100%">
+							<tr> <?php // Default Password Strength Requirements Options Yes/No ?>
+								<td width="50%"><?php _e('Use Default Password Strength Requirements: ', 'csds_userRegAide');?>
+								<span title="<?php _e('Select this option to use the default password strength requirements (Upper Case, Lower Case letters, number and special character and minimum length of 8)', 'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_DefaultPSR" id="csds_select_DefaultPSR" value="1" <?php
+								if ($csds_userRegAide_Options['default_xwrd_strength'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+								<span title="<?php _e('Select this option not to use the default Password Strength Requirements',  'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_DefaultPSR" id="csds_select_DefaultPSR" value="2" <?php
+								if ($csds_userRegAide_Options['default_xwrd_strength'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+								</td>
+								<?php // Custom Password Strength Requirements Option Yes/No ?>
+								<td width="50%"><?php _e('Use Custom Password Strength Requirements: ', 'csds_userRegAide');?>
+								<span title="<?php _e('Select this option to create your own custom password strength requirements', 'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_CustomPSR" id="csds_select_CustomPSR" value="1" <?php
+								if ($csds_userRegAide_Options['custom_xwrd_strength'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+								<span title="<?php _e('Select this option not to use a custom Password Strength Requirements',  'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_CustomPSR" id="csds_select_CustomPSR" value="2" <?php
+								if ($csds_userRegAide_Options['custom_xwrd_strength'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+								</td>
+							</tr>
+							<tr>
+								<?php // Custom Password Strength Requirement Password Length ?>
+								<td width="50%"><?php _e('Require Minimum Password Length: ', 'csds_userRegAide');?>
+								<span title="<?php _e('Select this option to require an Upper Case Letter in the custom Password Strength Requirements', 'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_MinXwrdLngth" id="csds_select_MinXwrdLngth" value="1" <?php
+								if ($csds_userRegAide_Options['require_xwrd_length'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+								<span title="<?php _e('Select this option NOT to require an Upper Case Letter in the custom Password Strength Requirements',  'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_MinXwrdLngth" id="csds_select_MinXwrdLngth" value="2" <?php
+								if ($csds_userRegAide_Options['require_xwrd_length'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+								</td>
+								<td width="50%"><?php _e('Password Minimum Length: ', 'csds_userRegAide');?><select <?php // class="fieldOrder" ?> name="csds_xwrdLength" id="csds_xwrdLength" title="<?php __('Select the minimum length for the password', 'csds_userRegAide');?>">
+									<?php
+									for($ii = 1; $ii <= $i1; $ii++){
+										if($ii == $csds_userRegAide_Options['xwrd_length']){
+											//echo '<option selected="'.$fieldKey.'" >'.$fieldOrder.'</option>';
+											echo '<option selected="'.$ii.'" >'.$ii.'</option>';
+										}else{
+											echo '<option value="'.$ii.'">'.$ii.'</option>';
+										}									
+									} ?>
+								</td>
+							</tr>
+							<tr>
+								<?php // Custom Password Strength Requirement Upper Case Letter ?>
+								<td width="50%"><?php _e('Require Upper Case Letter: ', 'csds_userRegAide');?>
+								<span title="<?php _e('Select this option to require an Upper Case Letter in the custom Password Strength Requirements', 'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_UCPSR" id="csds_select_UCPSR" value="1" <?php
+								if ($csds_userRegAide_Options['xwrd_uc'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+								<span title="<?php _e('Select this option NOT to require an Upper Case Letter in the custom Password Strength Requirements',  'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_UCPSR" id="csds_select_UCPSR" value="2" <?php
+								if ($csds_userRegAide_Options['xwrd_uc'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+								</td>
+								<?php // Custom Password Strength Requirement Lower Case Letter ?>
+								<td width="50%"><?php _e('Require Lower Case Letter: ', 'csds_userRegAide');?>
+								<span title="<?php _e('Select this option to require a Lower Case Letter in the password strength requirements', 'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_LCPSR" id="csds_select_LCPSR" value="1" <?php
+								if ($csds_userRegAide_Options['xwrd_lc'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+								<span title="<?php _e('Select this option NOT to require a Lower Case Letter in the password strength requirements',  'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_LCPSR" id="csds_select_LCPSR" value="2" <?php
+								if ($csds_userRegAide_Options['xwrd_lc'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+								</td>
+							</tr>
+							<tr>
+								<?php // Custom Password Strength Requirement Number ?>
+								<td width="50%"><?php _e('Require Number: ', 'csds_userRegAide');?>
+								<span title="<?php _e('Select this option to require a Number in the custom Password Strength Requirements', 'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_NumbPSR" id="csds_select_NumbPSR" value="1" <?php
+								if ($csds_userRegAide_Options['xwrd_numb'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+								<span title="<?php _e('Select this option NOT to require a Number in the custom Password Strength Requirements',  'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_NumbPSR" id="csds_select_NumbPSR" value="2" <?php
+								if ($csds_userRegAide_Options['xwrd_numb'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+								</td>
+								<?php // Custom Password Strength Requirement Special Character ?>
+								<td width="50%"><?php _e('Require Special Character: ', 'csds_userRegAide');?>
+								<span title="<?php _e('Select this option to require a Special Character (!,@,#,$,%,^,&,*,?,_,~,-,£,(,)) in the password strength requirements', 'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_SCPSR" id="csds_select_SCPSR" value="1" <?php
+								if ($csds_userRegAide_Options['xwrd_sc'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+								<span title="<?php _e('Select this option to NOT require an Lower Case Letter in the password strength requirements',  'csds_userRegAide');?>">
+								<input type="radio" name="csds_select_SCPSR" id="csds_select_SCPSR" value="2" <?php
+								if ($csds_userRegAide_Options['xwrd_sc'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+								</td>
+							</tr>
+							
+							</table>
+							<div class="submit"><input type="submit" class="button-primary" name="psr_update" value="<?php _e('Update Password Strength Requirement Options', 'csds_userRegAide'); ?>"  /></div>
+						</div>
+					</div>
+					
+					<?php // end new password strength form ?>
 					<?php
 					//Form for adding redirects to registration and login pages ?>
 						<div class="stuffbox"><span class="regForm"><?php _e('Add custom redirects after users login or a new user registers here:', 'csds_userRegAide');?></span>

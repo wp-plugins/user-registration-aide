@@ -5,8 +5,8 @@ Author URI: http://creative-software-design-solutions.com/
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Tags: user, registration, force, field, register, name, nickname, AIM, AOL, instant messenger, Yahoo, Jabber, Google Talk, Facebook, wordpress, plugin, extra, add, new, fields, profile
 Requires at least: 3.2
-Tested up to: 3.7.1
-Stable tag: 1.3.4
+Tested up to: 3.8
+Stable tag: 1.3.5
 
 Adds new fields and forces new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
@@ -45,7 +45,7 @@ Plugin Features:
     Get better control over your user base
     New fields are added to existing users profiles!
     Increase your knowledge of, and interaction with your customers & users!
-	Add Custom Logo to REgistration & Login Pages!
+	Add Custom Logo to Registration & Login Pages!
 	Add Custom Background Image or Background Color to Login & Registration Pages!
 
 
@@ -79,20 +79,30 @@ Read more: http://creative-software-design-solutions.com/wordpress-user-registra
 
 == Frequently Asked Questions ==
 
-[Frequently Asked Questions](http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/#axzz228bHzpkj)			
+= Is there a shortcode?  =
 
+No, there currently is no shortcode as it uses the current registration/profile actions and filters for WordPress so it shows up without the need for a shortcode.
 
+= Where are the new fields? =
+
+First, you need to make sure you are allowing new users to register for your site which is found on the general settings tab on the admin dashboard under membership, make sure you have the Anyone can register checkbox checked.
+
+Then, if you don't know where it is the registration form is on the login form, as there should be a register link at the bottom of the login form page if you are allowing anyone to sign up. Click on the register link to see the registration form and your new extra fields.
+ 
 == Screenshots ==
 
-1. User Registration Aide Admin Page Screenshot: http://creative-software-design-solutions.com/wp-content/uploads/2012/07/user-registration-aide-admin-page.jpg
-
-2. Administration Page Link: http://creative-software-design-solutions.com/wp-content/uploads/2012/07/admin-page-location.jpghttp://creative-software-design-solutions.com/wp-content/uploads/2012/07/admin-page-location.jpg
-
-3. Registration Form Screenshot: http://creative-software-design-solutions.com/wp-content/uploads/2012/07/registration-form-screenshot.jpg
-
-4. User Profile Screenshot: http://creative-software-design-solutions.com/wp-content/uploads/2012/07/user-profile-screenshot.jpg
+1. Plugin Page
+2. WordPress Administration Dashboard
+3. Admin Page 1 Registration Fields
+4. Admin Page 2 Edit New Fields
+5. Admin Page 3 Registration Form Options
+6. Admin Page 4 Registration Form Messages & CSS Options
 
 == Changelog ==	
+
+1.3.5
+
+a) Added options to modify password strength requirements, either use default or make custom or use none.
 
 1.3.4
 
