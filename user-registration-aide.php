@@ -4,14 +4,14 @@ Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain alot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.3.5
+Version: 1.3.6
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: csds_userRegAide
 
 User Registration Aide Requires & Adds More Fields to User Registration & Profile - Forces new users to register additional fields on registration form, and gives you the option to add additional fields at your discretion. Gives you more control over who registers, and allows you to manage users easier!
 
-Copyright (c) 2012 Brian Novotny
+Copyright ©  2012 - 2014 Brian Novotny
 
 Users Registration Helper - Forces new users to register additional fields
 
@@ -60,7 +60,7 @@ require_once (CLASSES_PATH."user-reg-aide-actions.php"); // Handles recurring cu
  *
  * @category Class CSDS_USER_REG_AIDE
  * @since 1.2.0
- * @updated 1.3.0
+ * @updated 1.3.6
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -102,6 +102,11 @@ class CSDS_USER_REG_AIDE
 		$settings_file = 'user-reg-aide-admin.php';
 		$options = get_option('csds_userRegAide_Options');
 		
+		if(empty($options['updated'])){
+			$ura_options->csds_userRegAide_updateOptions();
+		}elseif($options['updated'] == 2){
+			$ura_options->csds_userRegAide_updateOptions();
+		}
 		// defines
 		
 		if ( ! defined( 'WP_CONTENT_URL' ) )
@@ -152,7 +157,9 @@ class CSDS_USER_REG_AIDE
 		
 		// Filling default User Registration Aide options db
 		if(isset($_GET['action']) && $_GET['action'] == 'admin_init'){
-			add_action( 'init', array(&$ura_options, 'csds_userRegAide_DefaultOptions' )); // Line 59 user-reg-aide-options.php
+			if(!empty($options)){
+				add_action( 'init', array(&$ura_options, 'csds_userRegAide_DefaultOptions' )); // Line 59 user-reg-aide-options.php
+			}
 		}
 		
 		// Customize Registration & Login Forms
@@ -213,7 +220,7 @@ class CSDS_USER_REG_AIDE
 		
 		
 		// Adds stylesheet to admin dashboard widget
-		add_action('admin_print_styles', array(&$dashWidget, 'csds_dashboard_widget_style')); // Line 213 &$dashWidget
+		add_action('admin_print_styles', array(&$dashWidget, 'csds_dashboard_widget_style')); // Line 655 &$dashWidget
 					
 		// Sets new password if user can enter own password on registration
 		add_filter('random_password',  array(&$this, 'csds_userRegAide_createNewPassword'), 0, 1); // Line 874 &$this (Params: str $password)
@@ -240,6 +247,11 @@ class CSDS_USER_REG_AIDE
 		add_action('update_field_order', array($ura_options, 'csds_userRegAide_update_field_order')); // Line 331 &$ura_options
 		add_action('delete_usermeta_field', array(&$this, 'csds_delete_field_from_users_meta'), 10, 1); // Line 1206 &$this
 		add_action('update_options', array($ura_options, 'csds_userRegAide_updateOptions')); // Line 402 &$ura_options
+		add_action('display_dw_options', array($dashWidget, 'dashboard_widget_options')); // Displays dashboard widget options on URA admin page, $admin line	364	
+		add_action('update_dw_display_options', array($dashWidget, 'update_dashboard_widget_options')); // Update dashboard widget options from admin page, $admin line 479
+		add_action('update_dw_field_options', array($dashWidget, 'update_dashboard_widget_fields')); // Update dashboard widget options from admin page, $admin line 497
+		add_action('update_dw_field_order', array($dashWidget, 'update_dashboard_widget_field_order')); // Update dashboard widget options from admin page, $admin line 600
+		
 				// Handles user profiles and extra fields
 		add_action('show_user_profile', array(&$userProfile, 'csds_show_user_profile'), 0, 1); // Line 59 &$userProfile (Params: str $user)
 		add_action('edit_user_profile', array(&$userProfile, 'csds_show_user_profile'), 0, 1); // Line 59 &$userProfile (Params: str $user)

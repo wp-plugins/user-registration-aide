@@ -6,7 +6,7 @@ Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registr
 Tags: user, registration, force, field, register, name, nickname, AIM, AOL, instant messenger, Yahoo, Jabber, Google Talk, Facebook, wordpress, plugin, extra, add, new, fields, profile
 Requires at least: 3.2
 Tested up to: 3.8
-Stable tag: 1.3.5
+Stable tag: 1.3.6
 
 Adds new fields and forces new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
@@ -27,7 +27,7 @@ When new users register, this plugin forces new users to register additional fie
 
 Wordpress User Registration Aide Force & Add New User Fields on Registration Form, as the title implies, allows you to force or require more fields when a new user registers. This not only can help to stop spammers, but it can also increase your user management capabilities and services. All the new fields that you add will also be added to existing users profiles, but the users will have to fill them out of course, but any new users will be required to fill out these fields.
 
-Another important option is that you can also add new fields but not require them for registration, so you can increase you user management capabilities. This is an exciting new feature for Webmasters that wish to increase contact options, communications, and information obtained from your user base.
+Another important option is that you can also add new fields to the users profile page but not require them for registration, so you can increase you user management capabilities. This is an exciting new feature for Webmasters that wish to increase contact options, communications, and information obtained from your user base.
 
 We are also currently working on additional features which will come out as a new plugin in the near future, however we released this simple version for those who want to add these simple features now to increase security and user information and reduce spammers. We originally got the idea from the Force User Field Registration from fergcorp, with their plugin, however that plugin hasn’t been updated in ages so we applied new functionality and replaced deprecated functions and added some new features and looks.
 
@@ -99,6 +99,12 @@ Then, if you don't know where it is the registration form is on the login form, 
 6. Admin Page 4 Registration Form Messages & CSS Options
 
 == Changelog ==	
+
+1.3.6
+
+a) Added options to modify WordPress dashboard widget fields.
+
+b) Added options to modify math problems so you can choose which operators to use and made the random numbers smaller so it won't be as difficult.
 
 1.3.5
 

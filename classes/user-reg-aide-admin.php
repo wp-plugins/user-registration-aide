@@ -3,7 +3,7 @@
 /**
  * User Registration Aide - Plugin Main Administration Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.5
+ * Version: 1.3.6
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -18,7 +18,7 @@
  * Couple of includes for functionality
  *
  * @since 1.2.0
- * @updated 1.3.0
+ * @updated 1.3.6
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -29,6 +29,7 @@ require_once (URA_PLUGIN_PATH."user-registration-aide.php");
 require_once ("user-reg-aide-options.php");
 require_once ("user-reg-aide-newFields.php");
 require_once ("user-reg-aide-regForm.php");
+require_once ("user-reg-aide-dashWidget.php");
 //require_once ("user-reg-aide-mailer.php");
 
 // -------------------------------------------------------------------------------------
@@ -38,7 +39,7 @@ require_once ("user-reg-aide-regForm.php");
  *
  * @category Class
  * @since 1.3.0
- * @updated 1.3.0
+ * @updated 1.3.6
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -63,7 +64,7 @@ class CSDS_URA_ADMIN_SETTINGS
 	/**
 	 * Loads and displays the User Registration Aide main administration page
 	 * @since 1.0.0
-	 * @updated 1.3.0
+	 * @updated 1.3.6
 	 * @handles action 'add_menu_page' line 651 user-registration-aide.php
 	 * @access private
 	 * @author Brian Novotny
@@ -79,7 +80,7 @@ class CSDS_URA_ADMIN_SETTINGS
 		
 		// Checking to see that database options are up to date to the latest version
 		
-		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.5"){
+		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.6"){
 			
 				$ura_options->csds_userRegAide_updateOptions();
 			
@@ -120,6 +121,7 @@ class CSDS_URA_ADMIN_SETTINGS
 		$csds_userRegAide_newBackgroundImageURL = (string) '';
 		$show_background_color = (string) '';
 		$csds_userRegAide_newBackgroundColor = (string) '';
+		$dashWidget = new URA_DASHBOARD_WIDGET;
 		
 		
 		// Updating Arrays from options db
@@ -134,11 +136,12 @@ class CSDS_URA_ADMIN_SETTINGS
 						
 			// Handles adding fields to registration form
 			
-		if (isset($_POST['dash_widget_update'])){
-			$update = array();
-			$update = get_option('csds_userRegAide_Options');
-			$update['show_dashboard_widget'] = $_POST['csds_dashWidgetDisplay'];
-			update_option("csds_userRegAide_Options", $update);
+		if (isset($_POST['dash_widget_display_option'])){
+			do_action('update_dw_display_options'); // handles updates to dashboard widget options line 244 user-registration-aide.php
+		}elseif (isset($_POST['dash_widget_fields_update'])){
+			do_action('update_dw_field_options'); // handles updates to dashboard widget options line 244 user-registration-aide.php
+		}elseif (isset($_POST['dash_widget_field_order_update'])){
+			do_action('update_dw_field_order'); // handles updates to dashboard widget options line 244 user-registration-aide.php
 		}elseif (isset($_POST['reg_fields_update'])){
 			$options = array();
 			$options = get_option('csds_userRegAide_Options');
@@ -360,25 +363,9 @@ class CSDS_URA_ADMIN_SETTINGS
 					<?php //Form for dashboard widget options ?>
 						<div class="stuffbox"><span class="regForm"><?php _e('Choose to display Creative Software Design Solutions Dashboard Widget Here:', 'csds_userRegAide');?> </span>
 							<div class="inside">
-								<table class="adminPage_Dash">
-								<tr colspan="2">
-								<th><?php _e('Dashboard Widget Display Options', 'csds_userRegAide');?> </th>
-								</tr>
-								<tr>
-								<td><?php _e('Choose to display or not display the dashboard widget on the WordPress Admin page: ', 'csds_userRegAide');?>
-								<span title="<?php _e('Select this option to show the Creative Software Design Solutions Users table Dashboard Widget', 'csds_userRegAide');?>">
-								<input type="radio" name="csds_dashWidgetDisplay" id="csds_dashWidgetDisplay" value="1" <?php
-								if ($csds_userRegAide_Options['show_dashboard_widget'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
-								<span title="<?php _e('Select this option NOT to show the Creative Software Design Solutions Users table Dashboard Widget',  'csds_userRegAide');?>">
-								<input type="radio" name="csds_dashWidgetDisplay" id="csds_dashWidgetDisplay" value="2" <?php
-								if ($csds_userRegAide_Options['show_dashboard_widget'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span></td>
-								</tr>
-								<tr>
-								<td>
-								<div class="submit"><input type="submit" class="button-primary" name="dash_widget_update" value="<?php _e('Update Dashboard Widget Options', 'csds_userRegAide');?>"/></div>
-								</td>
-								</tr>
-								</table>
+							<?php
+								do_action('display_dw_options'); // handles updates to dashboard widget options line 243 user-registration-aide.php
+							?>
 								<br />
 							</div>
 						</div>

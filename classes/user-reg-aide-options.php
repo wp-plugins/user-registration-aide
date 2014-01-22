@@ -3,7 +3,7 @@
  * User Registration Aide - Options
  * Handles all options and related functions for plugin
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.5
+ * Version: 1.3.6
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -62,6 +62,7 @@ class URA_OPTIONS
 		
 		global $wpdb;
 		$options = array();
+		$dw_fields = array();
 		$options = get_option('csds_userRegAide_Options');
 		
 		if(empty($options)){
@@ -80,6 +81,7 @@ class URA_OPTIONS
 		}else{
 			$options = get_option('csds_userRegAide_Options');
 		}
+		
 		//return $options;
 	}
 	
@@ -113,68 +115,72 @@ class URA_OPTIONS
 			$registered_url = $signup_url;
 		}
 		$csds_userRegAide_Options = array(
-			"csds_userRegAide_db_Version" => "1.3.5 `",
-			"select_pass_message" => "2",
-			"password"			=>	"2",
-			"registration_form_message" => "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
-			"agreement_message" => "I have read and understand and agree to the terms and conditions of the guidelines/agreement policy required for this website provided in the link below",
-			"empty"	=>	"No password Entered!",
-			"short" => "Password Entered is too Short!", 
-			"bad" => "Password Entered is Bad, Too Weak",
-			"good" => "Password Entered is fairly tough and is good to accept",
-			"strong" => "Password Entered is very strong!",
-			"mismatch" => "Password Entered does not match Password Confirm! Try Again Please!",
-			"show_support" => "2",
-			"support_display_link" => "http://creative-software-design-solutions.com/#axzz24C84ExPC",
-			"support_display_name" => "Creative Software Design Solutions",
-			"show_logo" => "2",
-			"logo_url" => "wp-admin/images/wordpress-logo.png",
-			"show_background_image" => "2",
-			"background_image_url" => "",
-			"show_background_color" => "2",
-			"reg_background_color" => "#FFFFFF",
-			"show_reg_form_page_color" => "2",
-			"reg_form_page_color" => "#FFFFFF",
-			"show_reg_form_page_image" => "2",
-			"reg_form_page_image" => "",
-			"show_login_text_color" => "2",
-			"login_text_color" => "#BBBBBB",
-			"hover_text_color" => "#FF0000",
-			"show_shadow" => "2",
-			"shadow_size" => "0px",
-			"shadow_color" => "#FFFFFF",
-			"change_logo_link" => "2",
-			"show_custom_agreement_link" => "2",
-			"agreement_title" => "Agreement Policy",
+			"csds_userRegAide_db_Version"	=> "1.3.6",
+			"select_pass_message" 			=> "2",
+			"password"						=>	"2",
+			"registration_form_message" 	=> "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
+			"agreement_message" 			=> "I have read and understand and agree to the terms and conditions of the guidelines/agreement policy required for this website provided in the link below",
+			"empty"							=>	"No password Entered!",
+			"short" 						=> "Password Entered is too Short!", 
+			"bad" 							=> "Password Entered is Bad, Too Weak",
+			"good" 							=> "Password Entered is fairly tough and is good to accept",
+			"strong" 						=> "Password Entered is very strong!",
+			"mismatch" 						=> "Password Entered does not match Password Confirm! Try Again Please!",
+			"show_support" 					=> "2",
+			"support_display_link" 			=> "http://creative-software-design-solutions.com/#axzz24C84ExPC",
+			"support_display_name" 			=> "Creative Software Design Solutions",
+			"show_logo" 					=> "2",
+			"logo_url" 						=> esc_url_raw(home_url("/wp-admin/images/wordpress-logo.png")),
+			"show_background_image" 		=> "2",
+			"background_image_url" 			=> "",
+			"show_background_color" 		=> "2",
+			"reg_background_color" 			=> "#FFFFFF",
+			"show_reg_form_page_color" 		=> "2",
+			"reg_form_page_color" 			=> "#FFFFFF",
+			"show_reg_form_page_image" 		=> "2",
+			"reg_form_page_image" 			=> "",
+			"show_login_text_color" 		=> "2",
+			"login_text_color" 				=> "#BBBBBB",
+			"hover_text_color" 				=> "#FF0000",
+			"show_shadow"					=> "2",
+			"shadow_size" 					=> "0px",
+			"shadow_color" 					=> "#FFFFFF",
+			"change_logo_link" 				=> "2",
+			"show_custom_agreement_link" 	=> "2",
+			"agreement_title" 				=> "Agreement Policy",
 			"show_custom_agreement_message" => "2",
 			"show_custom_agreement_checkbox" => "2",
-			"new_user_agree" => "2",
-			"agreement_link" => esc_url_raw(site_url()),
-			"show_login_message" =>	"2",
-			"login_message"		=>	"Welcome to " . get_bloginfo('name') . "! Please login for our site here!",
-			"reg_top_message"		=>	"Welcome to " . get_bloginfo('name') . "! Please register for our site here!",
-			"login_messages_login" 	=>	"Extra Login messages",
+			"new_user_agree" 				=> "2",
+			"agreement_link" 				=> esc_url_raw(site_url()),
+			"show_login_message" 			=>	"2",
+			"login_message"					=>	"Welcome to " . get_bloginfo('name') . "! Please login for our site here!",
+			"reg_top_message"				=>	"Welcome to " . get_bloginfo('name') . "! Please register for our site here!",
+			"login_messages_login" 			=>	"Extra Login messages",
 			"login_messages_lost_password" 	=>	"Please enter your username(login name) or email address here. You will then soon receive a link to create a new password via email!",
 			"login_messages_logged_out" 	=>	"Thank you for visiting us at  " . get_bloginfo('name') . "! You are now logged out",
 			"login_messages_registered" 	=>	"Thank you for registering with us at  " . get_bloginfo('name') . "! You account is now active!",
-			"reset_password_messages_security"		=> 	"Enter your new password here and confirm it, and enter your correct security question and answer, if you don't have one, just ignor that step for now and after you complete this, go to your profile and add a security question and answer to your profile to improve your personal security as well as our websites! Thank you!",
-			"reset_password_messages_normal"		=> 	"Enter your new password below and confirm it, Thank you!",
+			"reset_password_messages_security"	=> 	"Enter your new password here and confirm it, and enter your correct security question and answer, if you don't have one, just ignor that step for now and after you complete this, go to your profile and add a security question and answer to your profile to improve your personal security as well as our websites! Thank you!",
+			"reset_password_messages_normal"	=> 	"Enter your new password below and confirm it, Thank you!",
 			"reset_password_confirm"		=>	"You may now check your email for a confirmation link to reset your password!",
-			"reset_password_success_security"		=>	'You have succesfully reset your password! You may now login again  <a href="' . esc_url_raw( wp_login_url() ) . '">' . __( 'Log in here' ) . '</a> with your new password!',
-			"reset_password_success_normal"		=>	'You have succesfully changed your password! You may now login again  <a href="' . esc_url_raw( wp_login_url() ) . '">' . __( 'Log in here' ) . '</a> with your new password!',
+			"reset_password_success_security" =>	'You have succesfully reset your password! You may now login again  <a href="' . esc_url_raw( wp_login_url() ) . '">' . __( 'Log in here' ) . '</a> with your new password!',
+			"reset_password_success_normal"	=>	'You have succesfully changed your password! You may now login again  <a href="' . esc_url_raw( wp_login_url() ) . '">' . __( 'Log in here' ) . '</a> with your new password!',
 			"add_security_question"			=>	"2",
-			"rp_fill_in_security_question"		=>	"You haven't added your security question and security answer yet, please do so on your profile page after you have finished resetting your password!",
-			"fill_in_security_question_answer"		=>	"You haven't added your security question and security answer yet, please do so on your profile page to improve your personal security!",
+			"rp_fill_in_security_question"	=>	"You haven't added your security question and security answer yet, please do so on your profile page after you have finished resetting your password!",
+			"fill_in_security_question_answer"	=>	"You haven't added your security question and security answer yet, please do so on your profile page to improve your personal security!",
 			"fill_in_security_question"		=>	"You haven't added your security question yet, please do so on your profile page to improve your personal security!",
 			"fill_in_security_answer"		=>	"You need to enter your security answer for your security question otherwise you won't be able to reset tyour password without an administrators help!",
 			"activate_anti_spam"			=>	"2",
-			"activate_now"		=>	"2",
-			"activation_message"	=>	"Welcome to " . get_bloginfo('name') . "! Your account is now activated!",
-			"ms_activate_now"		=> "2",
-			"user_password"			=> "2",
-			"ms_user_activation_message" => 'Your user account is now activated for '.$site_name.' , you may proceed with your login <a href="'.esc_url_raw(wp_login_url()).'">Here</a> now!',
-			"ms_activate_blog_now"		=> "2",
-			"ms_non_activation_now"		=>	"2",
+			"division_anti_spam"			=>	"1",
+			"multiply_anti_spam"			=>	"1",
+			"minus_anti_spam"				=>	"1",
+			"addition_anti_spam"			=>	"1",
+			"activate_now"					=>	"2",
+			"activation_message"			=>	"Welcome to " . get_bloginfo('name') . "! Your account is now activated!",
+			"ms_activate_now"				=> "2",
+			"user_password"					=> "2",
+			"ms_user_activation_message" 	=> 'Your user account is now activated for '.$site_name.' , you may proceed with your login <a href="'.esc_url_raw(wp_login_url()).'">Here</a> now!',
+			"ms_activate_blog_now"			=> "2",
+			"ms_non_activation_now"			=>	"2",
 			"ms_non_activation_message"		=>	"Before you can start using this site and your new username, you must activate it by checking your email inbox and clocking on the activation link givern. *** If you do not activate your user account within two days, you will have to sign up again! ***",
 			"wp_user_notification_message"	=>	"Thank you for registering with ".$site_name.",  \r\n\n Here are your new login credentials for ".$site_name.": \r\n\n",
 			"redirect_registration"			=>	"2",
@@ -184,6 +190,21 @@ class URA_OPTIONS
 			"change_profile_title"			=>	"2",
 			"profile_title"					=>	"User Registration Aide Additional Fields",
 			"show_dashboard_widget"			=>	"1",
+			"dwf1_key"						=>	"user_nicename",
+			"dwf1"							=>	"Username",
+			"dwf1_order" 					=>	"1",
+			"dwf2_key"						=>	"user_email",
+			"dwf2"							=>	"Email",
+			"dwf2_order" 					=>	"2",
+			"dwf3_key"						=>	"first_name",
+			"dwf3"							=>	"First Name",
+			"dwf3_order" 					=>	"3",
+			"dwf4_key"						=>	"last_name",
+			"dwf4"							=>	"Last Name",
+			"dwf4_order" 					=>	"4",
+			"dwf5_key"						=>	"roles",
+			"dwf5"							=>	"Role",
+			"dwf5_order" 					=>	"5",
 			"default_xwrd_strength"			=>	"1",
 			"custom_xwrd_strength"			=>	"2",
 			"require_xwrd_length"			=>	"1",
@@ -192,12 +213,13 @@ class URA_OPTIONS
 			"xwrd_numb"						=>	"1",
 			"xwrd_uc"						=>	"1",
 			"xwrd_lc"						=>	"1",
+			"updated"						=>	"2"	
 			
 				
 		);
 		return $csds_userRegAide_Options;
 	}
-
+	
 	/**
 	 * Fills array of known fields
 	 *
@@ -389,6 +411,7 @@ class URA_OPTIONS
 		$csds_userRegAide_oldOptions = get_option('csds_userRegAide_Options');
 		$csds_userRegAide_defOptions = array();
 		$csds_userRegAide_defOptions = $this->csds_userRegAide_defaultOptionsArray();
+		
 		//$security_questions = array();
 		//$security_questions = get_option('csds_userRegAide_SecurityQuestions');
 		$update = array();
@@ -401,7 +424,9 @@ class URA_OPTIONS
 					if($key == $key1){
 						if(!empty($value1)){
 							if($key1 == 'csds_userRegAide_db_Version'){
-								$update[$key1] = "1.3.5";
+								$update[$key1] = "1.3.6";
+							}elseif($key1 == 'updated'){
+								$update[$key1] = "1";
 							}else{
 								if($value1 != $value){
 									$update[$key1] = $value1;
@@ -410,7 +435,9 @@ class URA_OPTIONS
 								}
 							}
 						}else{
-							$update[$key] = $value;
+							
+							$update[$key1] = $value1;	//$update[$key] = $value;
+							
 						}
 					}
 				
@@ -435,15 +462,12 @@ class URA_OPTIONS
 	function check_options_table(){
 		$default_options = $this->csds_userRegAide_defaultOptionsArray();
 		$options = get_option('csds_userRegAide_Options');
-		$sec_questions = get_option('csds_userRegAide_SecurityQuestions');
 		$default_count = count($default_options);
 		$options_count = count($options);
-		$a_diff = array_diff($default_options, $options);
+		//$a_diff = array_diff($default_options, $options);
 		if($options_count < $default_count){
 			$this->csds_userRegAide_updateOptions();
-		}elseif(!empty($a_diff)){
-			$this->csds_userRegAide_updateOptions();
-		}elseif(empty($sec_questions)){
+		}elseif($options['updated'] == 2){
 			$this->csds_userRegAide_updateOptions();
 		}
 	}

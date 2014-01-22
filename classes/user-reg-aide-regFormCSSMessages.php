@@ -3,7 +3,7 @@
 /**
  * User Registration Aide - Registration Form CSS & Messages Admin Page Options
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.5
+ * Version: 1.3.6
  * Since Version 1.3.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -72,7 +72,7 @@ class URA_REG_FORM_CSS_OPTIONS
 		global $current_user;
 		$ura_options = new URA_OPTIONS(); 
 		$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.5"){
+		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.6"){
 			
 				$ura_options->csds_userRegAide_updateOptions();
 				
@@ -371,6 +371,12 @@ class URA_REG_FORM_CSS_OPTIONS
 				<?php	// Form area for adding custom logo ?>
 					<div class="stuffbox"><span class="regForm"><?php _e('Add Your Own Logo and Registration Form Customizations:', 'csds_userRegAide');?> </span>
 					<?php
+						$logo_url = (string) '';
+						if(!empty($csds_userRegAide_Options['logo_url'])){
+							$logo_url = $csds_userRegAide_Options['logo_url'];
+						}elseif(empty($csds_userRegAide_Options['logo_url']) && $csds_userRegAide_Options['show_logo'] == 1){
+							$logo_url = home_url('/wp-admin/images/wordpress-logo.png');
+						}
 						echo '<div class="inside">';
 						echo '<table class="regForm" width="100%">';
 						echo '<tr>';
@@ -394,10 +400,16 @@ class URA_REG_FORM_CSS_OPTIONS
 						if ($csds_userRegAide_Options['change_logo_link'] == 2) echo 'checked' ;?>/><?php _e('No', 'csds_userRegAide'); ?></span>
 						</td>
 						<td width="50%"><?php _e('New Logo URL: ', 'csds_userRegAide');?>
-						<input  style="width: 450px;" type="text" title="<?php esc_url(_e('Enter the URL where your new logo is for your register/login page -- (http://mysite.com/wp-content/uploads/9/5/thislogo.png)', 'csds_userRegAide'));?>" value="<?php _e(esc_url($csds_userRegAide_Options['logo_url']), 'csds_userRegAide');?>" name="csds_userRegAide_newLogoURL" id="csds_userRegAide_newLogoURL" /></td>
+						<input  style="width: 550px;" type="text" title="<?php esc_url(_e('Enter the URL where your new logo is for your register/login page -- (http://mysite.com/wp-content/uploads/9/5/thislogo.png)', 'csds_userRegAide'));?>" value="<?php _e(esc_url($logo_url), 'csds_userRegAide');?>" name="csds_userRegAide_newLogoURL" id="csds_userRegAide_newLogoURL" /></td>
 						</tr>
-						<?php
-						// Form Background Image ?>
+						
+						<?php // Form Background Image
+						$bckgrd_image_url = (string) '';
+						if(!empty($csds_userRegAide_Options['background_image_url'])){
+							$bckgrd_image_url = $csds_userRegAide_Options['background_image_url'];
+						}else{
+							$bckgrd_image_url = home_url('/add-background-image-location-here.img');
+						}?>
 						
 						<tr>
 						<td><?php _e('Show Custom Background Image: ', 'csds_userRegAide'); ?>
@@ -410,11 +422,17 @@ class URA_REG_FORM_CSS_OPTIONS
 						<?php if ($csds_userRegAide_Options['show_background_image'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
 						</td>
 						<td colspan="2"><?php _e('New Background Image URL: ', 'csds_userRegAide');?>
-						<input  style="width: 450px;" type="text" title="<?php esc_url(_e('Enter the URL where your new background image is for your login/register forms --  (http://mysite.com/wp-content/uploads/9/5/this-background-image.png)', 'csds_userRegAide'));?>" value="<?php _e(esc_url($csds_userRegAide_Options['background_image_url']), 'csds_userRegAide');?>" name="csds_userRegAide_newBackgroundImageURL" id="csds_userRegAide_newBackgroundImageURL" /></td>
+						<input  style="width: 550px;" type="text" title="<?php esc_url(_e('Enter the URL where your new background image is for your login/register forms --  (http://mysite.com/wp-content/uploads/9/5/this-background-image.png)', 'csds_userRegAide'));?>" value="<?php _e(esc_url($bckgrd_image_url), 'csds_userRegAide');?>" name="csds_userRegAide_newBackgroundImageURL" id="csds_userRegAide_newBackgroundImageURL" /></td>
 						</tr>
 						<?php
-						// Page Background Image 	?>
-						
+						// Page Background Image 	
+						$pg_bckgrd_image_url = (string) '';
+						if(!empty($csds_userRegAide_Options['reg_form_page_image'])){
+							$pg_bckgrd_image_url = $csds_userRegAide_Options['reg_form_page_image'];
+						}else{
+							$pg_bckgrd_image_url = home_url('/enter-new-page-background-image-location-here.img');
+						}
+						?>
 						<tr>
 						<td><?php _e('Show Custom Page Background Image: ', 'csds_userRegAide');?><br/>
 						<span title="<?php _e('Select this option to add your own custom background image on the login-registration page', 'csds_userRegAide');?>">
@@ -425,8 +443,9 @@ class URA_REG_FORM_CSS_OPTIONS
 						<?php if ($csds_userRegAide_Options['show_reg_form_page_image'] == 2) echo 'checked' ;?>/> <?php _e('No', 'csds_userRegAide'); ?></span>
 						</td>
 						<td colspan="2"><?php _e('New Page Background Image URL: ', 'csds_userRegAide');?>
-						<input  style="width: 150px;" type="text" title="<?php esc_url(_e('Enter the new page background image url for your register/login pages (http://mysite.com/content/uploads/myimage.png)', 'csds_userRegAide'));?>" value="<?php _e(esc_url($csds_userRegAide_Options['reg_form_page_image']), 'csds_userRegAide');?>" name="csds_userRegAide_newPageBackgroundImage" id="csds_userRegAide_newPageBackgroundImage" /></td></tr>
-						<?php
+						<input  style="width: 550px;" type="text" title="<?php esc_url(_e('Enter the new page background image url for your register/login pages (http://mysite.com/content/uploads/myimage.png)', 'csds_userRegAide'));?>" value="<?php _e(esc_url($pg_bckgrd_image_url), 'csds_userRegAide');?>" name="csds_userRegAide_newPageBackgroundImage" id="csds_userRegAide_newPageBackgroundImage" /></td>
+						</tr>
+						<?php						
 						// Form Background Color
 						?>
 						<tr>

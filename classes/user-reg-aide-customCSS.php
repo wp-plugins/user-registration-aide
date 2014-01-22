@@ -2,7 +2,7 @@
 /**
  * User Registration Aide - Custom CSS Functions For Registration - Login Pages Custom Styling
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.1
+ * Version: 1.3.6
  * Since Version 1.3.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -105,11 +105,15 @@ class URA_CUSTOM_CSS
 		$show_logo = $options['show_logo'];
 		$logo_url = $options['logo_url'];
 		$show_background_image = $options['show_background_image'];
-		$background_image = $options['background_image_url'];
+		if($show_background_image == 1 && !empty($options['background_image_url'])){
+			$background_image = $options['background_image_url'];
+		}
 		$show_background_color = $options['show_background_color'];
 		$background_color = $options['reg_background_color'];
 		$show_page_image = $options['show_reg_form_page_image'];
-		$page_image = $options['reg_form_page_image'];
+		if($show_page_image == 1 && !empty($options['reg_form_page_image'])){
+			$page_image = $options['reg_form_page_image'];
+		}
 		$show_page_color = $options['show_reg_form_page_color'];
 		$page_color = $options['reg_form_page_color'];
 		
@@ -117,7 +121,7 @@ class URA_CUSTOM_CSS
 			echo '<style type="text/css">h1 a { background-image:url('.$logo_url.') !important; height:150px; margin-bottom:10px; } </style>';
 		}
 		
-		if($show_background_image =="1"){
+		if($show_background_image =="1" && !empty($background_image)){
 			echo '<style type="text/css">#loginform{background:url('.$background_image.') no-repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
 			echo '<style type="text/css">#registerform{background:url('.$background_image.') no-repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
 			echo '<style type="text/css">#lostpasswordform{background:url('.$background_image.') no-repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
@@ -130,7 +134,7 @@ class URA_CUSTOM_CSS
 			 echo '<style type="text/css">p.message{background-color:'.$background_color.' !important;} </style>';
 		}
 				
-		if($show_page_image == "1"){
+		if($show_page_image == "1" && !empty($page_image)){
 			echo '<style type="text/css">body.login{height:350%; background:url('.$page_image.') repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
 			echo '<style type="text/css">body.register{background:url('.$page_image.') repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
 			echo '<style type="text/css">body.login login-action-lostpassword wp-core-ui{height:350%; background:url('.$page_image.') repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';

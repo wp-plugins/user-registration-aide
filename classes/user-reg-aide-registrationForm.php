@@ -2,7 +2,7 @@
 /**
  * User Registration Aide - Registration Form Functions
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.5
+ * Version: 1.3.6
  * Since Version 1.3.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -19,13 +19,14 @@ require_once ("user-reg-aide-admin.php");
 require_once (URA_PLUGIN_PATH."user-registration-aide.php");
 require_once ("user-reg-aide-newFields.php");
 require_once ("user-reg-aide-regForm.php");
+require_once ("math-functions.php");
 
 /**
  * Class added for better functionality
  *
  * @category Class
  * @since 1.3.0
- * @updated 1.3.0
+ * @updated 1.3.6
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -44,12 +45,13 @@ class URA_REGISTRATION_FORM
 	
 		global $wp_version, $new_fields, $admin, $admin_page, $ual, $ual_admin_settings; 
 		self::$instance = $this;
+				
 	}
 	
 	/**
 	 * Add fields to the new user registration page that the user must fill out when they register
 	 * @since 1.0.0
-	 * @updated 1.3.0
+	 * @updated 1.3.6
 	 * @handles action 'register_form' line 217 user-registration-aide.php
 	 * @access private
 	 * @author Brian Novotny
@@ -57,7 +59,8 @@ class URA_REGISTRATION_FORM
 	*/
 
 	function csds_userRegAide_addFields(){
-
+		
+		
 		$fieldKey = '';
 		$fieldName = '';
 		$regFields = array();
@@ -206,8 +209,9 @@ class URA_REGISTRATION_FORM
 				
 		// For anti-spammer attempts to prevent bots from registering
 		if($options['activate_anti_spam'] == "1"){
+			$math = new URA_Math_Functions();
 			$numbs = array();
-			$numbs = $this->random_numbers();?>
+			$numbs = $math->random_numbers();?>
 			<label><?php _e('*Please complete the following arithmatic problem to prove you are human!*:', 'csds_userRegAide') ?><br />
 			<br />
 			<p style="text-align: center; border-style: solid; border-width: 1px; padding: 3px;">
@@ -466,55 +470,5 @@ class URA_REGISTRATION_FORM
 		return $errors;
 	}
 	
-	/**
-	 * Creates random numbers for helping to minimize spammers on registration page
-	 * @since 1.3.0
-	 * @handles anti-spam on registration form if user checks anti-spammer option (line 230 &$this (add_fields))
-	 * @returns array $ran_numbs
-	 * @access private
-	 * @author Brian Novotny
-	 * @website http://creative-software-design-solutions.com
-	*/
-	
-	function random_numbers(){
-		
-		$ran_numbs = array();
-		$a1 = rand(1,500);
-		$a2 = rand(1,500);
-		$d1 = rand(20,500);
-		$d2 = rand(2, 10);
-		$s1 = rand(1,500);
-		$s2 = rand(1,500);
-		$m1 = rand(1,50);
-		$m2 = rand(1,50);
-		$o = rand(1,4);
-		
-		if($o == 1){
-			$ran_numbs['operator'] = '+';
-			$ran_numbs['first'] = $a1;
-			$ran_numbs['second'] = $a2;
-		}elseif($o == 2){
-			$ran_numbs['operator'] = '-';
-			if($s2 < $s1){
-				$ran_numbs['first'] = $s1;
-				$ran_numbs['second'] = $s2;
-			}else{
-				$ran_numbs['first'] = $s2;
-				$ran_numbs['second'] = $s1;
-			}
-		}elseif($o == 3){
-			$ran_numbs['operator'] = '*';
-			$ran_numbs['first'] = $m1;
-			$ran_numbs['second'] = $m2;
-		}elseif($o == 4){
-			$ran_numbs['operator'] = '/';
-			$ran_numbs['first'] = $d1;
-			$ran_numbs['second'] = $d2;
-		}
-		// $temp_answer = $ran_numbs['first'] .' ' .$ran_numbs['operator'].' ' .$ran_numbs['second'];
-		// $math_answer = round($temp_answer, 1);
-		return $ran_numbs;
-		
-	}
 } // end class
 ?>

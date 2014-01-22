@@ -3,7 +3,7 @@
 /**
  * User Registration Aide - Registration Form Options Settings Admin Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.5
+ * Version: 1.3.6
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -19,7 +19,7 @@
  * Couple of includes for functionality
  *
  * @since 1.2.0
- * @updated 1.3.0
+ * @updated 1.3.6
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -36,7 +36,7 @@ require_once ("user-reg-aide-admin.php");
   *
  * @category Class
  * @since 1.3.0
- * @updated 1.3.0
+ * @updated 1.3.6
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -62,7 +62,7 @@ class URA_REG_FORM_OPTIONS
 	 * Loads and displays the User Registration Aide administration page
 	 * @handles action 'add_submenu_page' line 672 user-registration-aide.php
 	 * @since 1.2.0
-	 * @updated 1.3.0
+	 * @updated 1.3.6
 	 * @access private
 	 * @author Brian Novotny
 	 * @website http://creative-software-design-solutions.com
@@ -73,7 +73,7 @@ class URA_REG_FORM_OPTIONS
 		global $current_user;
 		$ura_options = new URA_OPTIONS(); 
 		$csds_userRegAide_Options = get_option('csds_userRegAide_Options');
-		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.5"){
+		if($csds_userRegAide_Options['csds_userRegAide_db_Version'] != "1.3.6"){
 			$ura_options->csds_userRegAide_updateOptions();
 		}
 			
@@ -302,10 +302,11 @@ class URA_REG_FORM_OPTIONS
 		}elseif (isset($_POST['anti-bot-spammer'])){
 			$update = array();
 			$update = get_option('csds_userRegAide_Options');
-			$registrationFields = get_option('csds_userRegAide_registrationFields');
-			$newFields = get_option('csds_userRegAide_NewFields');
-			//$update['add_security_question'] = esc_attr(stripslashes($_POST['csds_select_SecurityQuestion']));
 			$update['activate_anti_spam'] = esc_attr(stripslashes($_POST['csds_select_AntiBot']));
+			$update['division_anti_spam'] = esc_attr(stripslashes($_POST['csds_div_AntiBot']));
+			$update['multiply_anti_spam'] = esc_attr(stripslashes($_POST['csds_multiply_AntiBot']));
+			$update['minus_anti_spam'] = esc_attr(stripslashes($_POST['csds_minus_AntiBot']));
+			$update['addition_anti_spam'] = esc_attr(stripslashes($_POST['csds_add_AntiBot']));
 			update_option("csds_userRegAide_Options", $update);
 			echo '<div id="message" class="updated fade"><p class="my_message">'. __('Anti-Bot-Spammer Math Problem Options updated successfully.', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
 		
@@ -515,7 +516,7 @@ class URA_REG_FORM_OPTIONS
 								</td>
 								<?php // Custom Password Strength Requirement Special Character ?>
 								<td width="50%"><?php _e('Require Special Character: ', 'csds_userRegAide');?>
-								<span title="<?php _e('Select this option to require a Special Character (!,@,#,$,%,^,&,*,?,_,~,-,£,(,)) in the password strength requirements', 'csds_userRegAide');?>">
+								<span title="<?php _e('Select this option to require a Special Character','csds_userRegAide');?> (!,@,#,$,%,^,&,*,?,_,~,-,£,(,))<?php _e(' in the password strength requirements', 'csds_userRegAide');?>">
 								<input type="radio" name="csds_select_SCPSR" id="csds_select_SCPSR" value="1" <?php
 								if ($csds_userRegAide_Options['xwrd_sc'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
 								<span title="<?php _e('Select this option to NOT require an Lower Case Letter in the password strength requirements',  'csds_userRegAide');?>">
@@ -529,9 +530,20 @@ class URA_REG_FORM_OPTIONS
 						</div>
 					</div>
 					
-					<?php // end new password strength form ?>
-					<?php
-					//Form for adding redirects to registration and login pages ?>
+					<?php // end new password strength form 
+					$reg_redirect_url = (string) '';
+					$login_redirect_url = (string) '';
+					//Form for adding redirects to registration and login pages 
+					if(!empty($csds_userRegAide_Options['registration_redirect_url'])){
+						$reg_redirect_url = $csds_userRegAide_Options['registration_redirect_url'];
+					}else{
+						$reg_redirect_url = home_url('/wp-login.php?checkemail=registered');
+					}
+					if(!empty($csds_userRegAide_Options['login_redirect_url'])){
+						$login_redirect_url = $csds_userRegAide_Options['login_redirect_url'];
+					}else{
+						$login_redirect_url = home_url('/wp-admin/');
+					}?>
 						<div class="stuffbox"><span class="regForm"><?php _e('Add custom redirects after users login or a new user registers here:', 'csds_userRegAide');?></span>
 							<div class="inside">
 							<table class="regForm" width="100%">
@@ -547,7 +559,7 @@ class URA_REG_FORM_OPTIONS
 														
 								<td width="40%"><?php _e('Enter new successfull Registration form redirect url below: ', 'csds_userRegAide');?></td></tr>
 							<tr>
-								<td colspan="2"><input type="text" name="csds_registration_redirect_url" id="csds_registration_redirect_url" class="regFormRedirect" width="75%" title="<?php _e('Enter a new url here to redirect users to after a successful registration has been completed!', 'csds_userRegAide');?>" value="<?php _e(esc_url($csds_userRegAide_Options['registration_redirect_url']),'csds_userRegAide');?>" />
+								<td colspan="2"><input type="text" name="csds_registration_redirect_url" id="csds_registration_redirect_url" class="regFormRedirect" width="75%" title="<?php _e('Enter a new url here to redirect users to after a successful registration has been completed!', 'csds_userRegAide');?>" value="<?php _e(esc_url($reg_redirect_url),'csds_userRegAide');?>" />
 								</td>
 							</tr>
 							<tr>
@@ -561,7 +573,7 @@ class URA_REG_FORM_OPTIONS
 														
 								<td width="40%"><?php _e('Enter new successful login redirect url below: ', 'csds_userRegAide');?></td></tr>
 							<tr>
-								<td colspan="2"><input type="text" name="csds_login_redirect_url" id="csds_login_redirect_url" class="regFormRedirect width="75%" title="<?php _e('Enter a new url here to redirect users to after a successful login has been completed!', 'csds_userRegAide');?>" value="<?php _e(esc_url($csds_userRegAide_Options['login_redirect_url']),'csds_userRegAide');?>" />
+								<td colspan="2"><input type="text" name="csds_login_redirect_url" id="csds_login_redirect_url" class="regFormRedirect width="75%" title="<?php _e('Enter a new url here to redirect users to after a successful login has been completed!', 'csds_userRegAide');?>" value="<?php _e(esc_url($login_redirect_url),'csds_userRegAide');?>" />
 								</td>
 							</tr>
 							</table>
@@ -621,14 +633,61 @@ class URA_REG_FORM_OPTIONS
 					<div class="stuffbox"><span class="regForm"><?php _e('Add Anti-Bot-Spammer for Registration Form:', 'csds_userRegAide');?> </span>
 						<div class="inside">
 						<table class="regForm" width="100%">
-							<tr><?php
-							echo '<td width="60%">'. __('Choose to add a anti-spammer anti-bot math problem to the registration form to help reduce spammers and bots accessing your site and spamming it: ', 'csds_userRegAide');?>
+							<tr>
+							<td>
+							<?php _e('Choose to add a anti-spammer anti-bot math problem to the registration form to help reduce spammers and bots accessing your site and spamming it: ', 'csds_userRegAide');?>
+							<br/>
 							<span title="<?php _e('Select this option to activate the anti-spam math problem to registration form',  'csds_userRegAide');?>">
 							<input type="radio" name="csds_select_AntiBot" id="csds_select_AntiBot" value="1" <?php
 								if ($csds_userRegAide_Options['activate_anti_spam'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
 							<span title="<?php _e('Select this option to de-activate the anti-spam math problem to registration form',  'csds_userRegAide');?>">
 								<input type="radio" name="csds_select_AntiBot" id="csds_select_AntiBot" value="2" <?php
-								if ($csds_userRegAide_Options['activate_anti_spam'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span></td>
+								if ($csds_userRegAide_Options['activate_anti_spam'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+							</td>
+							<?php // use division option in the anti-spam math problem ?>
+							<td>
+								<?php _e('Choose this option to use division in the anti-spam math problem:', 'csds_userRegAide');?>
+								<br/>
+								<span title="<?php _e('Select this option to use division in the anti-spam math problem on the registration form',  'csds_userRegAide');?>">
+							<input type="radio" name="csds_div_AntiBot" id="csds_div_AntiBot" value="1" <?php
+								if ($csds_userRegAide_Options['division_anti_spam'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+							<span title="<?php _e('Select this option to de-activate the anti-spam math problem to registration form',  'csds_userRegAide');?>">
+								<input type="radio" name="csds_div_AntiBot" id="csds_div_AntiBot" value="2" <?php
+								if ($csds_userRegAide_Options['division_anti_spam'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span></td>
+							</td>
+							<?php // use multiplication option in the anti-spam math problem ?>
+							<td>
+								<?php _e('Choose this option to use multiplication in the anti-spam math problem:', 'csds_userRegAide');?>
+								<br/>
+								<span title="<?php _e('Select this option to use multiplication in the anti-spam math problem on the registration form',  'csds_userRegAide');?>">
+							<input type="radio" name="csds_multiply_AntiBot" id="csds_multiply_AntiBot" value="1" <?php
+								if ($csds_userRegAide_Options['multiply_anti_spam'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+							<span title="<?php _e('Select this option to de-activate the anti-spam math problem to registration form',  'csds_userRegAide');?>">
+								<input type="radio" name="csds_multiply_AntiBot" id="csds_multiply_AntiBot" value="2" <?php
+								if ($csds_userRegAide_Options['multiply_anti_spam'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span></td>
+							</td>
+							<?php // use subtraction option in the anti-spam math problem ?>
+							<td>
+								<?php _e('Choose this option to use subtraction in the anti-spam math problem:', 'csds_userRegAide');?>
+								<br/>
+								<span title="<?php _e('Select this option to use subtraction in the anti-spam math problem on the registration form',  'csds_userRegAide');?>">
+							<input type="radio" name="csds_minus_AntiBot" id="csds_minus_AntiBot" value="1" <?php
+								if ($csds_userRegAide_Options['minus_anti_spam'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+							<span title="<?php _e('Select this option to de-activate the anti-spam math problem to registration form',  'csds_userRegAide');?>">
+								<input type="radio" name="csds_minus_AntiBot" id="csds_minus_AntiBot" value="2" <?php
+								if ($csds_userRegAide_Options['minus_anti_spam'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span></td>
+							</td>
+							<?php // use addition option in the anti-spam math problem ?>
+							<td>
+								<?php _e('Choose this option to use addition in the anti-spam math problem:', 'csds_userRegAide');?>
+								<br/>
+								<span title="<?php _e('Select this option to use addition in the anti-spam math problem on the registration form',  'csds_userRegAide');?>">
+							<input type="radio" name="csds_add_AntiBot" id="csds_add_AntiBot" value="1" <?php
+								if ($csds_userRegAide_Options['addition_anti_spam'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+							<span title="<?php _e('Select this option to de-activate the anti-spam math problem to registration form',  'csds_userRegAide');?>">
+								<input type="radio" name="csds_add_AntiBot" id="csds_add_AntiBot" value="2" <?php
+								if ($csds_userRegAide_Options['addition_anti_spam'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span></td>
+							</td>
 							</tr>
 						</table>
 						<div class="submit"><input type="submit" class="button-primary" name="anti-bot-spammer" value="<?php _e('Update Anti-Bot-Spammer Math Problem Options', 'csds_userRegAide'); ?>"  /></div>
