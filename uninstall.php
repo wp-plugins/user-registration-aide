@@ -24,6 +24,8 @@
 		delete_option('csds_userRegAide_support');
 		delete_option('csds_display_link');
 		delete_option('csds_display_name');
+		delete_option('csds_userRegAide_fieldOrder');
+		
 		$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
 			foreach($csds_userRegAide_NewFields as $field => $value){
 				

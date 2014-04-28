@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: User Registration Aide\n"
-"POT-Creation-Date: 2014-01-22 10:08-0600\n"
-"PO-Revision-Date: 2014-01-22 10:09-0600\n"
+"POT-Creation-Date: 2014-01-22 14:02-0600\n"
+"PO-Revision-Date: 2014-01-22 14:02-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -160,7 +160,7 @@ msgid "***Cannot add duplicate fields, "
 msgstr ""
 
 #: classes/user-reg-aide-admin.php:322 classes/user-reg-aide-newFields.php:295
-#: classes/user-reg-aide-regForm.php:343
+#: classes/user-reg-aide-regForm.php:368
 #: classes/user-reg-aide-regFormCSSMessages.php:300
 msgid "Support Options updated successfully."
 msgstr ""
@@ -349,17 +349,17 @@ msgstr ""
 
 #: classes/user-reg-aide-dashWidget - Copy.php:314 Copy.php:322
 #: classes/user-reg-aide-dashWidget.php:380
-#: classes/user-reg-aide-regForm.php:387 classes/user-reg-aide-regForm.php:400
-#: classes/user-reg-aide-regForm.php:424 classes/user-reg-aide-regForm.php:450
-#: classes/user-reg-aide-regForm.php:459 classes/user-reg-aide-regForm.php:470
-#: classes/user-reg-aide-regForm.php:492 classes/user-reg-aide-regForm.php:501
-#: classes/user-reg-aide-regForm.php:512 classes/user-reg-aide-regForm.php:521
-#: classes/user-reg-aide-regForm.php:555 classes/user-reg-aide-regForm.php:569
-#: classes/user-reg-aide-regForm.php:596 classes/user-reg-aide-regForm.php:609
-#: classes/user-reg-aide-regForm.php:617 classes/user-reg-aide-regForm.php:642
-#: classes/user-reg-aide-regForm.php:653 classes/user-reg-aide-regForm.php:664
-#: classes/user-reg-aide-regForm.php:675 classes/user-reg-aide-regForm.php:686
-#: classes/user-reg-aide-regForm.php:706
+#: classes/user-reg-aide-regForm.php:412 classes/user-reg-aide-regForm.php:425
+#: classes/user-reg-aide-regForm.php:449 classes/user-reg-aide-regForm.php:475
+#: classes/user-reg-aide-regForm.php:484 classes/user-reg-aide-regForm.php:495
+#: classes/user-reg-aide-regForm.php:517 classes/user-reg-aide-regForm.php:526
+#: classes/user-reg-aide-regForm.php:537 classes/user-reg-aide-regForm.php:546
+#: classes/user-reg-aide-regForm.php:580 classes/user-reg-aide-regForm.php:594
+#: classes/user-reg-aide-regForm.php:621 classes/user-reg-aide-regForm.php:634
+#: classes/user-reg-aide-regForm.php:642 classes/user-reg-aide-regForm.php:667
+#: classes/user-reg-aide-regForm.php:678 classes/user-reg-aide-regForm.php:689
+#: classes/user-reg-aide-regForm.php:700 classes/user-reg-aide-regForm.php:711
+#: classes/user-reg-aide-regForm.php:731
 #: classes/user-reg-aide-regFormCSSMessages.php:326
 #: classes/user-reg-aide-regFormCSSMessages.php:388
 #: classes/user-reg-aide-regFormCSSMessages.php:397
@@ -381,17 +381,17 @@ msgstr ""
 
 #: classes/user-reg-aide-dashWidget - Copy.php:317 Copy.php:325
 #: classes/user-reg-aide-dashWidget.php:383
-#: classes/user-reg-aide-regForm.php:390 classes/user-reg-aide-regForm.php:402
-#: classes/user-reg-aide-regForm.php:427 classes/user-reg-aide-regForm.php:453
-#: classes/user-reg-aide-regForm.php:462 classes/user-reg-aide-regForm.php:473
-#: classes/user-reg-aide-regForm.php:495 classes/user-reg-aide-regForm.php:504
-#: classes/user-reg-aide-regForm.php:515 classes/user-reg-aide-regForm.php:524
-#: classes/user-reg-aide-regForm.php:558 classes/user-reg-aide-regForm.php:572
-#: classes/user-reg-aide-regForm.php:599 classes/user-reg-aide-regForm.php:612
-#: classes/user-reg-aide-regForm.php:620 classes/user-reg-aide-regForm.php:645
-#: classes/user-reg-aide-regForm.php:656 classes/user-reg-aide-regForm.php:667
-#: classes/user-reg-aide-regForm.php:678 classes/user-reg-aide-regForm.php:689
-#: classes/user-reg-aide-regForm.php:709
+#: classes/user-reg-aide-regForm.php:415 classes/user-reg-aide-regForm.php:427
+#: classes/user-reg-aide-regForm.php:452 classes/user-reg-aide-regForm.php:478
+#: classes/user-reg-aide-regForm.php:487 classes/user-reg-aide-regForm.php:498
+#: classes/user-reg-aide-regForm.php:520 classes/user-reg-aide-regForm.php:529
+#: classes/user-reg-aide-regForm.php:540 classes/user-reg-aide-regForm.php:549
+#: classes/user-reg-aide-regForm.php:583 classes/user-reg-aide-regForm.php:597
+#: classes/user-reg-aide-regForm.php:624 classes/user-reg-aide-regForm.php:637
+#: classes/user-reg-aide-regForm.php:645 classes/user-reg-aide-regForm.php:670
+#: classes/user-reg-aide-regForm.php:681 classes/user-reg-aide-regForm.php:692
+#: classes/user-reg-aide-regForm.php:703 classes/user-reg-aide-regForm.php:714
+#: classes/user-reg-aide-regForm.php:734
 #: classes/user-reg-aide-regFormCSSMessages.php:329
 #: classes/user-reg-aide-regFormCSSMessages.php:391
 #: classes/user-reg-aide-regFormCSSMessages.php:400
@@ -676,480 +676,487 @@ msgstr ""
 msgid "New Registration Form Agreement Message Options Fields "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:311
+#: classes/user-reg-aide-regForm.php:325
+msgid ""
+"You have not selected any operators (+. -, /, *) to use and selected to use "
+"the anti-spam math problem! Please try again and select at least one "
+"operator of select no to use the anti-spam math problem"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:330
 msgid "Anti-Bot-Spammer Math Problem Options updated successfully."
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:332
+#: classes/user-reg-aide-regForm.php:356
 msgid "New Profile Page Extra Fields Title Updated Successfully."
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:334
+#: classes/user-reg-aide-regForm.php:359
 msgid "New Profile Page Extra Fields Title Fields "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:374
+#: classes/user-reg-aide-regForm.php:399
 #: classes/user-reg-aide-regFormCSSMessages.php:315
 msgid "User Registration Aide: Custom Registration Form Options"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:379
+#: classes/user-reg-aide-regForm.php:404
 msgid "Multi-Site Options:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:384
+#: classes/user-reg-aide-regForm.php:409
 msgid ""
 "Choose to allow new users to be activated right away if new users can enter "
 "own password: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:385
+#: classes/user-reg-aide-regForm.php:410
 msgid "Select this option to allow users to be activated and log in right away"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:388
+#: classes/user-reg-aide-regForm.php:413
 msgid ""
 "Select this option to send confirmation link to new user registrations to "
 "confirm their registration, or the default Wordpress Multisite signup method"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:391
+#: classes/user-reg-aide-regForm.php:416
 msgid "Enter new activation message below: (HINT: Leave Links Alone!!!)"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:394
+#: classes/user-reg-aide-regForm.php:419
 msgid ""
 "Enter a custom message here for activation if users can create their own "
 "password and account activated right away!"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:398
+#: classes/user-reg-aide-regForm.php:423
 msgid ""
 "Choose to add a special message to confirm form if new users can&#39;t enter "
 "own password and be activated right away: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:403
+#: classes/user-reg-aide-regForm.php:428
 msgid "Enter new confirmation form new activation message below: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:406
+#: classes/user-reg-aide-regForm.php:431
 msgid ""
 "Enter a custom message here for confirmation form if users can&#39;t create "
 "their own password and account is not activated right away!"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:410
+#: classes/user-reg-aide-regForm.php:435
 msgid "Update Multi-Site Registration Form Options"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:417
+#: classes/user-reg-aide-regForm.php:442
 msgid "Add Your Own Message to Bottom of Registration Form:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:421
+#: classes/user-reg-aide-regForm.php:446
 msgid "Choose to add a special message to bottom of registration form: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:422
+#: classes/user-reg-aide-regForm.php:447
 msgid ""
 "Select this option to add your own custom message to the bottom of the "
 "registration form"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:425
+#: classes/user-reg-aide-regForm.php:450
 msgid ""
 "Select this option to use the default Wordpress message on the bottom of the "
 "registration form"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:429
+#: classes/user-reg-aide-regForm.php:454
 msgid "Enter new Registration form message below: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:432
+#: classes/user-reg-aide-regForm.php:457
 msgid ""
 "Enter a custom message here for bottom of registration form if users can or "
 "even can&#39t create their own password!"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:437
+#: classes/user-reg-aide-regForm.php:462
 msgid "Update Registration Form Message Options"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:443
+#: classes/user-reg-aide-regForm.php:468
 msgid "Password Strength Requirements:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:447
+#: classes/user-reg-aide-regForm.php:472
 msgid "Use Default Password Strength Requirements: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:448
+#: classes/user-reg-aide-regForm.php:473
 msgid ""
 "Select this option to use the default password strength requirements (Upper "
 "Case, Lower Case letters, number and special character and minimum length of "
 "8)"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:451
+#: classes/user-reg-aide-regForm.php:476
 msgid ""
 "Select this option not to use the default Password Strength Requirements"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:456
+#: classes/user-reg-aide-regForm.php:481
 msgid "Use Custom Password Strength Requirements: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:457
+#: classes/user-reg-aide-regForm.php:482
 msgid ""
 "Select this option to create your own custom password strength requirements"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:460
+#: classes/user-reg-aide-regForm.php:485
 msgid "Select this option not to use a custom Password Strength Requirements"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:467
+#: classes/user-reg-aide-regForm.php:492
 msgid "Require Minimum Password Length: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:468 classes/user-reg-aide-regForm.php:490
+#: classes/user-reg-aide-regForm.php:493 classes/user-reg-aide-regForm.php:515
 msgid ""
 "Select this option to require an Upper Case Letter in the custom Password "
 "Strength Requirements"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:471 classes/user-reg-aide-regForm.php:493
+#: classes/user-reg-aide-regForm.php:496 classes/user-reg-aide-regForm.php:518
 msgid ""
 "Select this option NOT to require an Upper Case Letter in the custom "
 "Password Strength Requirements"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:475
+#: classes/user-reg-aide-regForm.php:500
 msgid "Password Minimum Length: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:475
+#: classes/user-reg-aide-regForm.php:500
 msgid "Select the minimum length for the password"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:489
+#: classes/user-reg-aide-regForm.php:514
 msgid "Require Upper Case Letter: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:498
+#: classes/user-reg-aide-regForm.php:523
 msgid "Require Lower Case Letter: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:499
+#: classes/user-reg-aide-regForm.php:524
 msgid ""
 "Select this option to require a Lower Case Letter in the password strength "
 "requirements"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:502
+#: classes/user-reg-aide-regForm.php:527
 msgid ""
 "Select this option NOT to require a Lower Case Letter in the password "
 "strength requirements"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:509
+#: classes/user-reg-aide-regForm.php:534
 msgid "Require Number: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:510
+#: classes/user-reg-aide-regForm.php:535
 msgid ""
 "Select this option to require a Number in the custom Password Strength "
 "Requirements"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:513
+#: classes/user-reg-aide-regForm.php:538
 msgid ""
 "Select this option NOT to require a Number in the custom Password Strength "
 "Requirements"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:518
+#: classes/user-reg-aide-regForm.php:543
 msgid "Require Special Character: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:519
+#: classes/user-reg-aide-regForm.php:544
 msgid "Select this option to require a Special Character"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:519
+#: classes/user-reg-aide-regForm.php:544
 msgid " in the password strength requirements"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:522
+#: classes/user-reg-aide-regForm.php:547
 msgid ""
 "Select this option to NOT require an Lower Case Letter in the password "
 "strength requirements"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:529
+#: classes/user-reg-aide-regForm.php:554
 msgid "Update Password Strength Requirement Options"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:547
+#: classes/user-reg-aide-regForm.php:572
 msgid "Add custom redirects after users login or a new user registers here:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:551
+#: classes/user-reg-aide-regForm.php:576
 msgid ""
 "Choose to redirect users to a different page than default WordPress page "
 "after successful registration: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:553
+#: classes/user-reg-aide-regForm.php:578
 msgid ""
 "Select this option to redirect new user to custom page after successsful new "
 "registration signup"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:556
+#: classes/user-reg-aide-regForm.php:581
 msgid ""
 "Select this option to redirect new user to default Wordpress page after "
 "successsful new user registration signup"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:560
+#: classes/user-reg-aide-regForm.php:585
 msgid "Enter new successfull Registration form redirect url below: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:562
+#: classes/user-reg-aide-regForm.php:587
 msgid ""
 "Enter a new url here to redirect users to after a successful registration "
 "has been completed!"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:566
+#: classes/user-reg-aide-regForm.php:591
 msgid ""
 "Choose to redirect users to a different page than default WordPress page "
 "after successful login: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:567
+#: classes/user-reg-aide-regForm.php:592
 msgid ""
 "Select this option to redirect new user to custom page after successsful "
 "login"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:570
+#: classes/user-reg-aide-regForm.php:595
 msgid ""
 "Select this option to redirect new user to default Wordpress page after "
 "successsful login"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:574
+#: classes/user-reg-aide-regForm.php:599
 msgid "Enter new successful login redirect url below: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:576
+#: classes/user-reg-aide-regForm.php:601
 msgid ""
 "Enter a new url here to redirect users to after a successful login has been "
 "completed!"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:580
+#: classes/user-reg-aide-regForm.php:605
 msgid "Update Redirects Options"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:586
+#: classes/user-reg-aide-regForm.php:611
 msgid ""
 "Add Your Own Agreement Message and Policy Link with Confirmation of "
 "Agreement to Bottom of Registration Form:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:590
+#: classes/user-reg-aide-regForm.php:615
 msgid ""
 "Choose to add a special message to bottom of registration form for new users "
 "requiring them to read and agree to terms and conditions of the website:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:593
+#: classes/user-reg-aide-regForm.php:618
 msgid "Show Custom Link for Agreement/Guidelines/Policy Page: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:594
+#: classes/user-reg-aide-regForm.php:619
 msgid ""
 "Select this option to show link for custom agreement message page on "
 "registration page"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:597
+#: classes/user-reg-aide-regForm.php:622
 msgid ""
 "Select this option to NOT show link for custom agreement message page on "
 "registration page"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:601
+#: classes/user-reg-aide-regForm.php:626
 msgid ""
 "Enter a title to display for link to Agreement/Guidelines/Policies URL: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:602
+#: classes/user-reg-aide-regForm.php:627
 msgid ""
 "Enter the title for the URL where your agreement/guidelines/policy page is "
 "located."
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:603
+#: classes/user-reg-aide-regForm.php:628
 msgid "Enter Link to Agreement/Guidelines/Policies URL: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:604
+#: classes/user-reg-aide-regForm.php:629
 msgid ""
 "Enter the URL where your agreement/guidelines/policy page is located . "
 "Example: (http://mysite.com/agreement.php)"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:606
+#: classes/user-reg-aide-regForm.php:631
 msgid ""
 "Show Message Confirming Agreement for Agreement/Guidelines/Policy Page: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:607
+#: classes/user-reg-aide-regForm.php:632
 msgid ""
 "Select this option to show custom agreement message on registration page"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:610
+#: classes/user-reg-aide-regForm.php:635
 msgid ""
 "Select this option NOT to show custom agreement message on registration page"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:614
+#: classes/user-reg-aide-regForm.php:639
 msgid ""
 "Show Checkbox Confirming Agreement for Agreement/Guidelines/Policy Page: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:615
+#: classes/user-reg-aide-regForm.php:640
 msgid ""
 "Select this option to show checkbox for user to check stating they agree to "
 "the agreement terms and conditions"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:618
+#: classes/user-reg-aide-regForm.php:643
 msgid ""
 "Select this option NOT to show checkbox for user to check stating they agree "
 "to the agreement terms and conditions"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:622
+#: classes/user-reg-aide-regForm.php:647
 msgid ""
 "Add your special message below to add to bottom of registration form if new "
 "users must agree to terms or policies:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:625
+#: classes/user-reg-aide-regForm.php:650
 msgid ""
 "Enter a custom message here for bottom of registration form if users can "
 "create their own password or for other reasons!"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:628
+#: classes/user-reg-aide-regForm.php:653
 msgid "Update Registration Form Agreement Options"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:633
+#: classes/user-reg-aide-regForm.php:658
 msgid "Add Anti-Bot-Spammer for Registration Form:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:638
+#: classes/user-reg-aide-regForm.php:663
 msgid ""
 "Choose to add a anti-spammer anti-bot math problem to the registration form "
 "to help reduce spammers and bots accessing your site and spamming it: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:640
+#: classes/user-reg-aide-regForm.php:665
 msgid ""
 "Select this option to activate the anti-spam math problem to registration "
 "form"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:643 classes/user-reg-aide-regForm.php:654
-#: classes/user-reg-aide-regForm.php:665 classes/user-reg-aide-regForm.php:676
-#: classes/user-reg-aide-regForm.php:687
+#: classes/user-reg-aide-regForm.php:668 classes/user-reg-aide-regForm.php:679
+#: classes/user-reg-aide-regForm.php:690 classes/user-reg-aide-regForm.php:701
+#: classes/user-reg-aide-regForm.php:712
 msgid ""
 "Select this option to de-activate the anti-spam math problem to registration "
 "form"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:649
+#: classes/user-reg-aide-regForm.php:674
 msgid "Choose this option to use division in the anti-spam math problem:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:651
+#: classes/user-reg-aide-regForm.php:676
 msgid ""
 "Select this option to use division in the anti-spam math problem on the "
 "registration form"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:660
+#: classes/user-reg-aide-regForm.php:685
 msgid "Choose this option to use multiplication in the anti-spam math problem:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:662
+#: classes/user-reg-aide-regForm.php:687
 msgid ""
 "Select this option to use multiplication in the anti-spam math problem on "
 "the registration form"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:671
+#: classes/user-reg-aide-regForm.php:696
 msgid "Choose this option to use subtraction in the anti-spam math problem:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:673
+#: classes/user-reg-aide-regForm.php:698
 msgid ""
 "Select this option to use subtraction in the anti-spam math problem on the "
 "registration form"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:682
+#: classes/user-reg-aide-regForm.php:707
 msgid "Choose this option to use addition in the anti-spam math problem:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:684
+#: classes/user-reg-aide-regForm.php:709
 msgid ""
 "Select this option to use addition in the anti-spam math problem on the "
 "registration form"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:693
+#: classes/user-reg-aide-regForm.php:718
 msgid "Update Anti-Bot-Spammer Math Problem Options"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:697
+#: classes/user-reg-aide-regForm.php:722
 msgid "Change Title For User Profiles Page:"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:702
+#: classes/user-reg-aide-regForm.php:727
 msgid "Choose to change the title for extra fields on the users profile page: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:704
+#: classes/user-reg-aide-regForm.php:729
 msgid ""
 "Select this option to add your own special title to the extra fields portion "
 "of the users profile"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:707
+#: classes/user-reg-aide-regForm.php:732
 msgid ""
 "Select this option to keep the default title to the extra fields portion of "
 "the users profile"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:710
+#: classes/user-reg-aide-regForm.php:735
 msgid "Extra Fields Title: "
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:715
+#: classes/user-reg-aide-regForm.php:740
 msgid "Update Profile Title Options"
 msgstr ""
 
-#: classes/user-reg-aide-regForm.php:726
+#: classes/user-reg-aide-regForm.php:751
 msgid ""
 "You do not have permissions to manage options for this plugin, sorry, please "
 "check with the site administrators to resolve this issue please!"

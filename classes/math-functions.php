@@ -2,7 +2,7 @@
 /**
  * User Registration Aide - Math Functions
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.6
+ * Version: 1.3.7
  * Since Version 1.3.6
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/

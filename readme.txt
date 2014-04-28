@@ -3,18 +3,18 @@ Contributors: Brian Novotny
 Donate link: http://creative-software-design-solutions.com/
 Author URI: http://creative-software-design-solutions.com/
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
-Tags: user, registration, force, field, register, name, nickname, AIM, AOL, instant messenger, Yahoo, Jabber, Google Talk, Facebook, wordpress, plugin, extra, add, new, fields, profile
+Tags: user, registration, field, register, Facebook, extra fields, profile, anti-spam, login message, login image, custom login css, admin, user management, membership, members
 Requires at least: 3.2
-Tested up to: 3.8
-Stable tag: 1.3.6
+Tested up to: 3.9
+Stable tag: 1.3.7
 
-Adds new fields and forces new users to register additional fields (such as first name and last name) or any new field you wish to add.
+Adds new fields and requites new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
-Note: WordPress 3.2 or higher is definite required due to new error handling procedures.
+Note: WordPress 3.2 or higher is required due to new error handling procedures.
 
 == Description ==
 
-When new users register, this plugin forces new users to register additional fields of your choosing. Available fields are:
+When new users register, this plugin forces new users to register additional fields of your choosing or lets you add your own custom fields. Default available fields are:
 
 *	First Name
 *	Last Name
@@ -25,13 +25,9 @@ When new users register, this plugin forces new users to register additional fie
 *	Jabber/Google Talk user name
 *	Password
 
-Wordpress User Registration Aide Force & Add New User Fields on Registration Form, as the title implies, allows you to force or require more fields when a new user registers. This not only can help to stop spammers, but it can also increase your user management capabilities and services. All the new fields that you add will also be added to existing users profiles, but the users will have to fill them out of course, but any new users will be required to fill out these fields.
+Wordpress User Registration Aide Force & Add New User Fields on Registration Form, as the title implies, allows you to require more fields when a new user registers. This not only can help to stop spammers, but it can also increase your user management capabilities and services for your user base. All the new fields that you add also are added to existing users profiles, but the users will have to fill them out of course, but any new users will be required to fill out these fields if they are included in the registration process.
 
 Another important option is that you can also add new fields to the users profile page but not require them for registration, so you can increase you user management capabilities. This is an exciting new feature for Webmasters that wish to increase contact options, communications, and information obtained from your user base.
-
-We are also currently working on additional features which will come out as a new plugin in the near future, however we released this simple version for those who want to add these simple features now to increase security and user information and reduce spammers. We originally got the idea from the Force User Field Registration from fergcorp, with their plugin, however that plugin hasn’t been updated in ages so we applied new functionality and replaced deprecated functions and added some new features and looks.
-
-As we stated earlier, Force User Field Registration was simple, and we kept it the same for the most part in that aspect, simple, easy to use and understand, even for the most computer illiterate.
 
 Plugin Features:
 
@@ -45,9 +41,11 @@ Plugin Features:
     Get better control over your user base
     New fields are added to existing users profiles!
     Increase your knowledge of, and interaction with your customers & users!
-	Add Custom Logo to Registration & Login Pages!
+	Add Custom Logo & Messages to Registration & Login Pages!
 	Add Custom Background Image or Background Color to Login & Registration Pages!
-
+	Anti-Spam Math Problem
+	Password Strength Meter
+	Custom Password Strength Options to Create Your Own Password Strength Definition
 
 Read more: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/#ixzz22CCABfOx
 
@@ -98,7 +96,15 @@ Then, if you don't know where it is the registration form is on the login form, 
 5. Admin Page 3 Registration Form Options
 6. Admin Page 4 Registration Form Messages & CSS Options
 
-== Changelog ==	
+== Changelog ==
+
+1.3.7
+
+a) Minor bug fixes and cleanup
+
+1.3.6.1
+
+a) Fixed potential bug with anti-spam math problem allowing user to select no math operator (+, -, /, *) while using the anti-spam math problem for registration.
 
 1.3.6
 
@@ -170,7 +176,7 @@ c) Got rid of 'unexpected characters' when plugin is activated bug
 
 d) Made admin pages easier to view
 
-e) Added login-registration page link shadows options so you can either remove them or adjust them to your liking as the old version looked a little funky to me, so if it does to you to you can now either change the size and color or just dont show the shadow at all.
+e) Added login-registration page link shadows options so you can either remove them or adjust them to your liking as the old version looked a little funky to me, so if it does to you to you can now either change the size and color or just don't show the shadow at all.
 
 1.2.3
 

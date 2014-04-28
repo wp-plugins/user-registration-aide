@@ -4,7 +4,7 @@ Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain alot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.3.6
+Version: 1.3.7
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: csds_userRegAide
@@ -29,7 +29,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
 define('URA_PLUGIN_PATH', WP_PLUGIN_DIR.'/user-registration-aide/');
-define('INCLUDES_PATH', WP_PLUGIN_DIR.'/user-registration-aide/includes/');
 define('JS_PATH', plugin_dir_url(__FILE__).'js/');
 define('CSS_PATH', plugin_dir_url(__FILE__).'css/');
 define('IMAGES_PATH', plugin_dir_url(__FILE__).'images/');
@@ -171,7 +170,7 @@ class CSDS_USER_REG_AIDE
 		add_filter('login_headerurl', array(&$customCSS, 'csds_userRegAide_CustomLoginLink')); // Line 151 &$customCSS
 		add_filter('login_headertitle', array(&$customCSS, 'csds_userRegAide_Logo_Title_Color')); // Line 56 &$customCSS
 		add_action( 'login_head', array(&$customCSS, 'csds_userRegAide_Logo_Head')); // Line 100 &$customCSS
-					
+		
 		// Adding custom stylesheets
 		add_action('wp_enqueue_scripts', array(&$this, 'csds_userRegAide_stylesheet')); // Line 779 &$this
 		add_action('admin_init', array(&$this, 'csds_userRegAide_stylesheet')); // Line 779 &$this
@@ -345,7 +344,7 @@ class CSDS_USER_REG_AIDE
 	}
 		
 	// ----------------------------------------     Installation - Setup Functions     ----------------------------------------
-		
+	
 	/**
 	 * Installs options and default fields to database for plugin
 	 *

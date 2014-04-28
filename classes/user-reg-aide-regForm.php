@@ -3,7 +3,7 @@
 /**
  * User Registration Aide - Registration Form Options Settings Admin Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.6
+ * Version: 1.3.7
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -141,7 +141,7 @@ class URA_REG_FORM_OPTIONS
 			
 			if(!empty($_POST['csds_select_DefaultPSR']) && !empty($_POST['csds_select_CustomPSR'])){ // Updates default password strength requirements
 				$update['default_xwrd_strength'] = esc_attr(stripslashes($_POST['csds_select_DefaultPSR']));
-				if($_POST['csds_select_DefaultPSR'] == 1){
+				if($_POST['csds_select_DefaultPSR'] == 1 && $_POST['csds_select_CustomPSR'] == 2){
 					$update['require_xwrd_length'] = 1;
 					$update['xwrd_length'] = 8;
 					$update['xwrd_uc'] = 1;
@@ -301,14 +301,43 @@ class URA_REG_FORM_OPTIONS
 		// Upates lost password security question settings 
 		}elseif (isset($_POST['anti-bot-spammer'])){
 			$update = array();
+			$mcnt = (int) 0;
+			$errors = (string) '';
 			$update = get_option('csds_userRegAide_Options');
 			$update['activate_anti_spam'] = esc_attr(stripslashes($_POST['csds_select_AntiBot']));
-			$update['division_anti_spam'] = esc_attr(stripslashes($_POST['csds_div_AntiBot']));
-			$update['multiply_anti_spam'] = esc_attr(stripslashes($_POST['csds_multiply_AntiBot']));
-			$update['minus_anti_spam'] = esc_attr(stripslashes($_POST['csds_minus_AntiBot']));
-			$update['addition_anti_spam'] = esc_attr(stripslashes($_POST['csds_add_AntiBot']));
-			update_option("csds_userRegAide_Options", $update);
-			echo '<div id="message" class="updated fade"><p class="my_message">'. __('Anti-Bot-Spammer Math Problem Options updated successfully.', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
+			if($_POST['csds_select_AntiBot'] == 1){
+				if($_POST['csds_div_AntiBot'] == 2){
+					$mcnt ++;
+				}elseif($_POST['csds_multiply_AntiBot'] == 2){
+					$mcnt ++;
+				}elseif($_POST['csds_minus_AntiBot'] == 2){
+					$mcnt ++;
+				}elseif($_POST['csds_add_AntiBot'] == 2){
+					$mcnt ++;
+				}
+				
+				if(!$mcnt >= 4){
+					$update['division_anti_spam'] = esc_attr(stripslashes($_POST['csds_div_AntiBot']));
+					$update['multiply_anti_spam'] = esc_attr(stripslashes($_POST['csds_multiply_AntiBot']));
+					$update['minus_anti_spam'] = esc_attr(stripslashes($_POST['csds_minus_AntiBot']));
+					$update['addition_anti_spam'] = esc_attr(stripslashes($_POST['csds_add_AntiBot']));
+				}else{
+					$errors = __("You have not selected any operators (+. -, /, *) to use and selected to use the anti-spam math problem! Please try again and select at least one operator of select no to use the anti-spam math problem", 'csds_userRegAide');
+				}
+			}elseif($_POST['csds_select_AntiBot'] == 2){
+				$update['division_anti_spam'] = esc_attr(stripslashes($_POST['csds_div_AntiBot']));
+				$update['multiply_anti_spam'] = esc_attr(stripslashes($_POST['csds_multiply_AntiBot']));
+				$update['minus_anti_spam'] = esc_attr(stripslashes($_POST['csds_minus_AntiBot']));
+				$update['addition_anti_spam'] = esc_attr(stripslashes($_POST['csds_add_AntiBot']));
+			}
+			
+			if(empty($errors) || $errors == ''){
+				echo '<div id="message" class="updated fade"><p class="my_message">'. __('Anti-Bot-Spammer Math Problem Options updated successfully.', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
+				update_option("csds_userRegAide_Options", $update);
+			}else{
+				echo '<div id="message" class="updated fade"><p class="my_message">'. __($errors, 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
+				
+			}
 		
 		// Upates and changes profile page extra fields title 
 		}elseif (isset($_POST['update_profile_title'])){
@@ -327,9 +356,10 @@ class URA_REG_FORM_OPTIONS
 				$ucnt ++;
 				$field = ' Profile Plugin Title Option ';
 			}
-			update_option("csds_userRegAide_Options", $update);
+			
 			if($ucnt == 0){
 				echo '<div id="message" class="updated fade"><p class="my_message">'. __('New Profile Page Extra Fields Title Updated Successfully.', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
+				update_option("csds_userRegAide_Options", $update);
 			}else{
 				echo '<div id="message" class="updated fade"><p class="my_message">'. __('New Profile Page Extra Fields Title Fields '.$field.' Empty!', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
 			}
