@@ -2,7 +2,7 @@
 /**
  * User Registration Aide - Custom CSS Functions For Registration - Login Pages Custom Styling
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.7
+ * Version: 1.3.7.2
  * Since Version 1.3.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -93,7 +93,7 @@ class URA_CUSTOM_CSS
 	/**
 	 * Sets up head for custom login and registration pages
 	 * @since 1.2.0
-	 * @updated 1.3.0
+	 * @updated 1.3.7.2
 	 * @handles action 'login_head' Line 126 &$this Handles multisite action 'signup_header' line 146 &$this
 	 * @access private
 	 * @author Brian Novotny
@@ -118,7 +118,7 @@ class URA_CUSTOM_CSS
 		$page_color = $options['reg_form_page_color'];
 		
 		if ($show_logo == "1"){
-			echo '<style type="text/css">h1 a { background-image:url('.$logo_url.') !important; height:150px; margin-bottom:10px; } </style>';
+			echo '<style type="text/css">body.login div#login h1 a { background-image:url('.esc_url($logo_url).') !important; background-size: contain; width: 100%; } </style>';
 		}
 		
 		if($show_background_image =="1" && !empty($background_image)){

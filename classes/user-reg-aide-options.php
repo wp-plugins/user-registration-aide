@@ -3,7 +3,7 @@
  * User Registration Aide - Options
  * Handles all options and related functions for plugin
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.7
+ * Version: 1.3.7.2
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -89,7 +89,7 @@ class URA_OPTIONS
 	 * Array for all the new default options for the options fields on admin forms
 	 *
 	 * @since 1.2.5
-	 * @updated 1.3.0
+	 * @updated 1.3.7.2
 	 * @handles line 67, 407 & 456 &$this
 	 * @returns array $csds_userRegAide_Options - Default options array
 	 *
@@ -115,7 +115,7 @@ class URA_OPTIONS
 			$registered_url = $signup_url;
 		}
 		$csds_userRegAide_Options = array(
-			"csds_userRegAide_db_Version"	=> "1.3.6",
+			"csds_userRegAide_db_Version"	=> "1.3.7.2",
 			"select_pass_message" 			=> "2",
 			"password"						=>	"2",
 			"registration_form_message" 	=> "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
@@ -400,7 +400,7 @@ class URA_OPTIONS
 	 * Updates Database Options
 	 *
 	 * @since 1.2.5
-	 * @updated 1.3.0
+	 * @updated 1.3.7.2
 	 * @access private
 	 * @author Brian Novotny
 	 * @website http://creative-software-design-solutions.com
@@ -424,7 +424,7 @@ class URA_OPTIONS
 					if($key == $key1){
 						if(!empty($value1)){
 							if($key1 == 'csds_userRegAide_db_Version'){
-								$update[$key1] = "1.3.6";
+								$update[$key1] = "1.3.7.2";
 							}elseif($key1 == 'updated'){
 								$update[$key1] = "1";
 							}else{
