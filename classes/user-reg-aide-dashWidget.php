@@ -2,7 +2,7 @@
 /**
  * User Registration Aide - Dashboard Widget for WordPres Admin Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.7.2
+ * Version: 1.3.7.3
  * Since Version 1.3.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -108,7 +108,7 @@ class URA_DASHBOARD_WIDGET
 	/**
 	 * Displays dashboard widget users for wp admin page for news & update information
 	 * @since 1.3.0
-	 * @updated 1.3.6
+	 * @updated 1.3.7.3
 	 * @handles display users line 97 &$this
 	 * @params $users array of wordpress site users
 	 * @access private
@@ -119,7 +119,7 @@ class URA_DASHBOARD_WIDGET
 	
 	function display_users($users){
 		
-		global $wpdb, $role;
+		global $wpdb, $role, $current_user;
 		
 		$logo = IMAGES_PATH."csds-dash_logo.png";
 		$cols = array();
@@ -127,45 +127,51 @@ class URA_DASHBOARD_WIDGET
 		$count = count($users);
 		$col_cnt = count($cols);
 		$col_span = $col_cnt + 1;
-				
+		
 		echo '<div class="csds-dash-widget" id="csds-dash-widget">';
 		
-		echo '<table class="admin-dash">';
-			echo '<tr>';
-			echo '<th colspan="'.$col_span.'" class="main_title">';
-			echo __('Quick Glance Current Site Users:', 'csds_userRegAide');
-			echo '</th>';
-			echo '</tr>';
-			echo '<tr>';
-			foreach($cols as $key => $name){
-				echo '<th class="col_titles">'. __($name, 'csds_userRegAide').'</th>';
-			}
-			echo '</tr>';
-			
-			foreach($users as $nuser){ 
-			
+		$current_user = wp_get_current_user();
+		if(current_user_can('manage_options', $current_user->ID)){					
+			echo '<table class="admin-dash">';
 				echo '<tr>';
+				echo '<th colspan="'.$col_span.'" class="main_title">';
+				echo __('Quick Glance Current Site Users:', 'csds_userRegAide');
+				echo '</th>';
+				echo '</tr>';
+				echo '<tr>';
+				foreach($cols as $key => $name){
+					echo '<th class="col_titles">'. __($name, 'csds_userRegAide').'</th>';
+				}
+				echo '</tr>';
 				
-				foreach($cols as $key => $value){
+				foreach($users as $nuser){ 
 				
-					if($key != 'roles'){
-						echo '<td>'.$nuser->$key.'</td>';
-					}elseif($key == 'roles'){
-						$roles = $nuser->$key;
-						$userrole = array_shift($roles);
-						echo '<td>'.$userrole.'</td>';
+					echo '<tr>';
 					
+					foreach($cols as $key => $value){
+					
+						if($key != 'roles'){
+							echo '<td>'.$nuser->$key.'</td>';
+						}elseif($key == 'roles'){
+							$roles = $nuser->$key;
+							$userrole = array_shift($roles);
+							echo '<td>'.$userrole.'</td>';
+						
+						}
+						
 					}
 					
+					echo '</tr>';
 				}
 				
-				echo '</tr>';
-			}
-			
-			echo '</table>';
-			echo '<br />';
-		echo '<a href="http://creative-software-design-solutions.com" target="_blank" rel="follow"><img src="'.$logo.'" /></a>';
-		echo '</div>';
+				echo '</table>';
+				echo '<br />';
+			echo '<a href="http://creative-software-design-solutions.com" target="_blank" rel="follow"><img src="'.$logo.'" /></a>';
+			echo '</div>';
+		}else{
+			echo '<a href="http://creative-software-design-solutions.com" target="_blank" rel="follow"><img src="'.$logo.'" /></a>';
+			echo '</div>';
+		}
 				
 	}
 	

@@ -2,7 +2,7 @@
 /**
  * User Registration Aide - Custom CSS Functions For Registration - Login Pages Custom Styling
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.7.2
+ * Version: 1.3.7.3
  * Since Version 1.3.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -13,13 +13,13 @@
 
 
 // ----------------------------------------------
-
+/*
 require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 require_once ("user-reg-aide-admin.php");
 require_once (URA_PLUGIN_PATH."user-registration-aide.php");
 require_once ("user-reg-aide-newFields.php");
 require_once ("user-reg-aide-regForm.php");
-
+*/
 /*
  * Class added for better functionality
  *

@@ -3,7 +3,7 @@
  * User Registration Aide - Options
  * Handles all options and related functions for plugin
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.7.2
+ * Version: 1.3.7.3
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -115,7 +115,7 @@ class URA_OPTIONS
 			$registered_url = $signup_url;
 		}
 		$csds_userRegAide_Options = array(
-			"csds_userRegAide_db_Version"	=> "1.3.7.2",
+			"csds_userRegAide_db_Version"	=> "1.3.7.3",
 			"select_pass_message" 			=> "2",
 			"password"						=>	"2",
 			"registration_form_message" 	=> "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
@@ -424,7 +424,7 @@ class URA_OPTIONS
 					if($key == $key1){
 						if(!empty($value1)){
 							if($key1 == 'csds_userRegAide_db_Version'){
-								$update[$key1] = "1.3.7.2";
+								$update[$key1] = "1.3.7.3";
 							}elseif($key1 == 'updated'){
 								$update[$key1] = "1";
 							}else{
