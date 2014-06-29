@@ -3,7 +3,7 @@
  * User Registration Aide - Options
  * Handles all options and related functions for plugin
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.7.3
+ * Version: 1.3.7.4
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */

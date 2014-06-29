@@ -3,7 +3,7 @@
 /**
  * User Registration Aide - Registration Form Options Settings Admin Page
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.7.3
+ * Version: 1.3.7.4
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -316,7 +316,7 @@ class URA_REG_FORM_OPTIONS
 					$mcnt ++;
 				}
 				
-				if(!$mcnt >= 4){
+				if($mcnt != 4){
 					$update['division_anti_spam'] = esc_attr(stripslashes($_POST['csds_div_AntiBot']));
 					$update['multiply_anti_spam'] = esc_attr(stripslashes($_POST['csds_multiply_AntiBot']));
 					$update['minus_anti_spam'] = esc_attr(stripslashes($_POST['csds_minus_AntiBot']));
