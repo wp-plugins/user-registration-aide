@@ -298,7 +298,7 @@ class URA_REG_FORM_OPTIONS
 				echo '<div id="message" class="updated fade"><p class="my_message">'. __('New Registration Form Agreement Message Options Fields '.$field.' Empty!', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
 			}
 			
-		// Upates lost password security question settings 
+		// Upates anti-spam math problem settings 
 		}elseif (isset($_POST['anti-bot-spammer'])){
 			$update = array();
 			$mcnt = (int) 0;
@@ -308,11 +308,14 @@ class URA_REG_FORM_OPTIONS
 			if($_POST['csds_select_AntiBot'] == 1){
 				if($_POST['csds_div_AntiBot'] == 2){
 					$mcnt ++;
-				}elseif($_POST['csds_multiply_AntiBot'] == 2){
+				}
+				if($_POST['csds_multiply_AntiBot'] == 2){
 					$mcnt ++;
-				}elseif($_POST['csds_minus_AntiBot'] == 2){
+				}
+				if($_POST['csds_minus_AntiBot'] == 2){
 					$mcnt ++;
-				}elseif($_POST['csds_add_AntiBot'] == 2){
+				}
+				if($_POST['csds_add_AntiBot'] == 2){
 					$mcnt ++;
 				}
 				
@@ -321,7 +324,7 @@ class URA_REG_FORM_OPTIONS
 					$update['multiply_anti_spam'] = esc_attr(stripslashes($_POST['csds_multiply_AntiBot']));
 					$update['minus_anti_spam'] = esc_attr(stripslashes($_POST['csds_minus_AntiBot']));
 					$update['addition_anti_spam'] = esc_attr(stripslashes($_POST['csds_add_AntiBot']));
-				}else{
+				}elseif($mcnt == 4){
 					$errors = __("You have not selected any operators (+. -, /, *) to use and selected to use the anti-spam math problem! Please try again and select at least one operator of select no to use the anti-spam math problem", 'csds_userRegAide');
 				}
 			}elseif($_POST['csds_select_AntiBot'] == 2){
