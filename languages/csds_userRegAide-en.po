@@ -1,0 +1,1592 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: User Registration Aide\n"
+"POT-Creation-Date: 2014-01-22 14:02-0600\n"
+"PO-Revision-Date: 2014-01-22 14:02-0600\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.3\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: user-registration-aide.php:622
+msgid "Registration Fields"
+msgstr ""
+
+#: user-registration-aide.php:623 user-registration-aide.php:711
+msgid "Edit New Fields"
+msgstr ""
+
+#: user-registration-aide.php:624 user-registration-aide.php:690
+msgid "Registration Form Messages & CSS Options"
+msgstr ""
+
+#: user-registration-aide.php:625 user-registration-aide.php:668
+msgid "Registration Form Options"
+msgstr ""
+
+#: user-registration-aide.php:647
+msgid "User Registration Aide"
+msgstr ""
+
+#: user-registration-aide.php:977 classes/user-reg-aide-userProfile.php:71
+msgid "User Registration Aide Additional Fields"
+msgstr ""
+
+#: user-registration-aide.php:996 classes/user-reg-aide-userProfile.php:98
+msgid "Naughty, Naughty! You do not have permissions to do this!"
+msgstr ""
+
+#: user-registration-aide.php:1069 user-registration-aide.php:1087
+#: classes/user-reg-aide-userProfile.php:147
+#: classes/user-reg-aide-userProfile.php:162
+msgid "Failed Security Check"
+msgstr ""
+
+#: user-registration-aide.php:1072 user-registration-aide.php:1090
+#: classes/user-reg-aide-userProfile.php:169
+msgid ""
+"You do not have sufficient permissions to edit this user, contact a network "
+"administrator if this is an error!"
+msgstr ""
+
+#: user-registration-aide.php:1194
+#, php-format
+msgid "A new user has registered on your site %s:"
+msgstr ""
+
+#: user-registration-aide.php:1195 user-registration-aide.php:1207
+#, php-format
+msgid "Username: %s"
+msgstr ""
+
+#: user-registration-aide.php:1196
+#, php-format
+msgid "E-mail: %s"
+msgstr ""
+
+#: user-registration-aide.php:1198
+#, php-format
+msgid "[%s] New User Registration Alert"
+msgstr ""
+
+#: user-registration-aide.php:1204
+#, php-format
+msgid "Thank you for registering with %s!"
+msgstr ""
+
+#: user-registration-aide.php:1205
+#, php-format
+msgid "Here are your new login credentials for %s:"
+msgstr ""
+
+#: user-registration-aide.php:1209 user-registration-aide.php:1211
+#, php-format
+msgid "Password: %s"
+msgstr ""
+
+#: user-registration-aide.php:1215
+#, php-format
+msgid "[%s] Your username and password"
+msgstr ""
+
+#: classes/user-reg-aide-actions.php:143
+msgid "Plugin Support and Configuration Information:"
+msgstr ""
+
+#: classes/user-reg-aide-actions.php:150
+msgid ""
+"Please show your support & appreciation and help us out with a donation!"
+msgstr ""
+
+#: classes/user-reg-aide-actions.php:154
+msgid "Show Plugin Support: "
+msgstr ""
+
+#: classes/user-reg-aide-actions.php:162
+msgid "Plugin Configuration Help"
+msgstr ""
+
+#: classes/user-reg-aide-actions.php:169
+msgid "Check Official Website"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:198
+msgid "Registration Form Add New Field Options Updated Successfully!"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:200 classes/user-reg-aide-admin.php:310
+#: classes/user-reg-aide-newFields.php:131
+#: classes/user-reg-aide-newFields.php:224
+#: classes/user-reg-aide-newFields.php:287
+msgid ""
+"You do not have adequate permissions to edit this plugin! Please check with "
+"Administrator to get additional permissions."
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:245
+msgid ""
+"***Add New Field Options not updated successfully. Missing both fields for: "
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:247
+msgid ""
+"***Add New Field Options not updated successfully. Missing following field "
+"for: "
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:249
+msgid ""
+"***Add New Field Options not updated successfully. Following field already "
+"exists: "
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:259 classes/user-reg-aide-admin.php:277
+msgid "Add New Field "
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:261 classes/user-reg-aide-admin.php:265
+#: classes/user-reg-aide-admin.php:279 classes/user-reg-aide-admin.php:282
+msgid "***Cannot add duplicate fields, "
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:322 classes/user-reg-aide-newFields.php:295
+#: classes/user-reg-aide-regForm.php:368
+#: classes/user-reg-aide-regFormCSSMessages.php:300
+msgid "Support Options updated successfully."
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:361
+msgid ""
+"User Registration Aide: Force New User Registration Fields Administration "
+"Page"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:364
+msgid ""
+"Choose to display Creative Software Design Solutions Dashboard Widget Here:"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:373
+msgid "Add Existing Fields To Registration Form or Create New Fields Here:"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:377
+msgid "Add Additional Fields to Registration Form"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:378
+msgid "Add New Field"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:382
+msgid ""
+"By default, Wordpress will only require an email address and username to "
+"register an account. Here, you can select additional fields required for "
+"registration."
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:383
+msgid ""
+"Note: Any fields selected here will be required fields on the registration "
+"form, however you can add fields in the Add New Field options which will be "
+"added to the profile but not to the registration form unless you select them "
+"here."
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:384
+msgid "Select Additional Fields to Require for Registration Form:"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:385
+msgid ""
+"You can select as many fields here as you want, just hold down the control "
+"key while selecting multiple fields. These fields are required on the "
+"registration form, so if you can do without them and just have them on the "
+"user profile page then leave them out of the registration form!"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:462
+msgid ""
+"Hold down \"Ctrl\" button on keyboard to select or unselect multiple options!"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:463
+msgid "Select None"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:464
+msgid "Update Options"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:471
+msgid ""
+"Here is where you can enter your custom additional fields, the key name "
+"should be lower case and correlate to the field name that the user sees on "
+"the registration form and profile."
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:472
+msgid "Examples:"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:473
+msgid "Field Key Name: address - Field Name: Address"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:474
+msgid "Field Key Name: address_2 - Field Name: Address 2"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:477
+msgid "Field Key Name: "
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:478
+msgid "Field Name: "
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:481
+msgid ""
+"Enter the database name for your field here, like dob for Date of Birth or "
+"full_name, use lower case letters and _ (underscores) ONLY! Keep it short "
+"and simple and relative to the field you are creating!"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:482
+msgid ""
+"Enter the user friendly name for your field here, like Date of Birth for "
+"dob, ect. Keep it short & simple and relative to the field you are creating!"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:486
+msgid "Add Field"
+msgstr ""
+
+#: classes/user-reg-aide-admin.php:500 classes/user-reg-aide-newFields.php:451
+#: classes/user-reg-aide-regFormCSSMessages.php:526
+msgid ""
+"You do not have permissions to activate this plugin, sorry, check with site "
+"administrator to resolve this issue please!"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:167
+msgid "Current Site Users:"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:230
+#: classes/user-reg-aide-dashWidget.php:185
+msgid "Login"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:231
+#: classes/user-reg-aide-dashWidget.php:186
+msgid "Username"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:232
+#: classes/user-reg-aide-dashWidget.php:187
+msgid "Email"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:233
+#: classes/user-reg-aide-dashWidget.php:188
+msgid "Website"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:234
+#: classes/user-reg-aide-dashWidget.php:189
+msgid "Display Name"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:235
+#: classes/user-reg-aide-dashWidget.php:190
+msgid "First Name"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:236
+#: classes/user-reg-aide-dashWidget.php:191
+msgid "Last Name"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:237
+#: classes/user-reg-aide-dashWidget.php:192
+msgid "Nickname"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:238
+#: classes/user-reg-aide-dashWidget.php:193
+msgid "Role"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:308
+#: classes/user-reg-aide-dashWidget.php:373
+msgid "Dashboard Widget Display Options"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:311
+#: classes/user-reg-aide-dashWidget.php:376
+msgid ""
+"Choose to display or not display the dashboard widget on the WordPress Admin "
+"page: "
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:312
+#: classes/user-reg-aide-dashWidget.php:377
+msgid ""
+"Select this option to show the Creative Software Design Solutions Users "
+"table Dashboard Widget"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:314 Copy.php:322
+#: classes/user-reg-aide-dashWidget.php:380
+#: classes/user-reg-aide-regForm.php:412 classes/user-reg-aide-regForm.php:425
+#: classes/user-reg-aide-regForm.php:449 classes/user-reg-aide-regForm.php:475
+#: classes/user-reg-aide-regForm.php:484 classes/user-reg-aide-regForm.php:495
+#: classes/user-reg-aide-regForm.php:517 classes/user-reg-aide-regForm.php:526
+#: classes/user-reg-aide-regForm.php:537 classes/user-reg-aide-regForm.php:546
+#: classes/user-reg-aide-regForm.php:580 classes/user-reg-aide-regForm.php:594
+#: classes/user-reg-aide-regForm.php:621 classes/user-reg-aide-regForm.php:634
+#: classes/user-reg-aide-regForm.php:642 classes/user-reg-aide-regForm.php:667
+#: classes/user-reg-aide-regForm.php:678 classes/user-reg-aide-regForm.php:689
+#: classes/user-reg-aide-regForm.php:700 classes/user-reg-aide-regForm.php:711
+#: classes/user-reg-aide-regForm.php:731
+#: classes/user-reg-aide-regFormCSSMessages.php:326
+#: classes/user-reg-aide-regFormCSSMessages.php:388
+#: classes/user-reg-aide-regFormCSSMessages.php:397
+#: classes/user-reg-aide-regFormCSSMessages.php:419
+#: classes/user-reg-aide-regFormCSSMessages.php:440
+#: classes/user-reg-aide-regFormCSSMessages.php:455
+#: classes/user-reg-aide-regFormCSSMessages.php:471
+#: classes/user-reg-aide-regFormCSSMessages.php:484
+#: classes/user-reg-aide-regFormCSSMessages.php:502
+msgid "Yes"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:315
+#: classes/user-reg-aide-dashWidget.php:381
+msgid ""
+"Select this option NOT to show the Creative Software Design Solutions Users "
+"table Dashboard Widget"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:317 Copy.php:325
+#: classes/user-reg-aide-dashWidget.php:383
+#: classes/user-reg-aide-regForm.php:415 classes/user-reg-aide-regForm.php:427
+#: classes/user-reg-aide-regForm.php:452 classes/user-reg-aide-regForm.php:478
+#: classes/user-reg-aide-regForm.php:487 classes/user-reg-aide-regForm.php:498
+#: classes/user-reg-aide-regForm.php:520 classes/user-reg-aide-regForm.php:529
+#: classes/user-reg-aide-regForm.php:540 classes/user-reg-aide-regForm.php:549
+#: classes/user-reg-aide-regForm.php:583 classes/user-reg-aide-regForm.php:597
+#: classes/user-reg-aide-regForm.php:624 classes/user-reg-aide-regForm.php:637
+#: classes/user-reg-aide-regForm.php:645 classes/user-reg-aide-regForm.php:670
+#: classes/user-reg-aide-regForm.php:681 classes/user-reg-aide-regForm.php:692
+#: classes/user-reg-aide-regForm.php:703 classes/user-reg-aide-regForm.php:714
+#: classes/user-reg-aide-regForm.php:734
+#: classes/user-reg-aide-regFormCSSMessages.php:329
+#: classes/user-reg-aide-regFormCSSMessages.php:391
+#: classes/user-reg-aide-regFormCSSMessages.php:400
+#: classes/user-reg-aide-regFormCSSMessages.php:422
+#: classes/user-reg-aide-regFormCSSMessages.php:443
+#: classes/user-reg-aide-regFormCSSMessages.php:458
+#: classes/user-reg-aide-regFormCSSMessages.php:474
+#: classes/user-reg-aide-regFormCSSMessages.php:487
+#: classes/user-reg-aide-regFormCSSMessages.php:505
+msgid "No"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:319
+msgid ""
+"Choose to display custom fields in the dashboard widget on the WordPress "
+"Admin page: "
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:320
+msgid ""
+"Select this option to show the Creative Software Design Solutions Users "
+"table with your own chosen fields in the Dashboard Widget"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:323
+msgid ""
+"Select this option to show your own chosen fields in the Creative Software "
+"Design Solutions Users table Dashboard Widget"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:325
+msgid ""
+"Select this option to NOT show your own chosen fields in the Creative "
+"Software Design Solutions Users table Dashboard Widget"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:327
+#: classes/user-reg-aide-dashWidget.php:389
+msgid ""
+"Here, you can select your own fields to show on the User Registration Aide "
+"Dashboard Widget."
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:328
+msgid ""
+"Note: You can only select a maximum of 5 fields due to the space constraints "
+"in the WordPress Dashboard!"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:329
+#: classes/user-reg-aide-dashWidget.php:391
+msgid ""
+"You can only select up to 5 fields due to space limitations, just hold down "
+"the control key while selecting multiple fields."
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget - Copy.php:348
+msgid "Update Dashboard Widget Options"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget.php:136
+msgid "Quick Glance Current Site Users:"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget.php:385
+msgid "Update Dashboard Widget Display Option"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget.php:390
+msgid ""
+"Note: You can only select a maximum of 5 fields due to the space constraints "
+"in the WordPress Dashboard! (Hold down the control key to select more than 1 "
+"field just like adding new fields to the registration form.)"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget.php:409
+msgid "Update Dashboard Widget Fields"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget.php:428
+msgid "Dashboard Widget Field Name: "
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget.php:429
+#: classes/user-reg-aide-newFields.php:360
+msgid "Current Field Order: "
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget.php:440
+#: classes/user-reg-aide-newFields.php:371
+msgid ""
+"Make sure that there are no duplicate field order numbers, like two fields "
+"having number 2 for their order!"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget.php:462
+msgid "Update Dashboard Widget Field Order"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget.php:484
+msgid "Dashboard Widget Fields Display Option Updated Successfully!"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget.php:584
+msgid "Dashboard Widget Fields Updated Successfully!"
+msgstr ""
+
+#: classes/user-reg-aide-dashWidget.php:639
+msgid "Dashboard Widget Fields Order Updated Successfully!"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:126
+msgid " Successfully Deleted!"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:128
+msgid ""
+"No field was selected for deletion, you must select a field to delete first!"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:219
+msgid "New Field Order Options updated successfully."
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:221
+msgid ""
+"***Error Updating New Field Order Options, two or more fields have the same "
+"order!***"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:269
+msgid " Name Successfully changed! & "
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:271
+msgid " Name Not Entered & "
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:275
+msgid " Name Successfully changed!"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:277
+msgid " Name Not Entered!"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:284
+msgid "No field was changed!"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:301
+msgid ""
+"No new fields have been created, please go to the main page to add some new "
+"fields first before you try and edit them! "
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:314
+msgid "User Registration Aide: Edit New Fields"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:316
+msgid ""
+"Delete or Change Field Order or Change Field Display Title for New Fields "
+"Here:"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:321
+msgid "Edit Additional Fields for Profile &  Registration Form: Delete Field"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:322
+msgid "Edit New Field Order"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:323
+msgid "Edit New Field Name"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:328
+msgid ""
+"Here you can select the new additional fields you added that you want to "
+"delete."
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:329
+msgid ""
+"Please choose a field to delete here, you can only select one field at a "
+"time to delete however"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:335
+msgid "Delete New Field"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:337
+msgid ""
+"No new fields currently exist, you have to add new fields on the main page "
+"before you can delete any!"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:346
+msgid ""
+"Here you can select or change the order for the new additional fields on the "
+"registration form and profile. You must not have the same number twice, so "
+"make sure you change all fields accordingly so there are no duplicates or "
+"you will generate an error!"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:359
+msgid "Additional New Field Name: "
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:387
+msgid "Update Field Order"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:392
+#: classes/user-reg-aide-newFields.php:432
+msgid ""
+"No new fields currently exist, you have to add new fields on the main page "
+"before you can change the order!"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:402
+msgid ""
+"Here you can change the field name displayed to the user for the new "
+"additional fields on the registration form and profile. !"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:412
+msgid "Additional New Field ID: "
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:413
+msgid "Current Field Title: "
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:423
+msgid "Edit your field name here"
+msgstr ""
+
+#: classes/user-reg-aide-newFields.php:438
+msgid "Update Field Names"
+msgstr ""
+
+#: classes/user-reg-aide-options.php:165 classes/user-reg-aide-options.php:166
+msgid "Log in here"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:130
+msgid "New Bottom Registration Form Message Options updated successfully."
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:132
+msgid ""
+"New Bottom Registration Form Message Options empty, not updated successfully."
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:211
+msgid "New Password Strength Requirement Options updated successfully."
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:213
+msgid ""
+"New Password Strength Requirement Options empty, not updated successfully."
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:247
+msgid ""
+"New Login & Registration Form Custom Redirects Options updated successfully."
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:249
+msgid "New Login & Registration Form Custom Redirects Options Field "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:296
+msgid "New Registration Form Agreement Message Options updated successfully."
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:298
+msgid "New Registration Form Agreement Message Options Fields "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:325
+msgid ""
+"You have not selected any operators (+. -, /, *) to use and selected to use "
+"the anti-spam math problem! Please try again and select at least one "
+"operator of select no to use the anti-spam math problem"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:330
+msgid "Anti-Bot-Spammer Math Problem Options updated successfully."
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:356
+msgid "New Profile Page Extra Fields Title Updated Successfully."
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:359
+msgid "New Profile Page Extra Fields Title Fields "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:399
+#: classes/user-reg-aide-regFormCSSMessages.php:315
+msgid "User Registration Aide: Custom Registration Form Options"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:404
+msgid "Multi-Site Options:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:409
+msgid ""
+"Choose to allow new users to be activated right away if new users can enter "
+"own password: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:410
+msgid "Select this option to allow users to be activated and log in right away"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:413
+msgid ""
+"Select this option to send confirmation link to new user registrations to "
+"confirm their registration, or the default Wordpress Multisite signup method"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:416
+msgid "Enter new activation message below: (HINT: Leave Links Alone!!!)"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:419
+msgid ""
+"Enter a custom message here for activation if users can create their own "
+"password and account activated right away!"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:423
+msgid ""
+"Choose to add a special message to confirm form if new users can&#39;t enter "
+"own password and be activated right away: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:428
+msgid "Enter new confirmation form new activation message below: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:431
+msgid ""
+"Enter a custom message here for confirmation form if users can&#39;t create "
+"their own password and account is not activated right away!"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:435
+msgid "Update Multi-Site Registration Form Options"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:442
+msgid "Add Your Own Message to Bottom of Registration Form:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:446
+msgid "Choose to add a special message to bottom of registration form: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:447
+msgid ""
+"Select this option to add your own custom message to the bottom of the "
+"registration form"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:450
+msgid ""
+"Select this option to use the default Wordpress message on the bottom of the "
+"registration form"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:454
+msgid "Enter new Registration form message below: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:457
+msgid ""
+"Enter a custom message here for bottom of registration form if users can or "
+"even can&#39t create their own password!"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:462
+msgid "Update Registration Form Message Options"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:468
+msgid "Password Strength Requirements:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:472
+msgid "Use Default Password Strength Requirements: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:473
+msgid ""
+"Select this option to use the default password strength requirements (Upper "
+"Case, Lower Case letters, number and special character and minimum length of "
+"8)"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:476
+msgid ""
+"Select this option not to use the default Password Strength Requirements"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:481
+msgid "Use Custom Password Strength Requirements: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:482
+msgid ""
+"Select this option to create your own custom password strength requirements"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:485
+msgid "Select this option not to use a custom Password Strength Requirements"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:492
+msgid "Require Minimum Password Length: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:493 classes/user-reg-aide-regForm.php:515
+msgid ""
+"Select this option to require an Upper Case Letter in the custom Password "
+"Strength Requirements"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:496 classes/user-reg-aide-regForm.php:518
+msgid ""
+"Select this option NOT to require an Upper Case Letter in the custom "
+"Password Strength Requirements"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:500
+msgid "Password Minimum Length: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:500
+msgid "Select the minimum length for the password"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:514
+msgid "Require Upper Case Letter: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:523
+msgid "Require Lower Case Letter: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:524
+msgid ""
+"Select this option to require a Lower Case Letter in the password strength "
+"requirements"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:527
+msgid ""
+"Select this option NOT to require a Lower Case Letter in the password "
+"strength requirements"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:534
+msgid "Require Number: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:535
+msgid ""
+"Select this option to require a Number in the custom Password Strength "
+"Requirements"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:538
+msgid ""
+"Select this option NOT to require a Number in the custom Password Strength "
+"Requirements"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:543
+msgid "Require Special Character: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:544
+msgid "Select this option to require a Special Character"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:544
+msgid " in the password strength requirements"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:547
+msgid ""
+"Select this option to NOT require an Lower Case Letter in the password "
+"strength requirements"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:554
+msgid "Update Password Strength Requirement Options"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:572
+msgid "Add custom redirects after users login or a new user registers here:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:576
+msgid ""
+"Choose to redirect users to a different page than default WordPress page "
+"after successful registration: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:578
+msgid ""
+"Select this option to redirect new user to custom page after successsful new "
+"registration signup"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:581
+msgid ""
+"Select this option to redirect new user to default Wordpress page after "
+"successsful new user registration signup"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:585
+msgid "Enter new successfull Registration form redirect url below: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:587
+msgid ""
+"Enter a new url here to redirect users to after a successful registration "
+"has been completed!"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:591
+msgid ""
+"Choose to redirect users to a different page than default WordPress page "
+"after successful login: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:592
+msgid ""
+"Select this option to redirect new user to custom page after successsful "
+"login"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:595
+msgid ""
+"Select this option to redirect new user to default Wordpress page after "
+"successsful login"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:599
+msgid "Enter new successful login redirect url below: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:601
+msgid ""
+"Enter a new url here to redirect users to after a successful login has been "
+"completed!"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:605
+msgid "Update Redirects Options"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:611
+msgid ""
+"Add Your Own Agreement Message and Policy Link with Confirmation of "
+"Agreement to Bottom of Registration Form:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:615
+msgid ""
+"Choose to add a special message to bottom of registration form for new users "
+"requiring them to read and agree to terms and conditions of the website:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:618
+msgid "Show Custom Link for Agreement/Guidelines/Policy Page: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:619
+msgid ""
+"Select this option to show link for custom agreement message page on "
+"registration page"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:622
+msgid ""
+"Select this option to NOT show link for custom agreement message page on "
+"registration page"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:626
+msgid ""
+"Enter a title to display for link to Agreement/Guidelines/Policies URL: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:627
+msgid ""
+"Enter the title for the URL where your agreement/guidelines/policy page is "
+"located."
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:628
+msgid "Enter Link to Agreement/Guidelines/Policies URL: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:629
+msgid ""
+"Enter the URL where your agreement/guidelines/policy page is located . "
+"Example: (http://mysite.com/agreement.php)"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:631
+msgid ""
+"Show Message Confirming Agreement for Agreement/Guidelines/Policy Page: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:632
+msgid ""
+"Select this option to show custom agreement message on registration page"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:635
+msgid ""
+"Select this option NOT to show custom agreement message on registration page"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:639
+msgid ""
+"Show Checkbox Confirming Agreement for Agreement/Guidelines/Policy Page: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:640
+msgid ""
+"Select this option to show checkbox for user to check stating they agree to "
+"the agreement terms and conditions"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:643
+msgid ""
+"Select this option NOT to show checkbox for user to check stating they agree "
+"to the agreement terms and conditions"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:647
+msgid ""
+"Add your special message below to add to bottom of registration form if new "
+"users must agree to terms or policies:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:650
+msgid ""
+"Enter a custom message here for bottom of registration form if users can "
+"create their own password or for other reasons!"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:653
+msgid "Update Registration Form Agreement Options"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:658
+msgid "Add Anti-Bot-Spammer for Registration Form:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:663
+msgid ""
+"Choose to add a anti-spammer anti-bot math problem to the registration form "
+"to help reduce spammers and bots accessing your site and spamming it: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:665
+msgid ""
+"Select this option to activate the anti-spam math problem to registration "
+"form"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:668 classes/user-reg-aide-regForm.php:679
+#: classes/user-reg-aide-regForm.php:690 classes/user-reg-aide-regForm.php:701
+#: classes/user-reg-aide-regForm.php:712
+msgid ""
+"Select this option to de-activate the anti-spam math problem to registration "
+"form"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:674
+msgid "Choose this option to use division in the anti-spam math problem:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:676
+msgid ""
+"Select this option to use division in the anti-spam math problem on the "
+"registration form"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:685
+msgid "Choose this option to use multiplication in the anti-spam math problem:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:687
+msgid ""
+"Select this option to use multiplication in the anti-spam math problem on "
+"the registration form"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:696
+msgid "Choose this option to use subtraction in the anti-spam math problem:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:698
+msgid ""
+"Select this option to use subtraction in the anti-spam math problem on the "
+"registration form"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:707
+msgid "Choose this option to use addition in the anti-spam math problem:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:709
+msgid ""
+"Select this option to use addition in the anti-spam math problem on the "
+"registration form"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:718
+msgid "Update Anti-Bot-Spammer Math Problem Options"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:722
+msgid "Change Title For User Profiles Page:"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:727
+msgid "Choose to change the title for extra fields on the users profile page: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:729
+msgid ""
+"Select this option to add your own special title to the extra fields portion "
+"of the users profile"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:732
+msgid ""
+"Select this option to keep the default title to the extra fields portion of "
+"the users profile"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:735
+msgid "Extra Fields Title: "
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:740
+msgid "Update Profile Title Options"
+msgstr ""
+
+#: classes/user-reg-aide-regForm.php:751
+msgid ""
+"You do not have permissions to manage options for this plugin, sorry, please "
+"check with the site administrators to resolve this issue please!"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:132
+msgid "New Top Registration Form Message Options updated successfully."
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:141
+msgid "New Top Registration Form Message Options Fields Empty "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:284
+msgid "New Registration Form Logo Options updated successfully."
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:293
+msgid "New Registration Form Logo Options Empty "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:319
+msgid "Add Your Own Custom Message to Top of Login & Registration Forms:"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:323
+msgid "Choose to add a special message to top of the registration form:"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:324
+msgid ""
+"Add your own custom messages to the top of the Wordpress login-registration-"
+"lost-password pages"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:327
+msgid ""
+"Use the default Wordpress messages for the login-registration-lost-password "
+"pages"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:331
+msgid "Enter new Login form message for top of login form here: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:333
+msgid "Enter a custom message here for top of login form!"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:337
+msgid "Enter new Registration form message for top of page here: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:339
+msgid "Enter a custom message here for top of registration form!"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:343
+msgid "Enter additional new Login form message for top of login page here: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:345
+msgid "Enter an additional new custom message here for top of login form!"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:349
+msgid ""
+"Enter new Login form message for top of login page when users log out here: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:351
+msgid ""
+"Enter a custom message here for top of login form after user is logged out!"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:355
+msgid ""
+"Enter new Login Form message for top of Login Page after user succesfully "
+"registers here: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:357
+msgid ""
+"Enter a custom message here for top of login form after user has succesfully "
+"registered!"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:361
+msgid ""
+"Enter new Lost Password Form message for top of Lost Password Page Here: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:363
+msgid ""
+"Enter a custom message here for top of lost password form if user attempts "
+"to recover lost password!"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:367
+msgid "Update Top Registration Form Message Options"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:372
+msgid "Add Your Own Logo and Registration Form Customizations:"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:385
+msgid "Show Custom Logo: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:386
+msgid ""
+"Select this option to show your own logo on the login-registration pages"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:389
+msgid ""
+"Select this option to show the default Wordpress logo on the login-"
+"registration pages"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:393
+msgid ""
+"Changes the link from the login form image from the wordpress site to your "
+"site, automatically defaults to your home page!"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:394
+msgid "Change Custom Logo Link: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:395
+msgid ""
+"Select this option to add your own logo link to the logo on the login-"
+"registration pages, automatically defaults to your site homepage!"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:398
+msgid ""
+"Select this option to use the default Wordpress logo link on the logo on the "
+"login-registration pages"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:402
+msgid "New Logo URL: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:403
+msgid ""
+"Enter the URL where your new logo is for your register/login page -- (http://"
+"mysite.com/wp-content/uploads/9/5/thislogo.png)"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:415
+msgid "Show Custom Background Image: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:417
+msgid ""
+"Select this option to add your own custom background image on the login-"
+"registration form"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:420
+msgid ""
+"Select this option to use the default Wordpress background image on the "
+"login-registration form"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:424
+msgid "New Background Image URL: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:425
+msgid ""
+"Enter the URL where your new background image is for your login/register "
+"forms --  (http://mysite.com/wp-content/uploads/9/5/this-background-image."
+"png)"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:437
+msgid "Show Custom Page Background Image: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:438
+msgid ""
+"Select this option to add your own custom background image on the login-"
+"registration page"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:441
+msgid ""
+"Select this option to use the default Wordpress background image on the "
+"login-registration page"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:445
+msgid "New Page Background Image URL: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:446
+msgid ""
+"Enter the new page background image url for your register/login pages "
+"(http://mysite.com/content/uploads/myimage.png)"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:452
+msgid "Show Custom Form Background Color: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:453
+msgid ""
+"Select this option to add your own custom background color on the login-"
+"registration form"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:456
+msgid ""
+"Select this option to use the default Wordpress background color on the "
+"login-registration form"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:460
+msgid "New Background Color: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:468
+msgid "Show Custom Page Background Color: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:469
+msgid ""
+"Select this option to add your own custom background color on the login-"
+"registration page"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:472
+msgid ""
+"Select this option to use the default Wordpress background color on the "
+"login-registration page"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:476
+msgid "New Page Background Color: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:481
+msgid "Show Custom Text/Links Colors: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:482
+msgid ""
+"Select this option to add your own custom text and link colors on the login-"
+"registration page"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:485
+msgid ""
+"Select this option to use the default Wordpress text and link colors on the "
+"login-registration page"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:489
+msgid "New Text/Links Color: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:491
+msgid "New Links Hover Color: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:499
+msgid "Show Link Shadows: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:500
+msgid ""
+"Select this option to add your own custom link shadow size and colors on the "
+"login-registration page"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:503
+msgid ""
+"Select this option to use the default Wordpress link shadow size and colors "
+"on the login-registration page"
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:507
+msgid "Shadow Size in PX: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:509
+msgid "Shadow Color: "
+msgstr ""
+
+#: classes/user-reg-aide-regFormCSSMessages.php:514
+msgid "Update Login-Reg Form Style Options"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:80
+#: classes/user-reg-aide-registrationForm.php:102
+#: classes/user-reg-aide-registrationForm.php:128
+#: classes/user-reg-aide-registrationForm.php:150
+msgid "*:"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:87
+#: classes/user-reg-aide-registrationForm.php:109
+#: classes/user-reg-aide-registrationForm.php:135
+#: classes/user-reg-aide-registrationForm.php:158
+msgid "Password*:"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:91
+#: classes/user-reg-aide-registrationForm.php:113
+#: classes/user-reg-aide-registrationForm.php:139
+#: classes/user-reg-aide-registrationForm.php:162
+msgid "Confirm Password*:"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:93
+#: classes/user-reg-aide-registrationForm.php:115
+#: classes/user-reg-aide-registrationForm.php:141
+#: classes/user-reg-aide-registrationForm.php:164
+msgid "Strength indicator"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:94
+#: classes/user-reg-aide-registrationForm.php:116
+#: classes/user-reg-aide-registrationForm.php:142
+#: classes/user-reg-aide-registrationForm.php:165
+msgid ""
+"Hint: The password should be at least seven characters long. To make it "
+"stronger, use upper and lower case letters, numbers and symbols like ! \" ? "
+"$ % ^ &amp; )."
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:184
+msgid "I Agree with the Terms and Conditions: "
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:190
+#: classes/user-reg-aide-registrationForm.php:197
+msgid "I Agree"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:192
+#: classes/user-reg-aide-registrationForm.php:199
+msgid "I Do Not Agree"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:215
+msgid ""
+"*Please complete the following arithmatic problem to prove you are human!*:"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:219
+#: classes/user-reg-aide-registrationForm.php:221
+msgid " "
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:219
+msgid " = "
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:228
+msgid ""
+"Enter the answer to the artithmatic problem here! ***Important: In certain "
+"division problems, the answer may not be a whole number so just round UP to "
+"the nearest 10th(Example: 5/3 = 1.6666 rounded to the nearest tenth is 1.6!"
+"***"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:333
+msgid "Failed Security Verification"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:363
+msgid "<strong>ERROR</strong>: Please type your "
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:370
+msgid "<strong>ERROR</strong>: Your "
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:379
+msgid "<strong>ERROR</strong>: Please enter and confirm your Password!"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:384
+msgid "<strong>ERROR</strong>: Passwords do not match!"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:388
+msgid ""
+"<strong>ERROR</strong>: Username and Password are the same, they must be "
+"different!"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:394
+msgid "<strong>ERROR</strong>: Password length too short! Should be at least "
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:401
+msgid "<strong>ERROR</strong>: There is no number in your password!"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:408
+msgid "<strong>ERROR</strong>: Password missing lower case letter!"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:415
+msgid "<strong>ERROR</strong>: Password missing upper case letter!"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:422
+msgid "<strong>ERROR</strong>: Password missing symbol!"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:434
+#: classes/user-reg-aide-registrationForm.php:437
+msgid "<strong>ERROR</strong>: You must agree to the terms and conditions!"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:455
+msgid ""
+"<strong>ERROR</strong>: You must enter the anti-spam math problem answer!"
+msgstr ""
+
+#: classes/user-reg-aide-registrationForm.php:458
+msgid ""
+"<strong>ERROR</strong>: Your anti-spam math problem answer is incorrect! Try "
+"using your calculator if you are having problems!"
+msgstr ""
