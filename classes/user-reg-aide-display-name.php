@@ -60,7 +60,6 @@ class URA_DISPLAY_NAME
 				}
 				$options['custom_display_field'] = esc_attr( stripslashes( $field ) );
 				$roles = $_POST['display_name_role_select'];
-				echo print_r( $roles );
 				$select_roles = array();
 				foreach( $roles as $role_key	=>	$role_value ){
 					$select_roles[$role_key] = $role_value;
