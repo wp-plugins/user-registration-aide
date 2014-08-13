@@ -3,7 +3,7 @@
  * User Registration Aide - Options
  * Handles all options and related functions for plugin
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.7.4
+ * Version: 1.4.0.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -14,19 +14,19 @@
 */
 
 // ----------------------------------------------
-
+/*
 require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 require_once ("user-reg-aide-admin.php");
 require_once (URA_PLUGIN_PATH."user-registration-aide.php");
 require_once ("user-reg-aide-newFields.php");
 require_once ("user-reg-aide-regForm.php");
-
+*/
 /**
  * Class added for user options
   *
  * @category Class
  * @since 1.3.0
- * @updated 1.3.0
+ * @updated 1.4.0.0
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -89,7 +89,7 @@ class URA_OPTIONS
 	 * Array for all the new default options for the options fields on admin forms
 	 *
 	 * @since 1.2.5
-	 * @updated 1.3.7.2
+	 * @updated 1.4.0.0
 	 * @handles line 67, 407 & 456 &$this
 	 * @returns array $csds_userRegAide_Options - Default options array
 	 *
@@ -115,7 +115,7 @@ class URA_OPTIONS
 			$registered_url = $signup_url;
 		}
 		$csds_userRegAide_Options = array(
-			"csds_userRegAide_db_Version"	=> "1.3.7.3",
+			"csds_userRegAide_db_Version"	=> "1.4.0.0",
 			"select_pass_message" 			=> "2",
 			"password"						=>	"2",
 			"registration_form_message" 	=> "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
@@ -159,16 +159,20 @@ class URA_OPTIONS
 			"login_messages_lost_password" 	=>	"Please enter your username(login name) or email address here. You will then soon receive a link to create a new password via email!",
 			"login_messages_logged_out" 	=>	"Thank you for visiting us at  " . get_bloginfo('name') . "! You are now logged out",
 			"login_messages_registered" 	=>	"Thank you for registering with us at  " . get_bloginfo('name') . "! You account is now active!",
-			"reset_password_messages_security"	=> 	"Enter your new password here and confirm it, and enter your correct security question and answer, if you don't have one, just ignor that step for now and after you complete this, go to your profile and add a security question and answer to your profile to improve your personal security as well as our websites! Thank you!",
+			"reset_password_messages_security"	=> 	"Enter your new password here and confirm it, and enter your correct security question and answer, if you don't have one, just ignore that step for now and after you complete this, go to your profile and add a security question and answer to your profile to improve your personal security as well as our websites! Thank you!",
 			"reset_password_messages_normal"	=> 	"Enter your new password below and confirm it, Thank you!",
 			"reset_password_confirm"		=>	"You may now check your email for a confirmation link to reset your password!",
-			"reset_password_success_security" =>	'You have succesfully reset your password! You may now login again  <a href="' . esc_url_raw( wp_login_url() ) . '">' . __( 'Log in here' ) . '</a> with your new password!',
-			"reset_password_success_normal"	=>	'You have succesfully changed your password! You may now login again  <a href="' . esc_url_raw( wp_login_url() ) . '">' . __( 'Log in here' ) . '</a> with your new password!',
+			"reset_password_success_security" =>	'You have successfully reset your password! You may now login again  <a href="' . esc_url_raw( wp_login_url() ) . '">' . __( 'Log in here' ) . '</a> with your new password!',
+			"reset_password_success_normal"	=>	'You have successfully changed your password! You may now login again  <a href="' . esc_url_raw( wp_login_url() ) . '">' . __( 'Log in here' ) . '</a> with your new password!',
+			
+			// security question stuff for future use if wordpress ever adds the appropriate actions ??? -----------------------------------------------
 			"add_security_question"			=>	"2",
 			"rp_fill_in_security_question"	=>	"You haven't added your security question and security answer yet, please do so on your profile page after you have finished resetting your password!",
 			"fill_in_security_question_answer"	=>	"You haven't added your security question and security answer yet, please do so on your profile page to improve your personal security!",
 			"fill_in_security_question"		=>	"You haven't added your security question yet, please do so on your profile page to improve your personal security!",
-			"fill_in_security_answer"		=>	"You need to enter your security answer for your security question otherwise you won't be able to reset tyour password without an administrators help!",
+			"fill_in_security_answer"		=>	"You need to enter your security answer for your security question otherwise you won't be able to reset your password without an administrators help!",
+			// end security question stuff -----------------------------
+			
 			"activate_anti_spam"			=>	"2",
 			"division_anti_spam"			=>	"1",
 			"multiply_anti_spam"			=>	"1",
@@ -177,7 +181,7 @@ class URA_OPTIONS
 			"activate_now"					=>	"2",
 			"activation_message"			=>	"Welcome to " . get_bloginfo('name') . "! Your account is now activated!",
 			"ms_activate_now"				=> "2",
-			"user_password"					=> "2",
+			"user_password"					=> "0",
 			"ms_user_activation_message" 	=> 'Your user account is now activated for '.$site_name.' , you may proceed with your login <a href="'.esc_url_raw(wp_login_url()).'">Here</a> now!',
 			"ms_activate_blog_now"			=> "2",
 			"ms_non_activation_now"			=>	"2",
@@ -213,7 +217,23 @@ class URA_OPTIONS
 			"xwrd_numb"						=>	"1",
 			"xwrd_uc"						=>	"1",
 			"xwrd_lc"						=>	"1",
-			"updated"						=>	"2"	
+			"updated"						=>	"2",
+			"new_user_email_verify"			=>	"2",
+			"custom_display_name"			=>	"2",
+			"custom_display_field"			=>	"first_last_name",
+			"custom_display_role"			=>	"2",
+			"display_name_role"				=>	"all_roles",
+			"show_profile_disp_name"		=>	"2",
+			"default_user_role"				=>	"subscriber",
+			"tbl_background_color"			=>	"#CCCCFF",
+			"tbl_color"						=>	"#000000",
+			"tbl_border-width"				=>	"5px",
+			"border-style"					=>	"ridge",
+			"border-color"					=>	"#666666",
+			"border-spacing"				=>	"5px",
+			"border-collapse"				=>	"separate",
+			"div_stuffbox_bckgrd_color"		=>	"#CCCCFF",
+			"tbl_padding"					=>	"5px"
 			
 				
 		);
@@ -424,7 +444,7 @@ class URA_OPTIONS
 					if($key == $key1){
 						if(!empty($value1)){
 							if($key1 == 'csds_userRegAide_db_Version'){
-								$update[$key1] = "1.3.7.3";
+								$update[$key1] = "1.4.0.0";
 							}elseif($key1 == 'updated'){
 								$update[$key1] = "1";
 							}else{

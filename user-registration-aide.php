@@ -2,9 +2,9 @@
 /**
 Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
-Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default Wordpress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain alot more features and options for those of you who wish to get more control over users and user access to your site.
+Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default WordPress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain a lot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.3.7.4
+Version: 1.4.0.0
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: csds_userRegAide
@@ -34,6 +34,7 @@ define('CSS_PATH', plugin_dir_url(__FILE__).'css/');
 define('IMAGES_PATH', plugin_dir_url(__FILE__).'images/');
 define('SCREENSHOTS_PATH', plugin_dir_url(__FILE__).'screenshots/');
 define('CLASSES_PATH', WP_PLUGIN_DIR.'/user-registration-aide/classes/');
+define('VIEWS_PATH', WP_PLUGIN_DIR.'/user-registration-aide/views/');
 
 require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 require_once (CLASSES_PATH."user-reg-aide-admin.php");  // Handles main options page
@@ -41,13 +42,15 @@ require_once (CLASSES_PATH."user-reg-aide-newFields.php"); // Handles new fields
 require_once (CLASSES_PATH."user-reg-aide-options.php"); // Behind the scenes options functions & default options
 require_once (CLASSES_PATH."user-reg-aide-regForm.php"); // Handles registration form main options page
 require_once (CLASSES_PATH."user-reg-aide-regFormCSSMessages.php"); // Handles registration form css and messages options ** New 1.3.0
-//require_once (CLASSES_PATH."user-reg-aide-multisite.php"); // Handles multisite functions ** New 1.3.0 Skipping multisite for now until next update due to lack of documentation and support and issues
-//require_once (CLASSES_PATH."user-reg-aide-mailer.php"); // Handles mailing functions ** New 1.3.0
 require_once (CLASSES_PATH."user-reg-aide-customCSS.php"); // Handles custom css for front end registration forms ** New 1.3.0
 require_once (CLASSES_PATH."user-reg-aide-userProfile.php"); // Handles user profile extra fields functions ** New 1.3.0
 require_once (CLASSES_PATH."user-reg-aide-registrationForm.php"); // Handles registration form fields functions, adding, checking and updating new user registrations ** New 1.3.0
 require_once (CLASSES_PATH."user-reg-aide-dashWidget.php"); // Handles the dashboard widget ** New 1.3.0
 require_once (CLASSES_PATH."user-reg-aide-actions.php"); // Handles recurring custom actions to eliminate redundancy
+require_once ( CLASSES_PATH."user-reg-aide-display-name.php" ); // new for changing display name for users
+
+require_once ( VIEWS_PATH."user-reg-aide-style-options.php" ); // for plugin style
+require_once ( VIEWS_PATH."user-reg-aide-custom-options.php" ); // for additional options
 
 //For Debugging and Testing Purposes ------------
 
@@ -59,7 +62,7 @@ require_once (CLASSES_PATH."user-reg-aide-actions.php"); // Handles recurring cu
  *
  * @category Class CSDS_USER_REG_AIDE
  * @since 1.2.0
- * @updated 1.3.6
+ * @updated 1.4.0.0
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -82,23 +85,18 @@ class CSDS_USER_REG_AIDE
 		
 	function CSDS_USER_REG_AIDE() { //constructor
 	
-		global $wp_version, $pagenow;
+		global $wp_version;
 		self::$instance = $this;
 		$this->plugin_dir = dirname(__FILE__);
 		$this->plugin_url = trailingslashit(get_option('siteurl')) . 'wp-content/plugins/' . basename(dirname(__FILE__)) .'/';
 		$this->ref = explode('?',$_SERVER['REQUEST_URI']);
 		$this->ref = $this->ref[0];
-		//$multi_site = new CSDS_URA_MULTISITE(); Skipping multisite for now until next update due to lack of documentation and support and issues
-		//$mailer = new CSDS_USER_REG_AIDE_MAILER(); Skipping multisite for now until next update due to lack of documentation and support and issues mailer only for multisite//
 		$ura_options = new URA_OPTIONS();
-		$admin = new CSDS_URA_ADMIN_SETTINGS();
 		$customCSS = new URA_CUSTOM_CSS();
 		$userProfile = new URA_USER_PROFILE();
 		$regForm = new URA_REGISTRATION_FORM();
 		$dashWidget = new URA_DASHBOARD_WIDGET();
 		$actions = new CSDS_URA_ACTIONS();
-		
-		$settings_file = 'user-reg-aide-admin.php';
 		$options = get_option('csds_userRegAide_Options');
 		
 		if(empty($options['updated'])){
@@ -154,6 +152,10 @@ class CSDS_USER_REG_AIDE
 			add_action('admin_print_styles', array(&$this, 'add_admin_settings_css')); // Line 748 &$this
 		}
 		
+		if( isset($_GET['page']) && $_GET['page'] == 'custom-options' ){
+			add_action('admin_print_styles', array(&$this, 'add_admin_settings_css')); // Line 748 &$this
+		}
+		
 		// Filling default User Registration Aide options db
 		if(isset($_GET['action']) && $_GET['action'] == 'admin_init'){
 			if(!empty($options)){
@@ -162,14 +164,10 @@ class CSDS_USER_REG_AIDE
 		}
 		
 		// Customize Registration & Login Forms
-		if(!is_multisite()){
-			add_action( 'login_head', array(&$customCSS, 'csds_userRegAide_Password_Header')); // Line 988 &$this
-		}else{
-			//add_action( 'signup_header', array(&$multi_site, 'multisite_Password_Header')); // Line 1187 user-reg-aide-multisite.php
-		}
+		
 		add_filter('login_headerurl', array(&$customCSS, 'csds_userRegAide_CustomLoginLink')); // Line 151 &$customCSS
 		add_filter('login_headertitle', array(&$customCSS, 'csds_userRegAide_Logo_Title_Color')); // Line 56 &$customCSS
-		add_action( 'login_head', array(&$customCSS, 'csds_userRegAide_Logo_Head')); // Line 100 &$customCSS
+		add_action( 'login_head', array( &$customCSS, 'csds_userRegAide_Logo_Head' ), 0 ); // Line 100 &$customCSS
 		
 		// Adding custom stylesheets
 		add_action('wp_enqueue_scripts', array(&$this, 'csds_userRegAide_stylesheet')); // Line 779 &$this
@@ -183,34 +181,41 @@ class CSDS_USER_REG_AIDE
 		
 		if(isset($_GET['action']) && $_GET['action'] == 'register'){
 			add_action('login_enqueue_scripts', array(&$this, 'add_lostpassword_css')); // Line 762 &$this
+			add_action( 'login_enqueue_scripts', array(&$customCSS, 'csds_userRegAide_Password_Header'));
 		}
 
 		if(isset($_GET['action']) && $_GET['action'] == 'rp'){
 			add_action('login_enqueue_scripts', array(&$this, 'add_lostpassword_css')); // Line 762 &$this
 		}						
-		
-		//Multisite Specific Actions & Filters
-		// Skipping multisite for now until next update due to lack of documentation and support and issues
-		// if(is_multisite()){ 
-			// //add_action( 'signup_header', array(&$multi_site, 'multisite_Password_Header')); // Line 1187 user-reg-aide-multisite.php csds_userRegAide_Password_Header
-			
-			// add_action('signup_header', array(&$multi_site, 'ms_actions')); // Line 40 user-reg-aide-multisite.php
-			// add_filter('login_headerurl', array(&$customCSS, 'csds_userRegAide_CustomLoginLink')); // Line 151 &$customCSS
-			// add_filter('login_headertitle', array(&$customCSS, 'csds_userRegAide_Logo_Title_Color')); // Line 56 &$customCSS
-			// add_action( 'signup_header', array(&$customCSS, 'csds_userRegAide_Logo_Head')); // Line 100 &$customCSS
-		// }
-		
+				
 		// Handles new fields for registration form
-		if(isset($_GET['action']) && $_GET['action'] == 'register'){
-			add_action('register_form', array(&$regForm, 'csds_userRegAide_addFields')); // Line 57 &$regForm
+		if(isset( $_GET['action'] ) && $_GET['action'] == 'register' ){
+			add_action('register_form', array( &$regForm, 'csds_userRegAide_addFields' ), 0 ); // Line 57 &$regForm
 			add_action('user_register', array(&$regForm, 'csds_userRegAide_updateFields'), 1, 1); // Line 283 &$regForm (Params: int $user_id)
 			
 			add_filter('registration_errors', array(&$regForm, 'csds_userRegAide_checkFields'), 1, 3 ); // Line 219 &$regForm (Params: array $errors, str $username, str $email)
 			add_filter('registration_redirect', array(&$this, 'ura_registration_redirect'), 1, 1); // Line 417 &$this (Params: string $redirect_to)
+			unset( $regForm );
+		}
+		
+		// for theme my login
+				
+		if ( function_exists( 'theme_my_login' ) ) {
+			include_once( WP_PLUGIN_DIR . '/theme-my-login/theme-my-login.php' );
+			add_action('register_form', array( &$regForm, 'csds_userRegAide_addFields' ), 20 ); // Line 57 &$regForm
+			add_action('user_register', array( &$regForm, 'csds_userRegAide_updateFields' ), 20, 1); // Line 283 &$regForm (Params: int $user_id)
+			
+			add_filter( 'registration_errors', array( &$regForm, 'csds_userRegAide_checkFields' ), 20, 3 ); // Line 219 &$regForm (Params: array $errors, str $username, str $email)
+			add_filter( 'registration_redirect', array( &$this, 'ura_registration_redirect' ), 0, 1); // Line 417 &$this (Params: string $redirect_to)
+			add_action( 'login_enqueue_scripts', array( &$customCSS, 'csds_userRegAide_Logo_Head' ), 20 );
+			add_action( 'login_head', 'wp_print_head_scripts', 25 );
+			add_action( 'login_head', array( &$customCSS, 'csds_userRegAide_Logo_Head' ), 30 );
+			add_action( 'login_footer', 'wp_print_footer_scripts', 30 );
+			unset( $regForm, $customCSS );
 		}
 					
 		// Filter to modify redirect of successful user login
-		add_filter('login_redirect', array(&$this, 'ura_login_redirect'), 1, 1); // Line 449 &$this (Params: string $redirect_to)
+		add_filter('login_redirect', array(&$this, 'ura_login_redirect'), 0, 1); // Line 449 &$this (Params: string $redirect_to)
 		
 
 		// Adds settings page to wordpress plugins page & css
@@ -226,19 +231,13 @@ class CSDS_USER_REG_AIDE
 		
 		// Administration Pages
 		
-		if(!is_multisite()){
-			// Single Site Administration Menus
-			add_action('admin_menu', array(&$this, 'csds_userRegAide_optionsPage')); // Line 646 &$this
-			add_action('admin_menu', array(&$this, 'csds_userRegAide_editNewFields_optionsPage')); // Line 712 &$this
-			add_action('admin_menu', array(&$this, 'csds_userRegAide_regFormOptionsPage')); // Line 669 &$this
-			add_action('admin_menu', array(&$this, 'csds_userRegAide_regFormCSSOptionsPage')); // Line 690 &$this
-		}else{
-			// Multisite Admin Menus incase needs changed to mu plugin (must use) but not using in this instance
-			//add_action('admin_menu', array(&$this, 'csds_userRegAide_optionsPage')); // Line 646 &$this
-			//add_action('admin_menu', array(&$this, 'csds_userRegAide_editNewFields_optionsPage')); // Line 712 &$this
-			//add_action('admin_menu', array(&$this, 'csds_userRegAide_regFormOptionsPage')); // Line 669 &$this
-			//add_action('admin_menu', array(&$this, 'csds_userRegAide_regFormCSSOptionsPage')); // Line 690 &$this
-		}
+		// Single Site Administration Menus
+		add_action('admin_menu', array(&$this, 'csds_userRegAide_optionsPage')); // Line 646 &$this
+		add_action('admin_menu', array(&$this, 'csds_userRegAide_editNewFields_optionsPage')); // Line 712 &$this
+		add_action('admin_menu', array(&$this, 'csds_userRegAide_regFormOptionsPage')); // Line 669 &$this
+		add_action('admin_menu', array(&$this, 'csds_userRegAide_regFormCSSOptionsPage')); // Line 690 &$this
+		add_action('admin_menu', array(&$this, 'csds_userRegAide_customOptionsPage')); // Line 690 &$this
+		
 		
 				// custom actions for this plugin
 		add_action('create_tabs', array(&$actions, 'options_tabs_page'), 10, 1); // Line 105 &$actions Accepts $current_page - (current options menu page)
@@ -250,7 +249,7 @@ class CSDS_USER_REG_AIDE
 		add_action('update_dw_display_options', array($dashWidget, 'update_dashboard_widget_options')); // Update dashboard widget options from admin page, $admin line 479
 		add_action('update_dw_field_options', array($dashWidget, 'update_dashboard_widget_fields')); // Update dashboard widget options from admin page, $admin line 497
 		add_action('update_dw_field_order', array($dashWidget, 'update_dashboard_widget_field_order')); // Update dashboard widget options from admin page, $admin line 600
-		
+		unset( $dashWidget, $ura_options );
 				// Handles user profiles and extra fields
 		add_action('show_user_profile', array(&$userProfile, 'csds_show_user_profile'), 0, 1); // Line 59 &$userProfile (Params: str $user)
 		add_action('edit_user_profile', array(&$userProfile, 'csds_show_user_profile'), 0, 1); // Line 59 &$userProfile (Params: str $user)
@@ -259,16 +258,12 @@ class CSDS_USER_REG_AIDE
 		add_action('profile_update', array(&$userProfile, 'csds_update_user_profile'), 0, 1); // Line 138 &$userProfile (Params: int $user_id)
 		add_action('load_extra_fields', array(&$this, 'create_new_user_extra_fields'), 0, 0); // Line 970 &$this My custom action for user-new.php
 		add_action('update_new_user_fields', array(&$this, 'create_new_user_extra_fields_updates'), 0, 1); // Line 1072 &$this My custom action for user-new.php
-		
+		unset( $userProfile );
 		// Add new column to the user list
-		if(!is_multisite()){
-			add_filter( 'manage_users_columns', array(&$this, 'csds_userRegAide_addUserFields')) ; // Line 814 &$this 
-			add_filter( 'manage_users_custom_column', array(&$this, 'csds_userRegAide_fillUserFields'), 0, 3); // Line 850 &$this (Params: str $value, str $column_name, int $user_id)
-		}else{
-			//add_filter( 'wpmu_users_columns', array(&$this, 'csds_userRegAide_addUserFields')); // Line 814 &$this 
-			//add_filter( 'manage_users_columns', array(&$this, 'csds_userRegAide_addUserFields')) ; // Line 814 &$this 
-			//add_filter( 'manage_users_custom_column', array(&$this, 'csds_userRegAide_fillUserFields'), 0, 3); // Line 850 &$this (Params: str $value, str $column_name, int $user_id)
-		}
+		
+		add_filter( 'manage_users_columns', array(&$this, 'csds_userRegAide_addUserFields')) ; // Line 814 &$this 
+		add_filter( 'manage_users_custom_column', array(&$this, 'csds_userRegAide_fillUserFields'), 0, 3); // Line 850 &$this (Params: str $value, str $column_name, int $user_id)
+		
 		
 		// Translation File - Still in Works
 		add_action('init', array(&$this, 'csds_userRegAide_translationFile')); // Line 385 &$this
@@ -295,52 +290,31 @@ class CSDS_USER_REG_AIDE
 		add_filter('pre_user_description', 'trim'); // Wordpress Filters
 		add_filter('pre_user_description', 'wp_filter_kses'); // Wordpress Filters
 		
+		// filter for footer removal in admin pages
+		add_filter( 'admin_footer_text', array( &$this, 'remove_admins_footer' ) );
+		
 		// Deactivation hook for deactivation of User Registration Aide Plugin
 		register_deactivation_hook(__FILE__, array(&$this, 'csds_userRegAide_deactivation')); // Line 1427 &$this
 		
-		// Multisite Actions & Filters ---------------------------------------------------------------------------
-		// if(is_multisite()){ Skipping multisite for now until next update due to lack of documentation and support and issues
-		
-			// // add engine for hidden extra fields to 2nd stage user's registration
-			// add_action('signup_hidden_fields', array(&$multi_site, 'ms_wpmu_signup_stage_2'), 1, 0); // Line 73 user-reg-aide-multisite.php
-
-			// // add filter to modify signup URL for WordPress MU where plug-in is installed per blog
-			// add_filter('wp_signup_location', array(&$multi_site, 'confirm_mu_signup_location')); // Line 508 user-reg-aide-multisite.php
-
-			// // // add extra fields to registration form
-			// add_action('signup_extra_fields', array(&$multi_site, 'addFields_MultisiteErrors'), 1, 1); // Line 983 user-reg-aide-multisite.php (Params: array $errors)
-
-			// // // add checks for extra fields in the registration form
-			// //add_action('validate_user_signup', array(&$multi_site, 'ms_validate_user_signup'), 0, 0); // !!!!!!!!!!!!!!!!! NOT USED !!!!!!!!!!!!!!!!!!!!
-			// add_filter('wpmu_validate_user_signup', array(&$multi_site, 'ms_filter_validate_user_signup'), 0, 1); // Line 119 user-reg-aide-multisite.php (Params: array $results)
-
-			// // Adds custom messages to signup finished page 			
-			// add_action('signup_finished', array(&$multi_site, 'ms_signup_finished')); // Line 233 user-reg-aide-multisite.php
-
-			// // add extra fields to wp_signups waiting for confirmation
-			// add_filter('add_signup_meta', array(&$multi_site, 'signup_meta_extra_fields'), 0, 1); // Line 532 user-reg-aide-multisite.php (Params: array $meta)
-			// add_action('wpmu_signup_user', array(&$multi_site, 'ms_wpmu_signup_user'), 0, 3); // Line 267 user-reg-aide-multisite.php (Params: string $user, string $user_email,  array $meta)
-						
-			// // // add update engine for extra fields to user's registration (user only)
-			// add_action('wpmu_activate_user', array(&$multi_site, 'activate_mu_user'), 0, 3);  // Line 610 user-reg-aide-multisite.php (Params: int $user_id, string $password, array $meta1)
-			
-			// // Adds my own actions for mutlisite signups since WordPress multisite actions don't seem to be working correctly
-			// add_action('ms_activate_user', array(&$multi_site, 'activate_mu_user'), 0, 3);  // Line 610 user-reg-aide-multisite.php (Params: int $user_id, string $password, array $meta1)
-			// add_action('ms_instant_activation', array(&$multi_site, 'multisite_activateSignup'), 0, 1);	// Line 893 user-reg-aide-multisite.php (Params: string $key)			
-			
-			// // filters for adding fields to user email notification
-			// add_filter('wpmu_signup_user_notification_email', array(&$mailer, 'signup_user_notification_email'), 0, 4 ); // Line 279 user-reg-aide-mailer.php (Params: string $link, string $user, string $user_email, string $key
-			
-			// add_filter('wpmu_signup_user_notification_subject', array(&$mailer, 'ms_signup_user_notification_subject'), 0, 4); // Line 38 user-reg-aide-mailer.php (Params: string $user, string $user_email, string $key, array $meta) !!!!!!!!!!!!!!!!!!!!!!CHECK ON PARAMS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			
-			// add_filter('update_welcome_user_subject', array(&$mailer, 'ms_welcome_user_notification_subject'), 0, 1); // Line 63 user-reg-aide-mailer.php (Params: string $subject)
-			
-			// add_filter('update_welcome_user_email', array(&$mailer, 'ms_welcome_user_notice'), 0, 4); // Line 86  user-reg-aide-mailer.php (Params: string $welcome_email, int $user_id, string $password, array $meta)
-			
-		// }
 		
 		// Checking options have been loaded
 		add_action('init' , array(&$this, 'check_default_options' )); // Line 400 &$this
+		
+		// new custom actions 7/28/14 for new views
+		$display_name = new URA_DISPLAY_NAME();
+		$styles = new URA_STYLESHEET();
+		add_action( 'change_display_name_view', array( &$display_name, 'display_name_options' ) );
+		add_action( 'display_name_view', array( &$display_name, 'user_display_name_view' ) );add_action( 'stylesheet_settings_view', array( &$styles, 'settings_options_page_view' ) );
+		add_action( 'style_view', array( &$styles, 'custom_style_view' ) );		
+		unset( $display_name, $styles );
+		add_action( 'start_wrapper', array( &$actions, 'start_wp_wrapper' ), 10, 5 );
+		add_action( 'end_wrapper', array( &$actions, 'end_wp_wrapper' ), 10, 0 );
+		add_action( 'start_mini_wrap', array( &$actions, 'start_mini_wp_wrapper' ), 10, 1 );
+		add_action( 'end_mini_wrap', array( &$actions, 'end_mini_wp_wrapper' ), 10, 0 );
+		unset( $actions );
+		// Enqueues color picker for stylesheet settings page
+		add_action( 'admin_enqueue_scripts', array( &$this, 'my_style_color_function' ) ); // &$this line 764
+		
 	}
 		
 	// ----------------------------------------     Installation - Setup Functions     ----------------------------------------
@@ -381,6 +355,43 @@ class CSDS_USER_REG_AIDE
 		
 		$plugin_path = plugin_basename(dirname( __FILE__) .'/languages');
 		load_plugin_textdomain('csds_userRegAide', false, $plugin_path );
+	}
+	
+	/**
+	 * Checks and verifies options have been loaded
+	 * @since 1.4.0.0
+	 * @handles filter 'admin_footer_text' line 291 &$this
+	 * @access private
+	 * @author Brian Novotny
+	 * @website http://creative-software-design-solutions.com
+	*/
+	
+	function remove_admins_footer(){
+		$link = 'Powered By: <a href="http://creative-software-design-solutions.com/">Creative Software Design Solutions</a>';
+		if( isset($_GET['page']) && $_GET['page'] == 'user-registration-aide' ){
+			echo '';
+			//echo $link;
+		}
+		
+		if( isset($_GET['page']) && $_GET['page'] == 'edit-new-fields' ){
+			echo '';
+			//echo $link;
+		}
+		
+		if( isset($_GET['page']) && $_GET['page'] == 'registration-form-options' ){
+			echo '';
+			//echo $link;
+		}
+		
+		if( isset($_GET['page']) && $_GET['page'] == 'registration-form-css-options' ){
+			echo '';
+			//echo $link;
+		}
+		
+		if( isset($_GET['page']) && $_GET['page'] == 'custom-options' ){
+			echo '';
+			//echo $link;
+		}
 	}
 	
 	/**
@@ -603,7 +614,7 @@ class CSDS_USER_REG_AIDE
 	 * 
 	 *
 	 * @since 1.3.0
-	 * @updated 1.3.0
+	 * @updated 1.4.0.0
 	 * @Filters 'plugin_action_links' line 228 &$this (Priority: 10 - Params: 2)
 	 *
 	 * @param array $links Array of links for admin plugins page links for all plugins
@@ -621,7 +632,8 @@ class CSDS_USER_REG_AIDE
 			$plugin_settings .= '<ul><li><a href="admin.php?page=user-registration-aide">'.__('Registration Fields', 'csds_userRegAide').'</a></li>';
 			$plugin_settings .= '<li><a href="admin.php?page=edit-new-fields">'.__('Edit New Fields', 'csds_userRegAide').'</a></li>';
 			$plugin_settings .= '<li><a href="admin.php?page=registration-form-css-options">'.__('Registration Form Messages & CSS Options', 'csds_userRegAide').'</a></li>';
-			$plugin_settings .= '<li><a href="admin.php?page=registration-form-options">'.__('Registration Form Options', 'csds_userRegAide').'</a></li></ul></li></ul>';
+			$plugin_settings .= '<li><a href="admin.php?page=registration-form-options">'.__('Registration Form Options', 'csds_userRegAide').'</a></li>';
+			$plugin_settings .= '<li><a href="admin.php?page=custom-options">'.__('Custom Options', 'csds_userRegAide').'</a></li></ul></li></ul>';
 			array_unshift($links, $plugin_settings);
 		}
 		return $links;
@@ -655,7 +667,7 @@ class CSDS_USER_REG_AIDE
 	 *
 	 * @since 1.2.0
 	 * @updated 1.3.0
-	 * @handles action 'admin_menu' line 244 &$this and handles action 'admin_menu' for multisite line 250 &$this
+	 * @handles action 'admin_menu' line 229 
 	 * @access private
 	 * @author Brian Novotny
 	 * @website http://creative-software-design-solutions.com
@@ -676,7 +688,7 @@ class CSDS_USER_REG_AIDE
 	 *
 	 * @since 1.3.0
 	 * @updated 1.3.0
-	 * @handles action 'admin_menu' line 245 &$this and handles action 'admin_menu' for multisite line 251 &$this
+	 * @handles action 'admin_menu' line 231 
 	 * @access private
 	 * @author Brian Novotny
 	 * @website http://creative-software-design-solutions.com
@@ -698,7 +710,7 @@ class CSDS_USER_REG_AIDE
 	 *
 	 * @since 1.1.0
 	 * @updated 1.3.0
-	 * @handles action 'admin_menu' line 243 &$this and action 'admin_menu' for multisite line 249 &$this
+	 * @handles action 'admin_menu' line 233 &$this 
 	 * @access private
 	 * @author Brian Novotny
 	 * @website http://creative-software-design-solutions.com
@@ -708,6 +720,27 @@ class CSDS_USER_REG_AIDE
 		$new_fields = new URA_NEW_FIELDS();
 		if(function_exists('add_submenu_page')){
 			$page = add_submenu_page('user-registration-aide',__('Edit New Fields', 'csds_userRegAide'), __('Edit New Fields', 'csds_userRegAide'), 'manage_options', 'edit-new-fields', array( &$new_fields, 'csds_userRegAide_editNewFields' ));  // Line 46 &$new_fields
+		}
+		
+		add_action('admin_print_styles-'.$page, array(&$this, 'csds_userRegAide_enqueueMyStyles')); // Line 795 &$this
+		
+	}
+	
+	/**
+	 * Add the Add-Edit New Fields management page to the user settings bar
+	 *
+	 * @since 1.4.0.0
+	 * @updated 1.4.0.0
+	 * @handles action 'admin_menu' line 235
+	 * @access private
+	 * @author Brian Novotny
+	 * @website http://creative-software-design-solutions.com
+	*/
+
+	function csds_userRegAide_customOptionsPage(){
+		$custom_options = new URA_CUSTOM_OPTIONS();
+		if(function_exists('add_submenu_page')){
+			$page = add_submenu_page('user-registration-aide',__('Custom Options', 'csds_userRegAide'), __('Custom Options', 'csds_userRegAide'), 'manage_options', 'custom-options', array( &$custom_options, 'custom_options_views' ));  // Line 46 &$new_fields
 		}
 		
 		add_action('admin_print_styles-'.$page, array(&$this, 'csds_userRegAide_enqueueMyStyles')); // Line 795 &$this
@@ -772,7 +805,7 @@ class CSDS_USER_REG_AIDE
 	*/
 		
 	function csds_userRegAide_stylesheet(){
-		wp_register_style('user_regAide_style', plugins_url('css/user-reg-aide-style.css', __FILE__));
+		wp_register_style('user_regAide_style', plugins_url('css/user-reg-aide-style.php', __FILE__));
 		wp_register_style('user_regAide_menu_style', plugins_url('css/wp-admin-menu-stylesheet.css', __FILE__));
 		wp_register_style('user_regAide_admin_style', plugins_url('css/csds_ura_only_stylesheet.css', __FILE__));
 		wp_register_style('user_regAide_lost_pass_style', plugins_url('css/regist_login_stylesheet.css', __FILE__));
@@ -790,6 +823,22 @@ class CSDS_USER_REG_AIDE
 	function csds_userRegAide_enqueueMyStyles(){
 		wp_enqueue_style('user_regAide_style');
 	}
+	
+	/* Enqueues color picker for stylesheet settings page custom stylesheet settings
+	 * @since 1.4.0.0
+	 * @updated 1.4.0.0
+	 * @handles action 'admin_enqueue_scripts' &$this line 302
+	 * @access private
+	 * @author Brian Novotny
+	 * @website http://creative-software-design-solutions.com
+	*/
+	function my_style_color_function(){
+	
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_script( 'wp-color-picker' );
+		
+	}
+		
 	
 	// ----------------------------------------     Admin User Table Functions     ----------------------------------------
 		
@@ -918,16 +967,19 @@ class CSDS_USER_REG_AIDE
 	 * @website http://creative-software-design-solutions.com
 	*/
 	
-	function remove_default_password_nag($user_id) {
+	function remove_default_password_nag( $user_id ) {
 		global $user_id;
-		$options = get_option('csds_userRegAide_Options');
-		if($options['user_password'] == "1"){
-			delete_user_setting('default_password_nag', $user_id);
-			update_user_option($user_id, 'default_password_nag', false, true);
+		$options = get_option( 'csds_userRegAide_Options' );
+		$password_nag = (int) 0;
+		if( $options['user_password'] == 1 ){
+			delete_user_setting( 'default_password_nag', $user_id );
+			update_user_option( $user_id, 'default_password_nag', false, true );
+			$password_nag = 1;
 		}else{
 			update_user_option( $user_id, 'default_password_nag', true, true ); //Set up the Password change nag.
+			$password_nag = 0;
 		}
-		return;
+		return $password_nag;
 	}
 	
 	// ----------------------------------------     Admin Page Create New User Additional Fields Functions     ----------------------------------------

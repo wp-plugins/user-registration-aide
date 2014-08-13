@@ -2,26 +2,14 @@
 /**
  * User Registration Aide - Custom CSS Functions For Registration - Login Pages Custom Styling
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.7.4
+ * Version: 1.3.7.5
  * Since Version 1.3.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
 
-//For Debugging and Testing Purposes ------------
-
-
-
-// ----------------------------------------------
 /*
-require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-require_once ("user-reg-aide-admin.php");
-require_once (URA_PLUGIN_PATH."user-registration-aide.php");
-require_once ("user-reg-aide-newFields.php");
-require_once ("user-reg-aide-regForm.php");
-*/
-/*
- * Class added for better functionality
+ * URA CUSTOM CSS Adds Styles and Scripts to Login/Registration Forms
  *
  * @category Class
  * @since 1.3.0
@@ -118,8 +106,16 @@ class URA_CUSTOM_CSS
 		$page_color = $options['reg_form_page_color'];
 		
 		if ($show_logo == "1"){
-			echo '<style type="text/css">body.login div#login h1 a { background-image:url('.esc_url($logo_url).') !important; background-size: contain; width: 100%; } </style>';
+			if ( function_exists( 'theme_my_login' ) ) {
+				echo '<style type="text/css">div.site-content header.entry-header h1.entry-title a { background-image:url('.esc_url($logo_url).') !important; background-size: contain; width: 100%; } </style>';
+				echo '<style type="text/css">header.entry-header a { background-image:url('.esc_url($logo_url).') !important; background-size: contain; width: 100%; } </style>';
+				echo '<style>h1.entry-title a { background-image:url('.esc_url($logo_url).') !important; background-size: contain; width: 100%; } </style>';
+			}else{
+				echo '<style type="text/css">body.login div#login h1 a { background-image:url('.esc_url($logo_url).') !important; background-size: contain; width: 100%; } </style>';
+			}
 		}
+		
+		
 		
 		if($show_background_image =="1" && !empty($background_image)){
 			echo '<style type="text/css">#loginform{background:url('.$background_image.') no-repeat center;padding-top:30px;font:11px "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; } </style>';
@@ -184,37 +180,16 @@ class URA_CUSTOM_CSS
 	
 	function csds_userRegAide_Password_Header(){
 		
-		global $wpdb;
 		$options = get_option('csds_userRegAide_Options');
 			
-		$csds_userRegAide_registrationFields = array();
-		$csds_userRegAide_registrationFields = get_option('csds_userRegAide_registrationFields');
-		$user_login = '';
-		$user_email = '';
 		$css = CSS_PATH."user-reg-aide-style.css";
-		//$ura_ps_js = JS_PATH."password_strength_meter.js";
-		//$ura_psm_mine_js = JS_PATH."pass-strength-meter.mine.js";
-		$ura_ps_js = admin_url()."password_strength_meter.js";
-		$ura_psm_mine_js = admin_url()."pass-strength-meter.min.js";
+		
 		$wp_pswrd_strength = admin_url().'js/user-profile.js';
 		$wp_admin_psm_js = admin_url().'js/password-strength-meter.js';
 		$wp_incl_jq = includes_url().'js/jquery/jquery.js';
 		$jq_color = JS_PATH."jquery.color.js";
 		$jq_color_min = JS_PATH."jquery.color.min.js";
-		$lp_js = JS_PATH."submit-button.js";
-		$lost_password_js = JS_PATH."lost-passwrd-form.js";
-		$ajaxurl = admin_url('admin-ajax.php');
-		
-		
-		if($options['add_security_question'] == "1"){
-			?>
-			<script type="text/javascript">
-			var ajaxurl = "<?php echo admin_url( 'admin-ajax.php' ); ?>"
-			</script>
-			<?php
-		}
-		
-		
+				
 		if($options['user_password'] == "1"){
 			wp_register_script("jquery", $wp_incl_jq, false);
 			wp_enqueue_script('jquery');
@@ -228,22 +203,9 @@ class URA_CUSTOM_CSS
 			wp_register_style("user-reg-aide-style", $css, false, false);
 			wp_enqueue_style('user-reg-aide-style');
 			
-			//wp_register_script("passstrength-calculator", $ura_psm_mine_js, array("pass-strength-meter"), false);
-			//wp_enqueue_script('passstrength-calculator');
-			
-			//wp_register_script("pass-strength-meter", $ura_ps_js, array("password-strength-meter"), false);
-			//wp_enqueue_script('pass-strength-meter');
-			//wp_enqueue_script('jquery');
             wp_enqueue_script('password-strength-meter');
             wp_enqueue_script('user-profile');
-			
-			//wp_register_script('csds_userRegAide_LostPasswordFormAjax', $lost_password_js, array('jquery'));
-			//wp_enqueue_script('csds_userRegAide_LostPasswordFormAjax');
-			//wp_localize_script('csds_userRegAide_LostPasswordFormAjax', 'csds_userRegAide_ajax_vars', array('csds_ura_lost_password_ajax_nonce' => wp_create_nonce('csds_ura_lost_password_ajax_nonce')));
-			
-			
-			
-			
+				
 		}else{
 		
 		}

@@ -6,7 +6,7 @@ Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registr
 Tags: user, registration, field, register, Facebook, extra fields, profile, anti-spam, login message, login image, custom login css, admin, user management, membership, members
 Requires at least: 3.2
 Tested up to: 3.9.1
-Stable tag: 1.3.7.4
+Stable tag: 1.4.0.0
 
 Adds new fields and requites new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
@@ -25,9 +25,9 @@ When new users register, this plugin forces new users to register additional fie
 *	Jabber/Google Talk user name
 *	Password
 
-Wordpress User Registration Aide Force & Add New User Fields on Registration Form, as the title implies, allows you to require more fields when a new user registers. This not only can help to stop spammers, but it can also increase your user management capabilities and services for your user base. All the new fields that you add also are added to existing users profiles, but the users will have to fill them out of course, but any new users will be required to fill out these fields if they are included in the registration process.
+WordPress User Registration Aide Force & Add New User Fields on Registration Form, as the title implies, allows you to require more fields when a new user registers. This not only can help to stop spammers, but it can also increase your user management capabilities and services for your user base. All the new fields that you add also are added to existing users profiles, but the users will have to fill them out of course, but any new users will be required to fill out these fields if they are included in the registration process.
 
-Another important option is that you can also add new fields to the users profile page but not require them for registration, so you can increase you user management capabilities. This is an exciting new feature for Webmasters that wish to increase contact options, communications, and information obtained from your user base.
+Another important option is that you can also add new fields to the users profile page but not require them for registration, so you can increase you user management capabilities. This is an exciting new feature for Web-masters that wish to increase contact options, communications, and information obtained from your user base.
 
 Plugin Features:
 
@@ -71,7 +71,7 @@ To configure what fields are required for new users to register an account, logi
 
 Add Additional Fields to User Registration Form Option:
 
-This section includes a drop down box with all the existing fields in the WordPress profile, except bio, and all the additional new fields that you add, if any. None of them will show up on the registration form until you click the field you want to add to the registration form with your mouse.
+This section includes a drop down box with all the existing fields in the WordPress profile, and all the additional new fields that you add, if any. None of them will show up on the registration form until you click the field you want to add to the registration form with your mouse. You can select multiple fields here by holding down the control button (CTRL) while clicking on the fields of your choice to add to the registration form.
 
 Read more: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/#ixzz22CEi4lRR
 
@@ -97,6 +97,18 @@ Then, if you don't know where it is the registration form is on the login form, 
 6. Admin Page 4 Registration Form Messages & CSS Options
 
 == Changelog ==
+
+1.4.0.0
+
+a) added option to change display names for users by select role or all roles and choice of fields
+
+b) added custom css options for those that find the interface not to their liking
+
+c) changed registration form Bio field so that it will now be a text area instead of a text box input
+
+d) deleted some old code that was not needed any more and cluttering up files
+
+e) make some new adjustments to account for Theme My Login Plugin
 
 1.3.7.4
 

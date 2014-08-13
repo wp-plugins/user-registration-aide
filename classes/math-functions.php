@@ -2,21 +2,15 @@
 /**
  * User Registration Aide - Math Functions
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.7.4
+ * Version: 1.3.7.5
  * Since Version 1.3.6
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
 
-require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-require_once ("user-reg-aide-admin.php");
-require_once (URA_PLUGIN_PATH."user-registration-aide.php");
-require_once ("user-reg-aide-newFields.php");
-require_once ("user-reg-aide-regForm.php");
-require_once ("user-reg-aide-registrationForm.php");
 
 /**
- * Class added for better functionality
+ * URA MATH FUNCTIONS Class for handling Anti-Spammer Math Problems
  *
  * @category Class
  * @since 1.3.6
@@ -26,17 +20,17 @@ require_once ("user-reg-aide-registrationForm.php");
  * @website http://creative-software-design-solutions.com
 */
 
-class URA_Math_Functions{
+class URA_MATH_FUNCTIONS{
 
 	
 	
 	
 
 	public function __construct() {
-		$this->URA_Math_Functions();
+		$this->URA_MATH_FUNCTIONS();
 	}
 	
-	public function URA_Math_Functions(){
+	public function URA_MATH_FUNCTIONS(){
 	
 		
 		
@@ -47,7 +41,7 @@ class URA_Math_Functions{
 	 * @since 1.3.0
 	 * @handles anti-spam on registration form if user checks anti-spammer option (line 230 &$this (add_fields))
 	 * @returns array $ran_numbs
-	 * @access private
+	 * @access public
 	 * @author Brian Novotny
 	 * @website http://creative-software-design-solutions.com
 	*/
@@ -91,6 +85,7 @@ class URA_Math_Functions{
 			$div = false;
 		}
 		
+		//random number variable range array
 		$ran_numbs = array();
 		$a1 = rand(1,50);
 		$a2 = rand(1,50);
@@ -123,20 +118,49 @@ class URA_Math_Functions{
 		}elseif($o == 4 && $div == true){
 			$ran_numbs = $this->division($d1, $d2);
 		}
+		unset( $options );
 		// $temp_answer = $ran_numbs['first'] .' ' .$ran_numbs['operator'].' ' .$ran_numbs['second'];
 		// $math_answer = round($temp_answer, 1);
 		return $ran_numbs;
 		
 	}
 	
+	/**
+	 * Handles addition problems for anti-spam math problem
+	 *
+	 * @category Class
+	 * @since 1.3.6
+	 * @updated 1.3.6
+	 * @access public
+	 * @accepts int $a1, $a2
+	 * returns array $ran_numbs includes operator, first and second numbers  ($a1, $a2)
+	 * @author Brian Novotny
+	 * @website http://creative-software-design-solutions.com
+	*/
+	
 	function addition($a1, $a2){
+		$ran_numbs = array();
 		$ran_numbs['operator'] = '+';
 		$ran_numbs['first'] = $a1;
 		$ran_numbs['second'] = $a2;
 		return $ran_numbs;
 	}
 	
+	/**
+	 * Handles subtraction problems for anti-spam math problem
+	 *
+	 * @category Class
+	 * @since 1.3.6
+	 * @updated 1.3.6
+	 * @access public
+	 * @accepts int $s1, $s2
+	 * returns array $ran_numbs includes operator, first and second numbers ($s1, $s2)
+	 * @author Brian Novotny
+	 * @website http://creative-software-design-solutions.com
+	*/
+	
 	function subtraction($s1, $s2){
+		$ran_numbs = array();
 		$ran_numbs['operator'] = '-';
 		if($s2 < $s1){
 			$ran_numbs['first'] = $s1;
@@ -148,14 +172,42 @@ class URA_Math_Functions{
 		return $ran_numbs;
 	}
 	
+	/**
+	 * Handles multiplication problems for anti-spam math problem
+	 *
+	 * @category Class
+	 * @since 1.3.6
+	 * @updated 1.3.6
+	 * @access public
+	 * @accepts int $m1, $m2
+	 * returns array $ran_numbs includes operator, first and second numbers ($m1, $m2)
+	 * @author Brian Novotny
+	 * @website http://creative-software-design-solutions.com
+	*/
+	
 	function multiplication($m1, $m2){
+		$ran_numbs = array();
 		$ran_numbs['operator'] = '*';
 		$ran_numbs['first'] = $m1;
 		$ran_numbs['second'] = $m2;
 		return $ran_numbs;
 	}
 	
+	/**
+	 * Handles division problems for anti-spam math problem
+	 *
+	 * @category Class
+	 * @since 1.3.6
+	 * @updated 1.3.6
+	 * @access public
+	 * @accepts int $d1, $d2
+	 * returns array $ran_numbs includes operator, first and second numbers ($d1, $d2)
+	 * @author Brian Novotny
+	 * @website http://creative-software-design-solutions.com
+	*/
+	
 	function division($d1, $d2){
+		$ran_numbs = array();
 		$ran_numbs['operator'] = '/';
 		$ran_numbs['first'] = $d1;
 		$ran_numbs['second'] = $d2;
