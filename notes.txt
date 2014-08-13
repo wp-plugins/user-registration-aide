@@ -1,0 +1,1 @@
+updated 4-27-14 to 1.3.7 compat with wp 3.9
