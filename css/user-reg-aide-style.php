@@ -24,6 +24,12 @@ header("Content-type: text/css");
  * @website http://creative-software-design-solutions.com
 */
 ?>
+
+.wp-toolbar
+{
+margin-top:-20px;
+}
+
 table.style
 {
 width:95%;
