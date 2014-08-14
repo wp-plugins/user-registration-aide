@@ -6,7 +6,7 @@ Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registr
 Tags: user, registration, field, register, Facebook, extra fields, profile, anti-spam, login message, login image, custom login css, admin, user management, membership, members
 Requires at least: 3.2
 Tested up to: 3.9.2
-Stable tag: 1.4.0.1
+Stable tag: 1.4.0.2
 
 Adds new fields and requites new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
@@ -98,9 +98,13 @@ Then, if you don't know where it is the registration form is on the login form, 
 
 == Changelog ==
 
+1.4.0.2
+
+a) svn bug
+
 1.4.0.1
 
-a) fixed math class bug
+a) math problem bug
 
 1.4.0.0
 
