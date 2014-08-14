@@ -5,8 +5,8 @@ Author URI: http://creative-software-design-solutions.com/
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Tags: user, registration, field, register, Facebook, extra fields, profile, anti-spam, login message, login image, custom login css, admin, user management, membership, members
 Requires at least: 3.2
-Tested up to: 3.9.1
-Stable tag: 1.4.0.0
+Tested up to: 3.9.2
+Stable tag: 1.4.0.1
 
 Adds new fields and requites new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
@@ -97,6 +97,10 @@ Then, if you don't know where it is the registration form is on the login form, 
 6. Admin Page 4 Registration Form Messages & CSS Options
 
 == Changelog ==
+
+1.4.0.1
+
+a) fixed math class bug
 
 1.4.0.0
 

@@ -17,8 +17,8 @@ header("Content-type: text/css");
 
 /**
  * Custom CSS added for admin option pages interface displays
- * @since 1.3.7.5
- * @updated 1.3.7.5
+ * @since 1.4.0.0
+ * @updated 1.4.0.1
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
