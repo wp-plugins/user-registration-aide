@@ -2,7 +2,7 @@
 
 //For Debugging and Testing Purposes ------------
 
-
+// checked and updated 1.3.7.5
 
 // ----------------------------------------------
 
@@ -11,7 +11,7 @@
 	if(!defined('ABSPATH') && !defined('WP_UNINSTALL_PLUGIN')){
 		exit('Something Bad Happened');
 	}else{
-		
+		// some options may not exist any more but including for those who don't update often
 		delete_option('csds_userRegAideFields');
 		delete_option('csds_userRegAide_knownFields');
 		delete_option('csds_userRegAide_fieldOrder');

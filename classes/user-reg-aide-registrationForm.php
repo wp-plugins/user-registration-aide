@@ -2,7 +2,7 @@
 /**
  * User Registration Aide - Registration Form Functions
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.3.7.4
+ * Version: 1.4.0.0
  * Since Version 1.3.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -14,19 +14,12 @@
 
 // ----------------------------------------------
 
-require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-require_once ("user-reg-aide-admin.php");
-require_once (URA_PLUGIN_PATH."user-registration-aide.php");
-require_once ("user-reg-aide-newFields.php");
-require_once ("user-reg-aide-regForm.php");
-require_once ("math-functions.php");
-
 /**
  * Class added for better functionality
  *
  * @category Class
  * @since 1.3.0
- * @updated 1.3.6
+ * @updated 1.4.0.0
  * @access private
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
@@ -51,7 +44,7 @@ class URA_REGISTRATION_FORM
 	/**
 	 * Add fields to the new user registration page that the user must fill out when they register
 	 * @since 1.0.0
-	 * @updated 1.3.6
+	 * @updated 1.4.0.0
 	 * @handles action 'register_form' line 217 user-registration-aide.php
 	 * @access private
 	 * @author Brian Novotny
@@ -59,8 +52,6 @@ class URA_REGISTRATION_FORM
 	*/
 
 	function csds_userRegAide_addFields(){
-		
-		
 		$fieldKey = '';
 		$fieldName = '';
 		$regFields = array();
@@ -74,14 +65,37 @@ class URA_REGISTRATION_FORM
 						foreach($_POST as $id => $value){
 							if($id == $fieldKey){
 								if(!is_plugin_active('theme-my-login/theme-my-login.php')){ // Compensates for theme my login bug
-									if($fieldKey != 'user_pass'){ // Adding fields to form other than password fields
+									if( $fieldKey == 'user_pass' ){ // adding password fields to form
+										?>
+										<p>
+										<label for="pass1"><?php _e('Password*:', 'csds_userRegAide');?><br />
+										<input autocomplete="off" name="pass1" id="pass1" value="" type="password" /></label></p>
+										<br />
+										<p>
+										<label><?php _e('Confirm Password*:', 'csds_userRegAide');?><br />
+										<input autocomplete="off" name="pass2" id="pass2" value="" type="password" /></label></p>
+										<div id="pass-strength-result"><?php _e('Strength indicator'); ?></div>
+										<p class="description indicator-hint"><?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).'); ?></p>
+										<br class="clear" />
+										<?php
+									}elseif( $fieldKey == 'description' ){
+										?>
+										<p>
+										<label><?php _e($regFields[$fieldKey].'*:', 'csds_userRegAide') ?></label>
+										<br />
+										<textarea name="<?php echo $fieldKey; ?>" id="<?php echo $fieldKey; ?>" class="input" value="<?php echo esc_textarea( $value );?>" rows="5" style="font-size: 20px; width: 97%;	padding: 3px; margin-right: 6px;" ></textarea>
+										</p>
+										<?php
+									}else{
 										?>
 										<p>
 										<label><?php _e($regFields[$fieldKey].'*:', 'csds_userRegAide') ?><br />
 										<input autocomplete="on" type="text" name="<?php echo $fieldKey; ?>" id="<?php echo $fieldKey; ?>" class="input" value="<?php echo $value;?>" size="25" style="font-size: 20px; width: 97%;	padding: 3px; margin-right: 6px;" /></label>
 										</p>
 										<?php
-									}else{ // adding password fields to form
+									}
+								}else{
+									if( $fieldKey == 'user_pass' ){
 										?>
 										<p>
 										<label for="pass1"><?php _e('Password*:', 'csds_userRegAide');?><br />
@@ -94,27 +108,20 @@ class URA_REGISTRATION_FORM
 										<p class="description indicator-hint"><?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).'); ?></p>
 										<br class="clear" />
 										<?php
-									}
-								}else{
-									if($fieldKey != 'user_pass'){
+									}elseif( $fieldKey == 'description' ){
 										?>
 										<p>
-										<label><?php _e($regFields[$fieldKey].'*:', 'csds_userRegAide') ?><br />
-										<input autocomplete="on" type="text" name="<?php echo $fieldKey; ?>" id="<?php echo $fieldKey; ?>" class="input" value="" size="25" /></label>
+										<label><?php _e($regFields[$fieldKey].'*:', 'csds_userRegAide') ?></label>
+										<br />
+										<textarea name="<?php echo $fieldKey; ?>" id="<?php echo $fieldKey; ?>" class="input" value="<?php echo esc_textarea( $value );?>" rows="5" style="font-size: 20px; width: 97%;	padding: 3px; margin-right: 6px;" ></textarea>
 										</p>
 										<?php
 									}else{
 										?>
 										<p>
-										<label for="pass1"><?php _e('Password*:', 'csds_userRegAide');?><br />
-										<input autocomplete="off" name="pass1" id="pass1" value="" type="password" /></label></p>
-										<br />
-										<p>
-										<label><?php _e('Confirm Password*:', 'csds_userRegAide');?><br />
-										<input autocomplete="off" name="pass2" id="pass2" value="" type="password" /></label></p>
-										<div id="pass-strength-result"><?php _e('Strength indicator'); ?></div>
-										<p class="description indicator-hint"><?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).'); ?></p>
-										<br class="clear" />
+										<label><?php _e($regFields[$fieldKey].'*:', 'csds_userRegAide') ?><br />
+										<input autocomplete="on" type="text" name="<?php echo $fieldKey; ?>" id="<?php echo $fieldKey; ?>" class="input" value="" size="25" /></label>
+										</p>
 										<?php
 									}
 								}
@@ -122,14 +129,7 @@ class URA_REGISTRATION_FORM
 						}
 					}else{
 						if(!is_plugin_active('theme-my-login/theme-my-login.php')){ //compensates for theme my login bug
-							if($fieldKey != 'user_pass'){
-								?>
-								<p>
-								<label><?php _e($regFields[$fieldKey].'*:', 'csds_userRegAide') ?><br />
-								<input autocomplete="on" type="text" name="<?php echo $fieldKey; ?>" id="<?php echo $fieldKey; ?>" class="input" value="" size="25" style="font-size: 20px; width: 97%;	padding: 3px; margin-right: 6px;" /></label>
-								</p>
-							<?php 
-							}else{
+							if( $fieldKey == 'user_pass' ){
 								?>
 								<p>
 								<label for="pass1"><?php _e('Password*:', 'csds_userRegAide');?><br />
@@ -142,17 +142,24 @@ class URA_REGISTRATION_FORM
 								<p class="description indicator-hint"><?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).'); ?></p>
 								<br class="clear" />
 								<?php
-							}
-						}else{
-							if($fieldKey != 'user_pass'){
+							}elseif( $fieldKey == 'description' ){
+								?>
+								<p>
+								<label><?php _e($regFields[$fieldKey].'*:', 'csds_userRegAide') ?></label>
+								<br />
+								<textarea name="<?php echo $fieldKey; ?>" id="<?php echo $fieldKey; ?>" class="input" value="<?php echo esc_textarea( $value );?>" rows="5" style="font-size: 20px; width: 97%;	padding: 3px; margin-right: 6px;" ></textarea>
+								</p>
+								<?php
+							}else{
 								?>
 								<p>
 								<label><?php _e($regFields[$fieldKey].'*:', 'csds_userRegAide') ?><br />
 								<input autocomplete="on" type="text" name="<?php echo $fieldKey; ?>" id="<?php echo $fieldKey; ?>" class="input" value="" size="25" /></label>
 								</p>
-							<?php 
-								
-							}else{
+								<?php
+							}
+						}else{
+							if( $fieldKey == 'user_pass' ){
 								?>
 								<p>
 								<label for="pass1"><?php _e('Password*:', 'csds_userRegAide');?><br />
@@ -164,6 +171,21 @@ class URA_REGISTRATION_FORM
 								<div id="pass-strength-result"><?php _e('Strength indicator'); ?></div>
 								<p class="description indicator-hint"><?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).'); ?></p>
 								<br class="clear" />
+								<?php
+							}elseif( $fieldKey == 'description' ){
+								?>
+								<p>
+								<label><?php _e($regFields[$fieldKey].'*:', 'csds_userRegAide') ?></label>
+								<br />
+								<textarea name="<?php echo $fieldKey; ?>" id="<?php echo $fieldKey; ?>" class="input" value="<?php echo esc_textarea( $value );?>" rows="5" style="font-size: 20px; width: 97%;	padding: 3px; margin-right: 6px;" ></textarea>
+								</p>
+								<?php
+							}else{
+								?>
+								<p>
+								<label><?php _e($regFields[$fieldKey].'*:', 'csds_userRegAide') ?><br />
+								<input autocomplete="on" type="text" name="<?php echo $fieldKey; ?>" id="<?php echo $fieldKey; ?>" class="input" value="" size="25" /></label>
+								</p>
 								<?php
 							}
 						}
@@ -209,7 +231,7 @@ class URA_REGISTRATION_FORM
 				
 		// For anti-spammer attempts to prevent bots from registering
 		if($options['activate_anti_spam'] == "1"){
-			$math = new URA_Math_Functions();
+			$math = new URA_MATH_FUNCTIONS();
 			$numbs = array();
 			$numbs = $math->random_numbers();?>
 			<label><?php _e('*Please complete the following arithmatic problem to prove you are human!*:', 'csds_userRegAide') ?><br />
@@ -300,7 +322,7 @@ class URA_REGISTRATION_FORM
 							//$addData = $wpdb->prepare("UPDATE $wpdb->users SET user_pass = md5('$newPass') WHERE ID = $user_id");
 							$addData = $wpdb->prepare("UPDATE $wpdb->users SET user_pass = %s WHERE ID = %d", $newpass, $user_id);
 							$wpdb->query($addData);
-							$ura->remove_default_password_nag($user_id);  // to  remove password nag from new users who fill out own password if this bullsit even works wordpress is sucky this way line 926 &$ura
+							//$ura->remove_default_password_nag($user_id);  // to  remove password nag from new users who fill out own password if this bullsit even works wordpress is sucky this way line 926 &$ura
 						}elseif($thisValue == "security_question"){
 							$newValue = apply_filters('pre_user_description', $_POST[$thisValue]);
 						}elseif($thisValue == "security_answer"){
@@ -317,6 +339,7 @@ class URA_REGISTRATION_FORM
 								update_user_meta( $user_id, new_user_agreed, "Yes");
 							}
 						}
+						// for future use maybe???----------------------
 						if($options['add_security_question'] == "1"){
 							if($_POST['security_question'] != 'select'){
 								$newValue = apply_filters('pre_user_description', $_POST['security_question']);
@@ -327,6 +350,39 @@ class URA_REGISTRATION_FORM
 								update_user_meta( $user_id, 'security_answer', $newValue);
 							}
 						}
+						// end security question
+						
+						// updates custom display name fields as needed
+						if( $options['custom_display_name'] == '1' ){
+							
+							$current_role = get_option('default_role');
+							$selRole = $options['display_name_role'];
+							$selField = $options['custom_display_field'];
+							foreach( $selRole as $role_key => $role_value ){
+								if( $role_value == 'all_roles' || $role_value == $current_role ){
+									if( $selField == 'first_last_name' ){
+										$display_name = $_POST['first_name'].' '.$_POST['last_name'];
+										$add_display_name = $wpdb->prepare("UPDATE $wpdb->users SET display_name = %s WHERE ID = %d", $display_name, $user_id);
+										$wpdb->query( $add_display_name );
+									}elseif( $selField == 'last_first_name' ){
+										$display_name = $_POST['last_name'].' '.$_POST['first_name'];
+										$add_display_name = $wpdb->prepare("UPDATE $wpdb->users SET display_name = %s WHERE ID = %d", $display_name, $user_id);
+										$wpdb->query( $add_display_name );
+									}else{
+										$display_name = $_POST[$selField];
+										$add_display_name = $wpdb->prepare("UPDATE $wpdb->users SET display_name = %s WHERE ID = %d", $display_name, $user_id);
+										$wpdb->query( $add_display_name );
+									}
+								}
+							}
+							
+							$field = $_POST['user_login'];
+							if( !empty( $field ) ){
+								update_user_meta( $user_id, 'default_display_name', $field );
+							}
+							
+						}
+						
 					} // end if check for empty post
 				} // end foreach
 			}else{
