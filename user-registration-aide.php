@@ -48,7 +48,7 @@ require_once (CLASSES_PATH."user-reg-aide-registrationForm.php"); // Handles reg
 require_once (CLASSES_PATH."user-reg-aide-dashWidget.php"); // Handles the dashboard widget ** New 1.3.0
 require_once (CLASSES_PATH."user-reg-aide-actions.php"); // Handles recurring custom actions to eliminate redundancy
 require_once ( CLASSES_PATH."user-reg-aide-display-name.php" ); // new for changing display name for users
-require_once ( CLASSES_PATH."user-reg-aide-math-functions.php" ); // new for changing display name for users
+require_once ( CLASSES_PATH."math-functions.php" ); // new for changing display name for users
 
 require_once ( VIEWS_PATH."user-reg-aide-style-options.php" ); // for plugin style
 require_once ( VIEWS_PATH."user-reg-aide-custom-options.php" ); // for additional options
