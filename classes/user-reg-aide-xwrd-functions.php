@@ -2,7 +2,7 @@
 /**
  * User Registration Aide - Password Actions & Functions
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.5.0.0
+ * Version: 1.5.0.1
  * Since Version 1.5.0.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -347,7 +347,7 @@ class PASSWORD_FUNCTIONS
 	/**
 	 * View for password settings options page
 	 * @since 1.5.0.0
-	 * @updated 1.5.0.0
+	 * @updated 1.5.0.1
 	 * @access public
 	 *
 	 * @author Brian Novotny
@@ -357,7 +357,8 @@ class PASSWORD_FUNCTIONS
 	function password_settings_view() {
 		$options = get_option('csds_userRegAide_Options');
 		$span = array( 'regForm', 'Password Change Options:', 'csds_userRegAide' );
-			//do_action( 'start_mini_wrap', $span ); ?>		
+			do_action( 'end_mini_wrap' );
+			do_action( 'start_mini_wrap', $span ); ?>	
 				<table class="regForm" width="100%">
 				<tr> <?php // Password Change Options ?>
 					<td width="50%"><?php _e('Require Password Change After User Registers and Gets Password From Email: ', 'csds_userRegAide');?>
@@ -421,8 +422,8 @@ class PASSWORD_FUNCTIONS
 					
 				</tr>
 				<tr>
-					<td width="50%"><label for="xwrd_chg_url" title="<?php _e( 'Only Add The Distinct Page Permalink Please!!', 'csds_userRegAide' );?>"><?php _e('Password Change Shortcode Page URL: ', 'csds_userRegAide');?></label>/
-					<input type="text" name="xwrd_chg_url" id="xwrd_chg_url" title="<?php _e( 'Only Add The Distinct Page Permalink Please!! ( EXAMPLE: change-password ) No /( FORWARD SLASHES!!)', 'csds_userRegAide' );?>" value="<?php echo $options['xwrd_change_name']; ?>" />/<br/>
+					<td width="50%"><label for="xwrd_chg_url" title="<?php _e( 'Only Add The Distinct Page Name Please!! ( EXAMPLE: change-password for page titled Change Password) No /( FORWARD SLASHES!!)', 'csds_userRegAide' );?>"><?php _e('Password Change Shortcode Page Name: ', 'csds_userRegAide');?></label>/
+					<input type="text" name="xwrd_chg_url" id="xwrd_chg_url" title="<?php _e( 'Only Add The Distinct Page Name Please!! ( EXAMPLE: change-password for page titled Change Password) No /( FORWARD SLASHES!!)', 'csds_userRegAide' );?>" value="<?php echo $options['xwrd_change_name']; ?>" />/<br/>
 					</td>
 					
 					<?php // Password Change Post Title -- ?>

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: User Registration Aide\n"
-"POT-Creation-Date: 2014-09-16 14:13-0600\n"
-"PO-Revision-Date: 2014-09-16 14:13-0600\n"
+"POT-Creation-Date: 2014-09-16 16:25-0600\n"
+"PO-Revision-Date: 2014-09-16 16:26-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -256,11 +256,11 @@ msgstr ""
 #: classes/user-reg-aide-regFormCSSMessages.php:489
 #: classes/user-reg-aide-regFormCSSMessages.php:504
 #: classes/user-reg-aide-regFormCSSMessages.php:522
-#: classes/user-reg-aide-xwrd-functions.php:367
-#: classes/user-reg-aide-xwrd-functions.php:376
-#: classes/user-reg-aide-xwrd-functions.php:438
-#: classes/user-reg-aide-xwrd-functions.php:447
-#: classes/user-reg-aide-xwrd-functions.php:458
+#: classes/user-reg-aide-xwrd-functions.php:368
+#: classes/user-reg-aide-xwrd-functions.php:377
+#: classes/user-reg-aide-xwrd-functions.php:439
+#: classes/user-reg-aide-xwrd-functions.php:448
+#: classes/user-reg-aide-xwrd-functions.php:459
 msgid "Yes"
 msgstr ""
 
@@ -290,11 +290,11 @@ msgstr ""
 #: classes/user-reg-aide-regFormCSSMessages.php:492
 #: classes/user-reg-aide-regFormCSSMessages.php:507
 #: classes/user-reg-aide-regFormCSSMessages.php:525
-#: classes/user-reg-aide-xwrd-functions.php:370
-#: classes/user-reg-aide-xwrd-functions.php:379
-#: classes/user-reg-aide-xwrd-functions.php:441
-#: classes/user-reg-aide-xwrd-functions.php:450
-#: classes/user-reg-aide-xwrd-functions.php:461
+#: classes/user-reg-aide-xwrd-functions.php:371
+#: classes/user-reg-aide-xwrd-functions.php:380
+#: classes/user-reg-aide-xwrd-functions.php:442
+#: classes/user-reg-aide-xwrd-functions.php:451
+#: classes/user-reg-aide-xwrd-functions.php:462
 msgid "No"
 msgstr ""
 
@@ -1387,27 +1387,27 @@ msgid ""
 msgstr ""
 
 #: classes/user-reg-aide-registrationForm.php:450
-#: classes/user-reg-aide-xwrd-functions.php:637
+#: classes/user-reg-aide-xwrd-functions.php:638
 msgid "<strong>ERROR</strong>: Password length too short! Should be at least "
 msgstr ""
 
 #: classes/user-reg-aide-registrationForm.php:457
-#: classes/user-reg-aide-xwrd-functions.php:644
+#: classes/user-reg-aide-xwrd-functions.php:645
 msgid "<strong>ERROR</strong>: There is no number in your password!"
 msgstr ""
 
 #: classes/user-reg-aide-registrationForm.php:464
-#: classes/user-reg-aide-xwrd-functions.php:651
+#: classes/user-reg-aide-xwrd-functions.php:652
 msgid "<strong>ERROR</strong>: Password missing lower case letter!"
 msgstr ""
 
 #: classes/user-reg-aide-registrationForm.php:471
-#: classes/user-reg-aide-xwrd-functions.php:658
+#: classes/user-reg-aide-xwrd-functions.php:659
 msgid "<strong>ERROR</strong>: Password missing upper case letter!"
 msgstr ""
 
 #: classes/user-reg-aide-registrationForm.php:478
-#: classes/user-reg-aide-xwrd-functions.php:665
+#: classes/user-reg-aide-xwrd-functions.php:666
 msgid "<strong>ERROR</strong>: Password missing symbol!"
 msgstr ""
 
@@ -1484,46 +1484,46 @@ msgstr ""
 msgid "Log In"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:363
+#: classes/user-reg-aide-xwrd-functions.php:364
 msgid ""
 "Require Password Change After User Registers and Gets Password From Email: "
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:365
+#: classes/user-reg-aide-xwrd-functions.php:366
 msgid ""
 "Select this option to require new users who have registered for your site "
 "and received their Password from the default WordPress Email to change their "
 "password before logging in"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:368
+#: classes/user-reg-aide-xwrd-functions.php:369
 msgid ""
 "Select this option not to require new users to change their password before "
 "logging in"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:373
+#: classes/user-reg-aide-xwrd-functions.php:374
 msgid ""
 "Require Existing Users to Change Passwords After Specified Time Period: "
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:374
+#: classes/user-reg-aide-xwrd-functions.php:375
 msgid ""
 "Select this option to require current users to change passwords at selected "
 "intervals"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:377
+#: classes/user-reg-aide-xwrd-functions.php:378
 msgid ""
 "Select this option not to require current users to change passwords at "
 "selected intervals"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:384
+#: classes/user-reg-aide-xwrd-functions.php:385
 msgid "Maximum Time Allowed in Days Between Password Change Dates: "
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:385
+#: classes/user-reg-aide-xwrd-functions.php:386
 msgid ""
 "Enter the amount of time in days between users having to change their "
 "passwords, the defaults are every 30 days up to one year. It is good "
@@ -1531,17 +1531,17 @@ msgid ""
 "180 days!"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:386
+#: classes/user-reg-aide-xwrd-functions.php:387
 msgid ""
 "You can select the maximum time allowed in days here before users are "
 "required to change their passwords. Good security practices call for 180 days"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:404
+#: classes/user-reg-aide-xwrd-functions.php:405
 msgid "Maximum Password Changes Before Duplicates Allowed: "
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:405
+#: classes/user-reg-aide-xwrd-functions.php:406
 msgid ""
 "Enter the number of times checked for password duplicates before allowing a "
 "duplicate password. For instance, a user has changed password 6 times before "
@@ -1551,7 +1551,7 @@ msgid ""
 "over again making it easier to hack their accounts and your site!"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:406
+#: classes/user-reg-aide-xwrd-functions.php:407
 msgid ""
 "You can select the number of password changes allowed before a user can "
 "enter a duplicate password. Useful for those users that use the same "
@@ -1560,116 +1560,113 @@ msgid ""
 "addition to strong password strength requirements!"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:424
-msgid "Only Add The Distinct Page Permalink Please!!"
-msgstr ""
-
-#: classes/user-reg-aide-xwrd-functions.php:424
-msgid "Password Change Shortcode Page URL: "
+#: classes/user-reg-aide-xwrd-functions.php:425
+#: classes/user-reg-aide-xwrd-functions.php:426
+msgid ""
+"Only Add The Distinct Page Name Please!! ( EXAMPLE: change-password for page "
+"titled Change Password) No /( FORWARD SLASHES!!)"
 msgstr ""
 
 #: classes/user-reg-aide-xwrd-functions.php:425
-msgid ""
-"Only Add The Distinct Page Permalink Please!! ( EXAMPLE: change-password ) "
-"No /( FORWARD SLASHES!!)"
-msgstr ""
-
-#: classes/user-reg-aide-xwrd-functions.php:429
-msgid "Only Add The Distinct Page Title!!"
-msgstr ""
-
-#: classes/user-reg-aide-xwrd-functions.php:429
-msgid "Password Change Shortcode Page Title: "
+msgid "Password Change Shortcode Page Name: "
 msgstr ""
 
 #: classes/user-reg-aide-xwrd-functions.php:430
+msgid "Only Add The Distinct Page Title!!"
+msgstr ""
+
+#: classes/user-reg-aide-xwrd-functions.php:430
+msgid "Password Change Shortcode Page Title: "
+msgstr ""
+
+#: classes/user-reg-aide-xwrd-functions.php:431
 msgid ""
 "Only Add The Distinct Page Title Please!! (Change Password) No /(SLASHES!!)"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:435
+#: classes/user-reg-aide-xwrd-functions.php:436
 msgid "Requires SSL Certificate on Website Server To Use SSL!"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:435
+#: classes/user-reg-aide-xwrd-functions.php:436
 msgid "Use SSL(HTTPS://) Secure Page For Password Change Page: "
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:436
+#: classes/user-reg-aide-xwrd-functions.php:437
 msgid ""
 "Select this option to require SSL for Custom Password Change Page! NOTE: "
 "REQUIRES SSL CERTIFICATE ON WEBSITE!"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:439
+#: classes/user-reg-aide-xwrd-functions.php:440
 msgid ""
 "Select this option to not use SSL on Custom Password Change Page! No "
 "Certificate Required, Use This Option if YOu Have No SSL Certificate!"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:444
-#: classes/user-reg-aide-xwrd-functions.php:455
+#: classes/user-reg-aide-xwrd-functions.php:445
+#: classes/user-reg-aide-xwrd-functions.php:456
 msgid "This will not include Administrators!"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:444
+#: classes/user-reg-aide-xwrd-functions.php:445
 msgid "Allow Lost Password Reset for Non-Admins: "
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:445
+#: classes/user-reg-aide-xwrd-functions.php:446
 msgid ""
 "Select this option to allow users to reset passwords with the lost password "
 "link on login page"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:448
+#: classes/user-reg-aide-xwrd-functions.php:449
 msgid ""
 "Select this option to not allow users to reset passwords with the lost "
 "password link on login page"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:455
+#: classes/user-reg-aide-xwrd-functions.php:456
 msgid ""
 "Show Password Fields on Profile/User Edit Page<b> (NOTE: WILL NOT UTILIZE "
 "PASSWORD STRENGTH OR PASSWORD CHANGE REQUIREMENTS!): "
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:456
+#: classes/user-reg-aide-xwrd-functions.php:457
 msgid ""
 "Select this option to allow users to change passwords on the user profile/"
 "edit page. NOTE: Will not enforce password strength or password change "
 "requirements!!!"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:459
+#: classes/user-reg-aide-xwrd-functions.php:460
 msgid ""
 "Select this option to not allow users to change passwords user profile/edit "
 "page"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:467
+#: classes/user-reg-aide-xwrd-functions.php:468
 msgid "Update Password Change Options"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:616
+#: classes/user-reg-aide-xwrd-functions.php:617
 msgid "<strong>ERROR</strong>: Please Enter Your Password!"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:621
+#: classes/user-reg-aide-xwrd-functions.php:622
 msgid "<strong>ERROR</strong>: Please Confirm Your Password!"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:626
+#: classes/user-reg-aide-xwrd-functions.php:627
 msgid "<strong>ERROR</strong>: Password and Confirm Password do not Match!"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:630
+#: classes/user-reg-aide-xwrd-functions.php:631
 msgid ""
 "<strong>ERROR</strong>: Username and Password are the Same, They Must be "
 "Different!"
 msgstr ""
 
-#: classes/user-reg-aide-xwrd-functions.php:705
+#: classes/user-reg-aide-xwrd-functions.php:706
 msgid ""
 "<strong>ERROR</strong>: Please Change Your Password! This Password Matches A "
 "Previous Password!"
