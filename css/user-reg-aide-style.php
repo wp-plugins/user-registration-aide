@@ -24,10 +24,59 @@ header("Content-type: text/css");
  * @website http://creative-software-design-solutions.com
 */
 ?>
+/* Need for public version for some reason can't figure out yet to avoid whitespaces on top of body
+
+*/
 
 .wp-toolbar
 {
-margin-top:-20px;
+margin-top:-13px;
+}
+
+div.my-updated,
+div.my-error {
+	padding: 0 0.6em;
+	margin: 5px 15px 2px;
+}
+
+div.my-updated p,
+div.my-error p {
+	margin: 0.5em 0;
+	padding: 2px;
+}
+
+.wrap div.my-updated,
+.wrap div.my-error,
+.media-upload-form div.error {
+	margin: 5px 0 15px;
+}
+
+div.my-updated {
+	border-left: 4px solid #7ad03a;
+	padding: 1px 12px;
+	background-color: #fff;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+}
+
+div.my-error {
+	border-left: 4px solid #dd3d36;
+	background: #fff;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+	padding: 1px 12px;
+}
+
+div.reset-xwrd
+{
+text-align:center;
+}
+
+input.reset-xwrd
+{
+border-style: solid;
+border-width: 1px;
+border-color:black;
 }
 
 table.style

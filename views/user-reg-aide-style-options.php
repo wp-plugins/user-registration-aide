@@ -3,7 +3,7 @@
 /**
  * User Registration Aide Pro - Stylesheet Settings Customize Plugin Styles
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-pro-force-add-new-user-fields-on-registration-form/
- * Version: 1.4.0.0
+ * Version: 1.5.0.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -280,7 +280,7 @@ class URA_STYLESHEET{
 		</table>
 		
 		<?php 
-		
+		do_action( 'end_mini_wrap' );
 	}
 
 

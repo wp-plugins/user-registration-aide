@@ -3,7 +3,7 @@
 /**
  * User Registration Aide - WordPress Display Name Modifier
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.4.0.1
+ * Version: 1.5.0.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -131,6 +131,7 @@ class URA_DISPLAY_NAME
 		$current_role = get_option('default_role');
 		$selRole = $options['display_name_role'];
 		$selField = $options['custom_display_field'];
+		do_action( 'start_mini_wrap', $span );
 		?>
 		<table class="displayName">
 			<tr>

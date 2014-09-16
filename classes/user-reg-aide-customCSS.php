@@ -2,7 +2,7 @@
 /**
  * User Registration Aide - Custom CSS Functions For Registration - Login Pages Custom Styling
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.4.0.1
+ * Version: 1.5.0.0
  * Since Version 1.3.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -182,7 +182,7 @@ class URA_CUSTOM_CSS
 		
 		$options = get_option('csds_userRegAide_Options');
 			
-		$css = CSS_PATH."user-reg-aide-style.css";
+		$css = CSS_PATH."user-reg-aide-style.php";
 		
 		$wp_pswrd_strength = admin_url().'js/user-profile.js';
 		$wp_admin_psm_js = admin_url().'js/password-strength-meter.js';
@@ -213,5 +213,44 @@ class URA_CUSTOM_CSS
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('utils');
 		
+	}
+	
+	/**
+	 * Handles scripts and css for password headers on password change form
+	 *
+	 * @since 1.5.0.0
+	 * @updated 1.5.0.0
+	 * @handles 
+	 * @access public
+	 * @author Brian Novotny
+	 * @website http://creative-software-design-solutions.com
+	*/
+	
+	function password_options(){
+		global $post;
+		$xwrds = new PASSWORD_FUNCTIONS();
+		$id = $post->ID;
+		$xwrd_id = $xwrds->title_id( $post );
+		$wp_pswrd_strength = admin_url().'js/user-profile.js';
+		$wp_admin_psm_js = admin_url().'js/password-strength-meter.js';
+		$wp_incl_jq = includes_url().'js/jquery/jquery.js';
+		$jq_color = JS_PATH."jquery.color.js";
+		$jq_color_min = JS_PATH."jquery.color.min.js";
+		if( $id == $xwrd_id ){
+			wp_register_style( 'user_regAide_style', plugins_url( 'css/user-reg-aide-style.php', __FILE__ ) );
+			wp_enqueue_style( 'user_regAide_style' );
+			wp_register_script("jquery", $wp_incl_jq, false);
+			wp_enqueue_script('jquery');
+					
+			wp_register_script("jquery_color", $jq_color, false);
+			wp_enqueue_script('jquery_color');
+			
+			wp_register_script("jquery_color_min", $jq_color_min, false);
+			wp_enqueue_script('jquery_color_min');
+			wp_enqueue_script('password-strength-meter');
+            wp_enqueue_script('user-profile');
+			wp_enqueue_script('jquery');
+			wp_enqueue_script('utils');
+		}
 	}
 } // end class ?>

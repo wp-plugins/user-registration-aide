@@ -3,10 +3,10 @@ Contributors: Brian Novotny
 Donate link: http://creative-software-design-solutions.com/
 Author URI: http://creative-software-design-solutions.com/
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
-Tags: user, registration, field, register, Facebook, extra fields, profile, anti-spam, login message, login image, custom login css, admin, user management, membership, members
+Tags: user, registration, field, register, Facebook, extra fields, profile, anti-spam, login message, login image, custom login css, admin, user management, membership, members, password change, password strength, password
 Requires at least: 3.2
-Tested up to: 3.9.2
-Stable tag: 1.4.0.2
+Tested up to: 4.0
+Stable tag: 1.5.0.0
 
 Adds new fields and requites new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
@@ -46,6 +46,9 @@ Plugin Features:
 	Anti-Spam Math Problem
 	Password Strength Meter
 	Custom Password Strength Options to Create Your Own Password Strength Definition
+	Force New Users to change password after getting password from email
+	Force Existing Users to change password after specified amount of time
+	Not allow same password to be used for specified number of times
 
 Read more: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/#ixzz22CCABfOx
 
@@ -97,6 +100,20 @@ Then, if you don't know where it is the registration form is on the login form, 
 6. Admin Page 4 Registration Form Messages & CSS Options
 
 == Changelog ==
+
+1.5.0.0
+
+a) Added Password Change Shortcode to have front end custom password change page.
+
+b) Added password change to force new users and existing users to change password after they get a new password in email or they haven't changed password in specified amount of time. 
+
+c) Can't use old passwords for a specified amount of time.
+
+d) Redirect to Change Password to SSL if available
+
+e) Remove password fields form profile page for non-admins
+
+f) Disable Lost Password Option from login page for non-admins
 
 1.4.0.2
 

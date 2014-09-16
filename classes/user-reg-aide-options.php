@@ -3,7 +3,7 @@
  * User Registration Aide - Options
  * Handles all options and related functions for plugin
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.4.0.1
+ * Version: 1.5.0.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
 */
@@ -14,13 +14,7 @@
 */
 
 // ----------------------------------------------
-/*
-require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-require_once ("user-reg-aide-admin.php");
-require_once (URA_PLUGIN_PATH."user-registration-aide.php");
-require_once ("user-reg-aide-newFields.php");
-require_once ("user-reg-aide-regForm.php");
-*/
+
 /**
  * Class added for user options
   *
@@ -115,12 +109,12 @@ class URA_OPTIONS
 			$registered_url = $signup_url;
 		}
 		$csds_userRegAide_Options = array(
-			"csds_userRegAide_db_Version"	=> "1.4.0.0",
+			"csds_userRegAide_db_Version"	=> "1.5.0.0",
 			"select_pass_message" 			=> "2",
-			"password"						=>	"2",
+			"password"						=> "2",
 			"registration_form_message" 	=> "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
 			"agreement_message" 			=> "I have read and understand and agree to the terms and conditions of the guidelines/agreement policy required for this website provided in the link below",
-			"empty"							=>	"No password Entered!",
+			"empty"							=> "No password Entered!",
 			"short" 						=> "Password Entered is too Short!", 
 			"bad" 							=> "Password Entered is Bad, Too Weak",
 			"good" 							=> "Password Entered is fairly tough and is good to accept",
@@ -217,6 +211,18 @@ class URA_OPTIONS
 			"xwrd_numb"						=>	"1",
 			"xwrd_uc"						=>	"1",
 			"xwrd_lc"						=>	"1",
+			"xwrd_require_change"			=>	"2",
+			"xwrd_change_on_signup"			=>	"2",
+			"xwrd_change_interval"			=>	"180",
+			"xwrd_duplicate_times"			=>	"3",
+			"xwrd_change_ssl"				=>	"2",
+			"allow_xwrd_reset"				=>	"1",
+			"show_password_fields"			=>	"1",
+			"xwrd_chng_title"				=>	"Change Password",
+			"xwrd_change_name"				=>	"change-password",
+			"xwrd_chng_email_url"			=>	"?action=new-register",
+			"xwrd_chng_exp_url"				=>	"?action=expired-password",
+			"xwrd_chng_nc_url"				=>	"?action=password-never-changed",
 			"updated"						=>	"2",
 			"new_user_email_verify"			=>	"2",
 			"custom_display_name"			=>	"2",
@@ -444,7 +450,7 @@ class URA_OPTIONS
 					if($key == $key1){
 						if(!empty($value1)){
 							if($key1 == 'csds_userRegAide_db_Version'){
-								$update[$key1] = "1.4.0.0";
+								$update[$key1] = "1.5.0.0";
 							}elseif($key1 == 'updated'){
 								$update[$key1] = "1";
 							}else{
@@ -461,9 +467,9 @@ class URA_OPTIONS
 						}
 					}
 				
-					 if(!array_key_exists($key, $csds_userRegAide_oldOptions)){
-						 $update[$key] = $value;
-					 }
+					if(!array_key_exists($key, $csds_userRegAide_oldOptions)){
+						$update[$key] = $value;
+					}
 					
 				}
 			}

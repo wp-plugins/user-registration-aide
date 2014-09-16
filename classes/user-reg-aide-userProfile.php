@@ -2,7 +2,7 @@
 /**
  * User Registration Aide - User Profile Functions
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.4.0.1
+ * Version: 1.5.0.0
  * Since Version 1.3.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -42,7 +42,7 @@ class URA_USER_PROFILE
 	/**
 	 * Show the additional fields added on the user profile page
 	 * @since 1.0.0
-	 * @updated 1.4.0.0
+	 * @updated 1.5.0.0
 	 * @handles action 'show_user_profile' line 259 user-registration-aide.php (Priority: 0 - Params: 1)
 	 * @handles action 'edit_user_profile' line 260 user-registration-aide.php (Priority: 0 - Params: 1)
 	 * @access private

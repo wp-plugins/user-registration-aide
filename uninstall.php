@@ -2,7 +2,7 @@
 
 //For Debugging and Testing Purposes ------------
 
-// checked and updated 1.3.7.5
+// checked and updated 1.5.0.0
 
 // ----------------------------------------------
 
@@ -26,6 +26,10 @@
 		delete_option('csds_display_name');
 		delete_option('csds_userRegAide_fieldOrder');
 		
+		$table_name = $wpdb->prefix . "ura_xwrd_change";
+		$sql = "DROP TABLE IF EXISTS $table_name;";
+		$wpdb->query( $sql );
+						
 		$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
 			foreach($csds_userRegAide_NewFields as $field => $value){
 				

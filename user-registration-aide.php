@@ -4,7 +4,7 @@ Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default WordPress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain a lot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.4.0.2
+Version: 1.5.0.0
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: csds_userRegAide
@@ -49,7 +49,7 @@ require_once (CLASSES_PATH."user-reg-aide-dashWidget.php"); // Handles the dashb
 require_once (CLASSES_PATH."user-reg-aide-actions.php"); // Handles recurring custom actions to eliminate redundancy
 require_once ( CLASSES_PATH."user-reg-aide-display-name.php" ); // new for changing display name for users
 require_once ( CLASSES_PATH."math-functions.php" ); // new for changing display name for users
-
+require_once ( CLASSES_PATH."user-reg-aide-xwrd-functions.php" ); // new for password options
 require_once ( VIEWS_PATH."user-reg-aide-style-options.php" ); // for plugin style
 require_once ( VIEWS_PATH."user-reg-aide-custom-options.php" ); // for additional options
 
@@ -304,17 +304,45 @@ class CSDS_USER_REG_AIDE
 		// new custom actions 7/28/14 for new views
 		$display_name = new URA_DISPLAY_NAME();
 		$styles = new URA_STYLESHEET();
+		
 		add_action( 'change_display_name_view', array( &$display_name, 'display_name_options' ) );
 		add_action( 'display_name_view', array( &$display_name, 'user_display_name_view' ) );add_action( 'stylesheet_settings_view', array( &$styles, 'settings_options_page_view' ) );
 		add_action( 'style_view', array( &$styles, 'custom_style_view' ) );		
 		unset( $display_name, $styles );
+		
 		add_action( 'start_wrapper', array( &$actions, 'start_wp_wrapper' ), 10, 5 );
 		add_action( 'end_wrapper', array( &$actions, 'end_wp_wrapper' ), 10, 0 );
 		add_action( 'start_mini_wrap', array( &$actions, 'start_mini_wp_wrapper' ), 10, 1 );
 		add_action( 'end_mini_wrap', array( &$actions, 'end_mini_wp_wrapper' ), 10, 0 );
 		unset( $actions );
+		
 		// Enqueues color picker for stylesheet settings page
 		add_action( 'admin_enqueue_scripts', array( &$this, 'my_style_color_function' ) ); // &$this line 764
+		
+		// password options
+		$xwrd = new PASSWORD_FUNCTIONS();
+		$css = new URA_CUSTOM_CSS();
+		
+		add_shortcode( 'change_password', array( &$xwrd, 'password_change_form' ) ); // shortcode for xwrd change page
+		add_action( 'wp_enqueue_scripts', array( &$this, 'enqueueXwrdStyles' ) ); // for password strength meter
+		add_action( 'xwrd_set_options_view', array( &$xwrd, 'pwrd_change_options_view' ) ); 
+		add_action( 'xwrd_settings_view', array( &$xwrd, 'password_settings_view' ) ); 
+		add_filter( 'wp_head', array( &$css, 'password_options' ) );
+		add_filter( 'custom_password_strength', array( &$xwrd, 'xwrd_strength_verify' ), 10, 6 );
+		add_filter( 'login_redirect', array( &$xwrd, 'non_admin_login_redirect' ), 10, 3 );
+		add_filter( 'duplicate_verify', array( &$xwrd, 'xwrd_change_duplicate_verify' ), 10, 4 );
+		
+		// ssl for password change page if available
+		add_action( 'template_redirect', array( &$xwrd, 'xwrd_chng_ssl_redirect' ), 1 );
+		add_filter( 'pre_post_link', array( &$xwrd, 'xwrd_chng_ssl'), 10, 3 );
+		
+		// password reset text
+		add_filter( 'gettext', array( &$xwrd, 'remove_xwrd_reset_text' ), 10, 1 );
+		add_filter( 'allow_password_reset', array( &$xwrd, 'xwrd_reset_disable' ) );
+		
+		// login check for users needing to change password
+		add_action( 'wp_authenticate' , array( &$xwrd, 'xwrd_change_login_check' ), 1 );
+		unset( $xwrd, $css );
 		
 	}
 		
@@ -340,7 +368,7 @@ class CSDS_USER_REG_AIDE
 		if(function_exists('csds_userRegAide_DefaultOptions')){
 			$ura_options->csds_userRegAide_DefaultOptions(); // Line 59 user-reg-aide-options.php
 		}
-		
+		unset( $ura_options );
 	}
 	
 	/**
@@ -359,7 +387,7 @@ class CSDS_USER_REG_AIDE
 	}
 	
 	/**
-	 * Checks and verifies options have been loaded
+	 * Removes admin footer which displayed in middle of some of my pages and looked funky
 	 * @since 1.4.0.0
 	 * @handles filter 'admin_footer_text' line 291 &$this
 	 * @access private
@@ -371,27 +399,22 @@ class CSDS_USER_REG_AIDE
 		$link = 'Powered By: <a href="http://creative-software-design-solutions.com/">Creative Software Design Solutions</a>';
 		if( isset($_GET['page']) && $_GET['page'] == 'user-registration-aide' ){
 			echo '';
-			//echo $link;
 		}
 		
 		if( isset($_GET['page']) && $_GET['page'] == 'edit-new-fields' ){
 			echo '';
-			//echo $link;
 		}
 		
 		if( isset($_GET['page']) && $_GET['page'] == 'registration-form-options' ){
 			echo '';
-			//echo $link;
 		}
 		
 		if( isset($_GET['page']) && $_GET['page'] == 'registration-form-css-options' ){
 			echo '';
-			//echo $link;
 		}
 		
 		if( isset($_GET['page']) && $_GET['page'] == 'custom-options' ){
 			echo '';
-			//echo $link;
 		}
 	}
 	
@@ -406,7 +429,7 @@ class CSDS_USER_REG_AIDE
 	
 	function check_default_options(){
 		$options = get_option('csds_userRegAide_Options');
-		if(empty($options)){
+		if( empty( $options ) ){
 			$ura_options = new URA_OPTIONS();
 			$ura_options->csds_userRegAide_DefaultOptions();  // Line 59  &$ura_options
 		}
@@ -427,7 +450,7 @@ class CSDS_USER_REG_AIDE
 	 *
 	*/
 		
-	function ura_registration_redirect($redirect_to){
+	function ura_registration_redirect( $redirect_to ){
 		
 		$options = get_option('csds_userRegAide_Options');
 		if($options['redirect_registration'] == "1"){
@@ -453,10 +476,10 @@ class CSDS_USER_REG_AIDE
 	 *
 	*/
 	
-	function ura_login_redirect($redirect_to){
+	function ura_login_redirect( $redirect_to ){
 		
-		$options = get_option('csds_userRegAide_Options');
-		if($options['redirect_login'] == "1"){
+		$options = get_option( 'csds_userRegAide_Options' );
+		if( $options['redirect_login'] == "1" ){
 			$redirect_to = $options['login_redirect_url'];
 		}else{
 			$redirect_to = $redirect_to;
@@ -480,12 +503,12 @@ class CSDS_USER_REG_AIDE
 	*/
 
 	function ura_registration_top_message(){
-		$options = get_option('csds_userRegAide_Options');
+		$options = get_option( 'csds_userRegAide_Options' );
 		$message = (string)'';
 		$show_message = $options['show_login_message'];
 		
-		if( $show_message == "1"){
-			if($options['add_security_question'] == "2"){
+		if( $show_message == "1" ){
+			if( $options['add_security_question'] == "2" ){
 				$message = '<p class="message register">'.$options['reg_top_message'].'</p>';
 			}else{
 				$message = '<p class="message register" style="width: 425px;">'.$options['reg_top_message'].'</p>';
@@ -507,7 +530,7 @@ class CSDS_USER_REG_AIDE
 	*/
 
 	function ura_login_message(){
-		$options = get_option('csds_userRegAide_Options');
+		$options = get_option( 'csds_userRegAide_Options' );
 		$message = '';
 		$page = site_url(). $_SERVER['REQUEST_URI'];
 		$show_message = $options['show_login_message'];
@@ -517,45 +540,45 @@ class CSDS_USER_REG_AIDE
 				$message = '<p class="message">'.$options['login_message'].'</p>';
 			}
 			
-			if( isset($_GET['action']) && $_GET['action'] == 'register'){
-				if($options['add_security_question'] == "2"){
+			if( isset( $_GET['action'] ) && $_GET['action'] == 'register' ){
+				if( $options['add_security_question'] == "2" ){ // future use
 					$message = '<p class="message register">'.$options['reg_top_message'].'</p>';
 				}else{
 					$message = '<p class="message register" style="width: 450px;">'.$options['reg_top_message'].'</p>';
 				}
 			}
 			
-			if( isset($_GET['action']) && $_GET['action'] == 'lostpassword'){
+			if( isset($_GET['action']) && $_GET['action'] == 'lostpassword' ){
 				$message = '<p class="message register">'.$options['login_messages_lost_password'].'</p>'; 
 			}
 			
-			if(isset($_GET['action']) && $_GET['action'] == 'resetpass' ){ //after successful reset password
-				if($options['add_security_question'] == "1"){
+			if( isset( $_GET['action'] ) && $_GET['action'] == 'resetpass' ){ //after successful reset password
+				if( $options['add_security_question'] == "1" ){
 					$message = $options['reset_password_success_security']; 
 				}else{
 					$message = $options['reset_password_success_normal']; 
 				}
 			}
 			
-			if(isset($_GET['action']) && $_GET['action'] == 'rp'){  // Reset Password Page
-				if($options['add_security_question'] == "1"){
+			if( isset( $_GET['action']) && $_GET['action'] == 'rp' ){  // Reset Password Page
+				if( $options['add_security_question'] == "1" ){
 					$message = $options['reset_password_messages_security']; 
 				}else{
 					$message = $options['reset_password_messages_normal']; 
 				}
 			}
 		
-			if(!empty($_GET['login'])){
-				if(!empty($_GET['key'])){
+			if( !empty( $_GET['login'] ) ){
+				if( !empty($_GET['key'] ) ){
 					$action = $_GET['action'];
-					if($action == 'rp'){
-						if($options['add_security_question'] == "1"){
-							$message = '<p class="message reset-pass">' . __($options['reset_password_messages_security'], 'csds_userRegAide').'</p>'; 
+					if( $action == 'rp' ){
+						if( $options['add_security_question'] == "1" ){
+							$message = '<p class="message reset-pass">' . __( $options['reset_password_messages_security'], 'csds_userRegAide').'</p>'; 
 						}else{
 							$message = '<p class="message reset-pass">' . __($options['reset_password_messages_normal'], 'csds_userRegAide').'</p>'; 
 						}
-					}elseif($action == 'resetpass'){
-						if($options['add_security_question'] == "1"){
+					}elseif( $action == 'resetpass' ){
+						if( $options['add_security_question'] == "1" ){
 							$message = '<p class="message reset-pass">' . __($options['reset_password_success_security'], 'csds_userRegAide').'</p>';
 						}else{
 							$message = '<p class="message reset-pass">' . __($options['reset_password_success_normal'], 'csds_userRegAide').'</p>'; 
@@ -582,27 +605,27 @@ class CSDS_USER_REG_AIDE
 	 * @website http://creative-software-design-solutions.com
 	*/
 	
-	function my_login_messages($messages){
-		$options = get_option('csds_userRegAide_Options');
+	function my_login_messages( $messages ){
+		$options = get_option( 'csds_userRegAide_Options' );
 		if($options['show_login_message'] == "1"){
 		
-			if( isset($_GET['loggedout']) && true == $_GET['loggedout'] ){
-				$messages = __($options['login_messages_logged_out'],'csds_userRegAide');
-			}elseif( isset($_GET['checkemail']) && 'registered' == $_GET['checkemail'] ){
+			if( isset( $_GET['loggedout'] ) && true == $_GET['loggedout'] ){
+				$messages = __($options['login_messages_logged_out'],'csds_userRegAide' );
+			}elseif( isset( $_GET['checkemail'] ) && 'registered' == $_GET['checkemail'] ){
 				$messages = __($options['login_messages_registered'],'csds_userRegAide');
-			}elseif( isset($_GET['checkemail']) && 'confirm' == $_GET['checkemail'] ){
-				$messages = __($options['reset_password_confirm'],'csds_userRegAide');
-			}elseif(isset($_GET['action']) && $_GET['action'] == 'resetpass'){
-				if($options['add_security_question'] == "1"){
+			}elseif( isset( $_GET['checkemail'] ) && 'confirm' == $_GET['checkemail'] ){
+				$messages = __( $options['reset_password_confirm'],'csds_userRegAide' );
+			}elseif( isset( $_GET['action'] ) && $_GET['action'] == 'resetpass' ){
+				if( $options['add_security_question'] == "1" ){
 					$messages = __($options['reset_password_success_security'],'csds_userRegAide'); 
 				}else{
-					$messages = __($options['reset_password_success_normal'],'csds_userRegAide'); 
+					$messages = __( $options['reset_password_success_normal'],'csds_userRegAide'); 
 				}
-			}elseif(isset($_GET['action']) && $_GET['action'] == 'rp'){
-				if($options['add_security_question'] == "1"){
+			}elseif( isset($_GET['action'] ) && $_GET['action'] == 'rp' ){
+				if( $options['add_security_question'] == "1" ){
 					$messages = __($options['reset_password_messages_security'],'csds_userRegAide'); 
 				}else{
-					$messages = __($options['reset_password_messages_normal'],'csds_userRegAide'); 
+					$messages = __( $options['reset_password_messages_normal'],'csds_userRegAide'); 
 				}
 			}
 		}
@@ -625,17 +648,17 @@ class CSDS_USER_REG_AIDE
 	 * @website http://creative-software-design-solutions.com
 	*/
 		
-	function add_plugins_settings_link($links, $file){
+	function add_plugins_settings_link( $links, $file ){
 		$admin = new CSDS_URA_ADMIN_SETTINGS();
-		$this_file = plugin_basename(__FILE__);
-		if($file == $this_file){
+		$this_file = plugin_basename( __FILE__ );
+		if( $file == $this_file ){
 			$plugin_settings = '<ul class="settings_menu"><li><a href="#">Settings</a>';
-			$plugin_settings .= '<ul><li><a href="admin.php?page=user-registration-aide">'.__('Registration Fields', 'csds_userRegAide').'</a></li>';
-			$plugin_settings .= '<li><a href="admin.php?page=edit-new-fields">'.__('Edit New Fields', 'csds_userRegAide').'</a></li>';
-			$plugin_settings .= '<li><a href="admin.php?page=registration-form-css-options">'.__('Registration Form Messages & CSS Options', 'csds_userRegAide').'</a></li>';
-			$plugin_settings .= '<li><a href="admin.php?page=registration-form-options">'.__('Registration Form Options', 'csds_userRegAide').'</a></li>';
-			$plugin_settings .= '<li><a href="admin.php?page=custom-options">'.__('Custom Options', 'csds_userRegAide').'</a></li></ul></li></ul>';
-			array_unshift($links, $plugin_settings);
+			$plugin_settings .= '<ul><li><a href="admin.php?page=user-registration-aide">'.__('Registration Fields', 'csds_userRegAide' ).'</a></li>';
+			$plugin_settings .= '<li><a href="admin.php?page=edit-new-fields">'.__( 'Edit New Fields', 'csds_userRegAide' ).'</a></li>';
+			$plugin_settings .= '<li><a href="admin.php?page=registration-form-css-options">'.__('Registration Form Messages & CSS Options', 'csds_userRegAide' ).'</a></li>';
+			$plugin_settings .= '<li><a href="admin.php?page=registration-form-options">'.__('Registration Form Options', 'csds_userRegAide' ).'</a></li>';
+			$plugin_settings .= '<li><a href="admin.php?page=custom-options">'.__( 'Custom Options', 'csds_userRegAide' ).'</a></li></ul></li></ul>';
+			array_unshift( $links, $plugin_settings );
 		}
 		return $links;
 	}
@@ -654,12 +677,12 @@ class CSDS_USER_REG_AIDE
 	function csds_userRegAide_optionsPage(){
 		
 		$admin_settings = new CSDS_URA_ADMIN_SETTINGS();
-		if(function_exists('add_menu_page')){
+		if( function_exists( 'add_menu_page' ) ){
 			//if(!is_multisite()){
-			$page = add_menu_page(__('User Registration Aide', 'csds_userRegAide'), __('User Registration Aide', 'csds_userRegAide'), 'manage_options','user-registration-aide', array(&$admin_settings, 'csds_userRegAide_myOptionsSubpanel'), '', 71 ) ; // line 71 &$admin_settings
+			$page = add_menu_page( __( 'User Registration Aide', 'csds_userRegAide' ), __( 'User Registration Aide', 'csds_userRegAide' ), 'manage_options','user-registration-aide', array(&$admin_settings, 'csds_userRegAide_myOptionsSubpanel' ), '', 71 ) ; // line 71 &$admin_settings
 		}
 		
-		add_action('admin_print_styles-'.$page, array(&$this, 'csds_userRegAide_enqueueMyStyles'));
+		add_action( 'admin_print_styles-'.$page, array( &$this, 'csds_userRegAide_enqueueMyStyles' ) );
 			
 	}
 
@@ -676,8 +699,8 @@ class CSDS_USER_REG_AIDE
 
 	function csds_userRegAide_regFormOptionsPage(){
 		$rfo = new URA_REG_FORM_OPTIONS();
-		if(function_exists('add_submenu_page')){
-			$page = add_submenu_page('user-registration-aide', __('Registration Form Options', 'csds_userRegAide'), __('Registration Form Options', 'csds_userRegAide'), 'manage_options', 'registration-form-options', array(&$rfo, 'csds_userRegAide_regFormOptions' )); // line 69 &$rfo
+		if( function_exists('add_submenu_page' ) ){
+			$page = add_submenu_page( 'user-registration-aide', __( 'Registration Form Options', 'csds_userRegAide' ), __( 'Registration Form Options', 'csds_userRegAide' ), 'manage_options', 'registration-form-options', array( &$rfo, 'csds_userRegAide_regFormOptions' ) ); // line 69 &$rfo
 		}
 		
 		add_action('admin_print_styles-'.$page, array(&$this, 'csds_userRegAide_enqueueMyStyles'));
@@ -698,11 +721,11 @@ class CSDS_USER_REG_AIDE
 	function csds_userRegAide_regFormCSSOptionsPage(){
 		
 		$rfco = new URA_REG_FORM_CSS_OPTIONS();
-		if(function_exists('add_submenu_page')){
-			$page = add_submenu_page('user-registration-aide', __('Registration Form Messages & CSS Options', 'csds_userRegAide'), __('Registration Form Messages & CSS Options', 'csds_userRegAide'), 'manage_options', 'registration-form-css-options', array(&$rfco, 'csds_userRegAide_regFormCSSOptions' )); // line 67 &$rfco
+		if( function_exists( 'add_submenu_page' ) ){
+			$page = add_submenu_page( 'user-registration-aide', __( 'Registration Form Messages & CSS Options', 'csds_userRegAide' ), __( 'Registration Form Messages & CSS Options', 'csds_userRegAide' ), 'manage_options', 'registration-form-css-options', array( &$rfco, 'csds_userRegAide_regFormCSSOptions' ) ); // line 67 &$rfco
 		}
 		
-		add_action('admin_print_styles-'.$page, array(&$this, 'csds_userRegAide_enqueueMyStyles'));
+		add_action( 'admin_print_styles-'.$page, array( &$this, 'csds_userRegAide_enqueueMyStyles' ) );
 			
 	}
 
@@ -719,8 +742,8 @@ class CSDS_USER_REG_AIDE
 
 	function csds_userRegAide_editNewFields_optionsPage(){
 		$new_fields = new URA_NEW_FIELDS();
-		if(function_exists('add_submenu_page')){
-			$page = add_submenu_page('user-registration-aide',__('Edit New Fields', 'csds_userRegAide'), __('Edit New Fields', 'csds_userRegAide'), 'manage_options', 'edit-new-fields', array( &$new_fields, 'csds_userRegAide_editNewFields' ));  // Line 46 &$new_fields
+		if( function_exists( 'add_submenu_page' ) ){
+			$page = add_submenu_page( 'user-registration-aide',__( 'Edit New Fields', 'csds_userRegAide' ), __( 'Edit New Fields', 'csds_userRegAide' ), 'manage_options', 'edit-new-fields', array( &$new_fields, 'csds_userRegAide_editNewFields' ) );  // Line 46 &$new_fields
 		}
 		
 		add_action('admin_print_styles-'.$page, array(&$this, 'csds_userRegAide_enqueueMyStyles')); // Line 795 &$this
@@ -740,11 +763,11 @@ class CSDS_USER_REG_AIDE
 
 	function csds_userRegAide_customOptionsPage(){
 		$custom_options = new URA_CUSTOM_OPTIONS();
-		if(function_exists('add_submenu_page')){
-			$page = add_submenu_page('user-registration-aide',__('Custom Options', 'csds_userRegAide'), __('Custom Options', 'csds_userRegAide'), 'manage_options', 'custom-options', array( &$custom_options, 'custom_options_views' ));  // Line 46 &$new_fields
+		if(function_exists( 'add_submenu_page' )){
+			$page = add_submenu_page( 'user-registration-aide',__( 'Custom Options', 'csds_userRegAide' ), __( 'Custom Options', 'csds_userRegAide' ), 'manage_options', 'custom-options', array( &$custom_options, 'custom_options_views' ) );  // Line 46 &$new_fields
 		}
 		
-		add_action('admin_print_styles-'.$page, array(&$this, 'csds_userRegAide_enqueueMyStyles')); // Line 795 &$this
+		add_action( 'admin_print_styles-'.$page, array( &$this, 'csds_userRegAide_enqueueMyStyles' ) ); // Line 795 &$this
 		
 	}
 	
@@ -761,7 +784,7 @@ class CSDS_USER_REG_AIDE
 	*/
 		
 	function add_settings_css(){
-		wp_enqueue_style('user_regAide_menu_style', plugins_url('css/wp-admin-menu-stylesheet.css', __FILE__));
+		wp_enqueue_style('user_regAide_menu_style', plugins_url( 'css/wp-admin-menu-stylesheet.css', __FILE__ ) );
 	}
 	
 	/** Enqueues CSS stylesheet for my menu settings on my pages
@@ -775,7 +798,7 @@ class CSDS_USER_REG_AIDE
 	*/
 		
 	function add_admin_settings_css(){
-		wp_enqueue_style('user_regAide_admin_style', plugins_url('css/csds_ura_only_stylesheet.css', __FILE__));
+		wp_enqueue_style( 'user_regAide_admin_style', plugins_url( 'css/csds_ura_only_stylesheet.css', __FILE__ ) );
 	}
 	
 	/** Enqueues CSS stylesheet for lost password form
@@ -790,8 +813,8 @@ class CSDS_USER_REG_AIDE
 	
 	function add_lostpassword_css(){
 		$options = get_option('csds_userRegAide_Options');
-		if($options['add_security_question'] == "1"){
-			wp_enqueue_style('user_regAide_lost_pass_style', plugins_url('css/regist_login_stylesheet.css', __FILE__));
+		if( $options['add_security_question'] == "1" ){
+			wp_enqueue_style( 'user_regAide_lost_pass_style', plugins_url( 'css/regist_login_stylesheet.css', __FILE__ ) );
 		}
 	}
 	
@@ -806,23 +829,39 @@ class CSDS_USER_REG_AIDE
 	*/
 		
 	function csds_userRegAide_stylesheet(){
-		wp_register_style('user_regAide_style', plugins_url('css/user-reg-aide-style.php', __FILE__));
-		wp_register_style('user_regAide_menu_style', plugins_url('css/wp-admin-menu-stylesheet.css', __FILE__));
-		wp_register_style('user_regAide_admin_style', plugins_url('css/csds_ura_only_stylesheet.css', __FILE__));
-		wp_register_style('user_regAide_lost_pass_style', plugins_url('css/regist_login_stylesheet.css', __FILE__));
+		wp_register_style( 'user_regAide_style', plugins_url( 'css/user-reg-aide-style.php', __FILE__ ) );
+		wp_register_style( 'user_regAide_menu_style', plugins_url( 'css/wp-admin-menu-stylesheet.css', __FILE__ ) );
+		wp_register_style( 'user_regAide_admin_style', plugins_url( 'css/csds_ura_only_stylesheet.css', __FILE__ ) );
+		wp_register_style( 'user_regAide_lost_pass_style', plugins_url( 'css/regist_login_stylesheet.css', __FILE__ ) );
 	}
 	
 	/** Enqueues the stylesheet for the plugin
 	 * @since 1.3.0
 	 * @updated 1.3.0
-	 * @handles action 'admin_print_styles' -> line 654, 675, 697, 718 &$this
+	 * @handles action 'admin_print_styles' -> line 323 &$this
+	 * @access private
+	 * @author Brian Novotny
+	 * @website http://creative-software-design-solutions.com
+	*/
+	
+	function enqueueXwrdStyles(){
+		$request = $_SERVER['REQUEST_URI'];
+		if( $request == '/reset-password/' ){
+			wp_enqueue_style( 'user_regAide_style' );
+		}
+	}
+	
+	/** Enqueues the stylesheet for the plugin
+	 * @since 1.5.0.0
+	 * @updated 1.5.0.0
+	 * @handles action 'wp_enqueue_style' -> line 654, 675, 697, 718 &$this
 	 * @access private
 	 * @author Brian Novotny
 	 * @website http://creative-software-design-solutions.com
 	*/
 	
 	function csds_userRegAide_enqueueMyStyles(){
-		wp_enqueue_style('user_regAide_style');
+		wp_enqueue_style( 'user_regAide_style' );
 	}
 	
 	/* Enqueues color picker for stylesheet settings page custom stylesheet settings
@@ -858,20 +897,19 @@ class CSDS_USER_REG_AIDE
 		
 	function csds_userRegAide_addUserFields($columns){
 				
-		global $wpdb;
-		$fields = get_option('csds_userRegAideFields');
-		$new_fields = get_option('csds_userRegAide_NewFields');
+		$fields = get_option( 'csds_userRegAideFields' );
+		$new_fields = get_option( 'csds_userRegAide_NewFields' );
 		
-		if(!empty($fields)){		
-			foreach($fields as $key => $value){
-				if($key != "user_pass"){
-					$columns[$key] = __($value, 'csds_userRegAide');
+		if( !empty( $fields ) ){		
+			foreach( $fields as $key => $value ){
+				if( $key != "user_pass" ){
+					$columns[$key] = __( $value, 'csds_userRegAide' );
 				}
 			}
 		}
-		if(!empty($new_fields)){
-			foreach($new_fields as $key1 => $value1){
-				$columns[$key1] = __($value1, 'csds_userRegAide');
+		if( !empty( $new_fields ) ){
+			foreach( $new_fields as $key1 => $value1 ){
+				$columns[$key1] = __( $value1, 'csds_userRegAide' );
 			}
 		}
 		
@@ -892,11 +930,9 @@ class CSDS_USER_REG_AIDE
 	 * @website http://creative-software-design-solutions.com
 	*/
 
-	function csds_userRegAide_fillUserFields($value, $column_name, $user_id ){
-		
-		global $wpdb;
+	function csds_userRegAide_fillUserFields( $value, $column_name, $user_id ){
 				
-		$data = get_user_option($column_name, $user_id, false);
+		$data = get_user_option( $column_name, $user_id, false );
 				
 		return $data;
 	}
@@ -917,33 +953,33 @@ class CSDS_USER_REG_AIDE
 	*/
 
 	function csds_userRegAide_createNewPassword($password){
-		$options = get_option('csds_userRegAide_Options');
+		global $wpdb;
+		$options = get_option( 'csds_userRegAide_Options' );
 		$password1 = '';
 		$data_meta = array();
-		if (!is_multisite()) {
-			if (isset($_POST["pass1"]))
+		if( !is_multisite() ) {
+			if( isset($_POST["pass1"] ) )
 				$password = $_POST["pass1"];
-		}
-		else {
-			if (!empty($_GET['key']))
+		}else{
+			if ( !empty($_GET['key'] ) ){
 				$key = $_GET['key'];
-			else if (!empty($_POST['key']))
+			}elseif( !empty( $_POST['key'] ) ){
 				$key = $_POST['key'];
-
-			if (!empty($key)) {
+			}
+			if( !empty( $key ) ){
 				// seems useless since this code cannot be reached with a bad key anyway you never know
-				$key = $wpdb->escape($key);
+				$key = $wpdb->escape( $key );
 
 				$sql = "SELECT active, meta FROM ".$wpdb->signups." WHERE activation_key='".$key."'";
-				$data = $wpdb->get_results($sql);
+				$data = $wpdb->get_results( $sql );
 
 				// checking to make sure data is not empty
-				if (isset($data[0])) {
+				if( isset($data[0] ) ){
 					// if account not active
-					if (!$data[0]->active) {
-						$meta = maybe_unserialize($data[1]->meta);
+					if( !$data[0]->active ){
+						$meta = maybe_unserialize( $data[1]->meta );
 
-						if (!empty($meta['pass1'])) {
+						if ( !empty($meta['pass1'] ) ) {
 							$password = $meta['pass1'];
 						}else{
 							$password = $password;
@@ -1016,17 +1052,17 @@ class CSDS_USER_REG_AIDE
 	
 	function create_new_user_extra_fields(){
 	 global $current_user;
-		$options = get_option('csds_userRegAide_Options');
+		$options = get_option( 'csds_userRegAide_Options' );
 		$field_names = 'fieldNames[]';
 		$fieldKey = '';
 		$fieldName = '';
-		$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
+		$csds_userRegAide_NewFields = get_option( 'csds_userRegAide_NewFields' );
 		$no_fields = (int) 2;
 		$current_user = wp_get_current_user();
-		if(current_user_can('create_users', $current_user->ID)){
-			if(!empty($csds_userRegAide_NewFields)){
+		if( current_user_can( 'create_users', $current_user->ID ) ){
+			if( !empty( $csds_userRegAide_NewFields ) ){
 				echo '<tr>';
-				echo '<th colspan="2"><b>'. __('User Registration Aide Additional Fields', 'csds_userRegAide').'</b></th>';
+				echo '<th colspan="2"><b>'. __( 'User Registration Aide Additional Fields', 'csds_userRegAide' ).'</b></th>';
 				echo '</tr>';
 				foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){ 
 					echo '<tr>';
@@ -1038,14 +1074,14 @@ class CSDS_USER_REG_AIDE
 				$no_fields = 1;
 			}
 									
-			if($options['show_support'] == "1"){
+			if( $options['show_support'] == "1" ){
 				echo '<tr>';
 				echo '<td><a target="_blank" href="'.$options['support_display_link'].'">' . $options['support_display_name'] . '</a></td>';
 				echo '</tr>';
 			}
-			echo wp_nonce_field('userRegAideNewUserForm', 'userRegAideNewUserNonce');
+			echo wp_nonce_field( 'userRegAideNewUserForm', 'userRegAideNewUserNonce' );
 		}else{
-			exit(__('Naughty, Naughty! You do not have permissions to do this!', 'csds_userRegAide'));
+			exit( __( 'Naughty, Naughty! You do not have permissions to do this!', 'csds_userRegAide' ) );
 		}
 			
 	} // end function
@@ -1081,11 +1117,11 @@ class CSDS_USER_REG_AIDE
 	 * @website http://creative-software-design-solutions.com
 	*/
 	 
-	 function create_new_user_extra_fields_updates($user_id){
+	 function create_new_user_extra_fields_updates( $user_id ){
 	 
 		global $wpdb, $current_user, $pagename;
-		$options = get_option('csds_userRegAide_Options');
-		$csds_userRegAide_NewFields = get_option('csds_userRegAide_NewFields');
+		$options = get_option( 'csds_userRegAide_Options' );
+		$csds_userRegAide_NewFields = get_option( 'csds_userRegAide_NewFields' );
 		$fieldKey = '';
 		$fieldName = '';
 		$newValue = '';
@@ -1093,24 +1129,24 @@ class CSDS_USER_REG_AIDE
 		$newValue2 = (string) '';
 		$extraFields = array();
 		$current_user = wp_get_current_user();
-		if(!empty($user_id)){
+		if( !empty( $user_id ) ){
 			
 			$userID = $user_id;
 			
 		}else{
-			exit('No User ID');
+			exit( 'No User ID' );
 		}
-		if(!empty($csds_userRegAide_NewFields)){
+		if( !empty( $csds_userRegAide_NewFields ) ){
 			
-			if(!is_multisite()){
-				if(current_user_can('edit_user', $current_user->ID)  || current_user_can('create_users', $current_user->ID)){
-					if(wp_verify_nonce($_POST["userRegAideNewUserNonce"], 'userRegAideNewUserForm')){
-						foreach($_POST as $key => $value){
-							foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){
-								if($key == $fieldKey){
-									$newValue = esc_attr(stripslashes($_POST[$fieldKey]));
-									if(!empty($newValue)){
-										update_user_meta($userID, $fieldKey, $newValue);
+			if( !is_multisite() ){
+				if( current_user_can( 'edit_user', $current_user->ID )  || current_user_can( 'create_users', $current_user->ID ) ){
+					if( wp_verify_nonce( $_POST["userRegAideNewUserNonce"], 'userRegAideNewUserForm' ) ){
+						foreach( $_POST as $key => $value ){
+							foreach( $csds_userRegAide_NewFields as $fieldKey => $fieldName ){
+								if( $key == $fieldKey ){
+									$newValue = esc_attr( stripslashes( $_POST[$fieldKey] ) );
+									if( !empty( $newValue ) ){
+										update_user_meta( $userID, $fieldKey, $newValue );
 									}else{
 										//exit(__('New Value empty!'));
 									}
@@ -1118,28 +1154,28 @@ class CSDS_USER_REG_AIDE
 							}
 						}	
 					}else{
-						exit(__('Failed Security Check', 'csds_userRegAide'));
+						exit( __( 'Failed Security Check', 'csds_userRegAide' ) );
 					}
 				}else{
-					exit(__('You do not have sufficient permissions to edit this user, contact a network administrator if this is an error!', 'csds_userRegAide'));
+					exit( __( 'You do not have sufficient permissions to edit this user, contact a network administrator if this is an error!', 'csds_userRegAide' ) );
 				}
 			}else{
-				if(current_user_can('edit_user', $current_user->ID)  || current_user_can('create_users', $current_user->ID)){
-					if(wp_verify_nonce($_POST["userRegAideNewUserNonce"], 'userRegAideNewUserForm')){
-							foreach($csds_userRegAide_NewFields as $fieldKey => $fieldName){
+				if( current_user_can( 'edit_user', $current_user->ID )  || current_user_can( 'create_users', $current_user->ID ) ){
+					if( wp_verify_nonce( $_POST["userRegAideNewUserNonce"], 'userRegAideNewUserForm' ) ){
+							foreach( $csds_userRegAide_NewFields as $fieldKey => $fieldName ){
 								$newValue = $_POST[$fieldKey];
-								if(!empty($newValue)){
-									update_user_meta($userID, $fieldKey, $_POST[$fieldKey]);
+								if( !empty( $newValue ) ){
+									update_user_meta( $userID, $fieldKey, $_POST[$fieldKey] );
 								}
 								else{
 									//exit(__('New Value empty!'));
 								}
 							}
 					}else{
-						exit(__('Failed Security Check', 'csds_userRegAide'));
+						exit( __( 'Failed Security Check', 'csds_userRegAide' ) );
 					}
 				}else{
-					exit(__('You do not have sufficient permissions to edit this user, contact a network administrator if this is an error!', 'csds_userRegAide'));
+					exit( __( 'You do not have sufficient permissions to edit this user, contact a network administrator if this is an error!', 'csds_userRegAide' ) );
 				}
 			} // end if multisite
 		} // end if not empty new fields
@@ -1165,9 +1201,9 @@ class CSDS_USER_REG_AIDE
 		//require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		$count = $wpdb->get_var("SELECT COUNT(ID) FROM $wpdb->users;");
 		$i = 1;
-		while($i <= $count){
+		while( $i <= $count ){
 			$user_id = $i;
-			update_user_meta( $user_id, $field, "");
+			update_user_meta( $user_id, $field, "" );
 			$i++;
 		} // end while
 	
@@ -1190,9 +1226,9 @@ class CSDS_USER_REG_AIDE
 		//require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		$count = $wpdb->get_var("SELECT COUNT(ID) FROM $wpdb->users;");
 		$i = 1;
-		while($i <= $count){
+		while( $i <= $count ){
 			$user_id = $i;
-			delete_user_meta( $user_id, $field, "");
+			delete_user_meta( $user_id, $field, "" );
 			$i++;
 		} // end while
 		
@@ -1229,42 +1265,52 @@ class CSDS_USER_REG_AIDE
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
-if(!function_exists('wp_new_user_notification')){
-	function wp_new_user_notification($user_id, $plaintext_pass = '') {
+if( !function_exists( 'wp_new_user_notification' ) ){
+	function wp_new_user_notification( $user_id, $plaintext_pass = '' ) {
 		
-		$user = new WP_User($user_id);
-		$options = get_option('csds_userRegAide_registrationFields');
-		$user_login = stripslashes($user->user_login);
-		$user_email = stripslashes($user->user_email);
+		$options = get_option('csds_userRegAide_Options');
+		$user = new WP_User( $user_id );
+		$fields = get_option('csds_userRegAide_registrationFields');
+		$login_url = (string) '';
+		$page = $options['xwrd_change_name'];
+		$user_login = stripslashes( $user->user_login );
+		$user_email = stripslashes( $user->user_email );
+		
+		if( $options['xwrd_change_on_signup'] == 1 ){
+			$url = site_url();
+			$login_url = $url.'/'.$page.'/?action=new-register';
+		}elseif( $options['xwrd_change_on_signup'] == 2 ){
+			$login_url = wp_login_url() . "\r\n";
+		}
 
 		// The blogname option is escaped with esc_html on the way into the database in sanitize_option
 	 
 		// we want to reverse this for the plain text arena of emails.
 	 
-		$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+		$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 	 
-		$message  = sprintf(__('A new user has registered on your site %s:'), $blogname) . "\r\n\r\n";
-		$message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
-		$message .= sprintf(__('E-mail: %s'), $user_email) . "\r\n";
+		$message  = sprintf( __( 'A new user has registered on your site %s:' ), $blogname ) . "\r\n\r\n";
+		$message .= sprintf( __( 'Username: %s'), $user_login ) . "\r\n\r\n";
+		$message .= sprintf( __( 'E-mail: %s'), $user_email ) . "\r\n";
 	 
-		@wp_mail(get_option('admin_email'), sprintf(__('[%s] New User Registration Alert'), $blogname), $message);
+		@wp_mail( get_option( 'admin_email' ), sprintf( __( '[%s] New User Registration Alert' ), $blogname ), $message );
 	 
-		if ( empty($plaintext_pass) ){
+		if ( empty( $plaintext_pass ) ){
 			return;
 		}
 		$xwrd = 'User Entered';
-		$message = sprintf(__('Thank you for registering with %s!'), $blogname) . "\r\n\n";
-		$message .= sprintf(__('Here are your new login credentials for %s:'), $blogname) . "\r\n\n";
+		$message = sprintf( __( 'Thank you for registering with %s!' ), $blogname ) . "\r\n\n";
+		$message .= sprintf( __( 'Here are your new login credentials for %s:' ), $blogname ) . "\r\n\n";
 		//$message = sprintf(__($options['wp_user_notification_message'])); not using dont want to confuse users 
-		$message .= sprintf(__('Username: %s'), $user_login) . "\r\n";
-		if(in_array('Password', $options)){
-			$message .= sprintf(__('Password: %s'), $xwrd) . "\r\n";
-		}elseif(!in_array('Password', $options)){
-			$message .= sprintf(__('Password: %s'), $plaintext_pass) . "\r\n";
+		$message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n";
+		if(in_array('Password', $fields)){
+			$message .= sprintf( __( 'Password: %s' ), $xwrd ) . "\r\n";
+		}elseif( !in_array( 'Password', $fields ) ){
+			$message .= sprintf( __( 'Password: %s' ), $plaintext_pass ) . "\r\n";
 		}
-		$message .= wp_login_url() . "\r\n";
+		$message .= $login_url;
 		 
-		wp_mail($user_email, sprintf(__('[%s] Your username and password'), $blogname), $message);
+		wp_mail( $user_email, sprintf( __( '[%s] Your username and password' ), $blogname ), $message );
 		 
 	}
 }
@@ -1282,9 +1328,9 @@ if(!function_exists('wp_new_user_notification')){
  * @website http://creative-software-design-solutions.com
 */
 # 
-if( class_exists('CSDS_USER_REG_AIDE') ){
+if( class_exists( 'CSDS_USER_REG_AIDE' ) ){
 	$csds_userRegAide_Instance = new CSDS_USER_REG_AIDE();
-	if(isset($csds_userRegAide_Instance)){
+	if( isset( $csds_userRegAide_Instance ) ){
 		// if(function_exists('csds_userRegAide_install')){
 			register_activation_hook( __FILE__, array(  &$csds_userRegAide_Instance, 'csds_userRegAide_install' ) );
 		// }
