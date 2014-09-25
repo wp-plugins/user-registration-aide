@@ -3,7 +3,7 @@
 /**
  * User Registration Aide - Actions & Filters
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.5.0.0
+ * Version: 1.5.0.2
  * Since Version 1.3.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -76,7 +76,7 @@ class CSDS_URA_ACTIONS
 	 * Creates array for menu tabs titles
 	 *
      * @since 1.4.0.0
-     * @updated 1.4.0.0
+     * @updated 1.5.0.2
 	 * @returns array $tabs - array of menu tabs Titles for plugin
      * @access private
      * @author Brian Novotny
@@ -88,7 +88,7 @@ class CSDS_URA_ACTIONS
 			'registration_fields' 			=> 'Set Dashboard Widget Options & Select Fields to add to Registration Form or Add New Custom Fields Here',
 			'edit_new_fields' 				=> 'Edit New Fields For Registration Form/User Profile Here Like Field Order, Field Titles Or Delete Fields',
 			'registration_form_options' 	=> 'Customize Bottom Registration Form Message, Password Strength Options, Custom Redirects, Agreement Message, Anti-Bot Spammer & Title for Profile Pages Here', 'registration_form_css_options' => 'Customize Registration Form Messages & Custom Registration Form CSS Options Here',
-			'custom_options'				=> 'Change Display Name Options or URA Admin Page Style Sheet Settings Here'
+			'custom_options'				=> 'Password Change Settings Options, Change Display Name Options or URA Admin Page Style Sheet Settings Here'
 		);
 		
 		return $tabs;

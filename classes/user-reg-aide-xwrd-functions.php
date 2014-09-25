@@ -2,7 +2,7 @@
 /**
  * User Registration Aide - Password Actions & Functions
  * Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
- * Version: 1.5.0.1
+ * Version: 1.5.0.2
  * Since Version 1.5.0.0
  * Author: Brian Novotny
  * Author URI: http://creative-software-design-solutions.com/
@@ -82,6 +82,7 @@ class PASSWORD_FUNCTIONS
 		$options = get_option('csds_userRegAide_Options');
 		$table_name = (string) $wpdb->prefix . "ura_xwrd_change";
 		$ip = $this->get_user_ip_address();
+		$nonce = wp_nonce_field(  'csds-passChange', 'wp_nonce_csds-passChange' );
 		
 		// declaring function variables
 		$line = (string) '';
@@ -119,6 +120,7 @@ class PASSWORD_FUNCTIONS
 		$form = (string) '';
 		$form .= '<form method="post" name="change_password" id="change_password">';
 		$form .= '<div class="reset-xwrd">';
+		$form .= $nonce; //wp_nonce_field( $nonce[0], $nonce[1] );
 		$form .= '<h2>Password Change Form</h2>';
 		$form .= $line;
 		//$form .= 'Post ID: '.$post_id.'<br/>';
@@ -147,7 +149,12 @@ class PASSWORD_FUNCTIONS
 		// end form shortcode
 		
 		if( isset( $_POST['update_xwrd-reset'] ) ){
-			
+			$wp_error = new WP_Error();
+			if( ! wp_verify_nonce( $_POST['wp_nonce_csds-passChange'], 'csds-passChange' ) ){
+				exit( 'Failed Security Validation!' );
+			}/* -- testing -- else{
+				$wp_error->add( 'nonce_verified' , __( "<b>ERROR</b>: Nonce Verified!",'csds_userRegAide' ) );
+			} */
 			$request_uri = $_SERVER['REQUEST_URI'];
 			$referer = $_SERVER['HTTP_REFERER'];
 			//$referrer = (string) '';
@@ -160,7 +167,7 @@ class PASSWORD_FUNCTIONS
 			$pass1 = $_POST['pass1'];
 			$pass2 = $_POST['pass2'];
 			$user = wp_authenticate( $login, $password );
-			$wp_error = new WP_Error();
+			
 			
 			if( empty( $login ) ){
 				$wp_error->add( 'empty_email' , __( "<b>ERROR</b>: Please Enter Your Username!",'csds_userRegAide' ) );
@@ -347,7 +354,7 @@ class PASSWORD_FUNCTIONS
 	/**
 	 * View for password settings options page
 	 * @since 1.5.0.0
-	 * @updated 1.5.0.1
+	 * @updated 1.5.0.2
 	 * @access public
 	 *
 	 * @author Brian Novotny
@@ -355,122 +362,129 @@ class PASSWORD_FUNCTIONS
 	*/
 	
 	function password_settings_view() {
-		$options = get_option('csds_userRegAide_Options');
-		$span = array( 'regForm', 'Password Change Options:', 'csds_userRegAide' );
+		global $current_user;
+		$current_user = wp_get_current_user();
+		if( !current_user_can( 'manage_options', $current_user->ID ) ){	
+			wp_die(__('You do not have permissions to modify this plugins settings, sorry, check with site administrator to resolve this issue please!', 'csds_userRegAide'));
+		}else{
+			$options = get_option('csds_userRegAide_Options');
+			$span = array( 'regForm', 'Password Change Options:', 'csds_userRegAide' );
+				do_action( 'end_mini_wrap' );
+				do_action( 'start_mini_wrap', $span ); ?>	
+					<table class="regForm" width="100%">
+					<tr> <?php // Password Change Options ?>
+						<td width="50%"><?php _e('Require Password Change After User Registers and Gets Password From Email: ', 'csds_userRegAide');?>
+						<br/>
+						<span title="<?php _e('Select this option to require new users who have registered for your site and received their Password from the default WordPress Email to change their password before logging in', 'csds_userRegAide');?>">
+						<input type="radio" name="newUser_xwrdChange" id="newUser_xwrdChange" value="1" <?php
+						if ($options['xwrd_change_on_signup'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+						<span title="<?php _e('Select this option not to require new users to change their password before logging in',  'csds_userRegAide');?>">
+						<input type="radio" name="newUser_xwrdChange" id="newUser_xwrdChange" value="2" <?php
+						if ($options['xwrd_change_on_signup'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+						</td>
+						<?php // Require existing users to change passwords at selected intervals ?>
+						<td width="50%"><?php _e('Require Existing Users to Change Passwords After Specified Time Period: ', 'csds_userRegAide');?>
+						<br/>
+						<span title="<?php _e('Select this option to require current users to change passwords at selected intervals', 'csds_userRegAide');?>">
+						<input type="radio" name="xwrd_chg_curUsers" id="xwrd_chg_curUsers" value="1" <?php
+						if ($options['xwrd_require_change'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+						<span title="<?php _e('Select this option not to require current users to change passwords at selected intervals',  'csds_userRegAide');?>">
+						<input type="radio" name="xwrd_chg_curUsers" id="xwrd_chg_curUsers" value="2" <?php
+						if ($options['xwrd_require_change'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+						</td>
+					</tr>
+					<tr>
+						<?php // Custom Password Strength Requirements Option Yes/No ?>
+						<td width="50%"><?php _e('Maximum Time Allowed in Days Between Password Change Dates: ', 'csds_userRegAide');?>
+						<span title="<?php _e('Enter the amount of time in days between users having to change their passwords, the defaults are every 30 days up to one year. It is good security practice to require a password change at least every 6 months, or 180 days!', 'csds_userRegAide');?>">
+						<select name="password_change_interval[]" id="password_changed_interval" title="<?php _e('You can select the maximum time allowed in days here before users are required to change their passwords. Good security practices call for 180 days', 'csds_userRegAide');?>"  size="8" style="height:40px">
+						<?php
+						$interval = trim( $options['xwrd_change_interval'] );
+						for( $days = 30; $days <= 360; $days += 30 ){
+						/* testing
+						for( $days = 1; $days <= 30; $days += 1 ){ */
+							if( $days == $interval ){
+								$selected = "selected=\"selected\"";
+							}else{
+								$selected = NULL;
+							}
+							
+							echo "<option value=\"$days\" $selected >$days</option>";
+						}
+						?>
+						</select>
+						</td>
+						<?php // Custom Password Strength Requirements Option Yes/No ?>
+						<td width="50%"><?php _e('Maximum Password Changes Before Duplicates Allowed: ', 'csds_userRegAide');?>
+						<span title="<?php _e('Enter the number of times checked for password duplicates before allowing a duplicate password. For instance, a user has changed password 6 times before allowing duplicates would mean that on the 7th password change, the user could duplicate the first password they entered of those 6 passwords. This is useful to prevent users from entering the same 1 or 2 passwords over and over again making it easier to hack their accounts and your site!', 'csds_userRegAide');?>">
+						<select name="dup_password_change_times[]" id="max_dup_xword_change_times" title="<?php _e('You can select the number of password changes allowed before a user can enter a duplicate password. Useful for those users that use the same passwords over and over again which makes it easy to hack their accounts and your site! This option will eliminate that problem for the most part in addition to strong password strength requirements!', 'csds_userRegAide');?>"  size="8" style="height:40px">
+						<?php
+						$dup_times = trim( $options['xwrd_duplicate_times'] );
+						for( $times = 1; $times <= 9; $times += 1 ){
+							if( $times == $dup_times ){
+								$selected = "selected=\"selected\"";
+							}else{
+								$selected = NULL;
+							}
+							
+							echo "<option value=\"$times\" $selected >$times</option>";
+						}
+						?>
+						</select>
+						</td>
+						
+					</tr>
+					<tr>
+						<td width="50%"><label for="xwrd_chg_url" title="<?php _e( 'Only Add The Distinct Page Name Please!! ( EXAMPLE: change-password for page titled Change Password) No /( FORWARD SLASHES!!)', 'csds_userRegAide' );?>"><?php _e('Password Change Shortcode Page Name: ', 'csds_userRegAide');?></label>/
+						<input type="text" name="xwrd_chg_url" id="xwrd_chg_url" title="<?php _e( 'Only Add The Distinct Page Name Please!! ( EXAMPLE: change-password for page titled Change Password) No /( FORWARD SLASHES!!)', 'csds_userRegAide' );?>" value="<?php echo $options['xwrd_change_name']; ?>" />/<br/>
+						</td>
+						
+						<?php // Password Change Post Title -- ?>
+						<td width="50%"><label for="xwrd_chg_title" title="<?php _e( 'Only Add The Distinct Page Title!!', 'csds_userRegAide' );?>"><?php _e('Password Change Shortcode Page Title: ', 'csds_userRegAide');?></label>
+						<input type="text" name="xwrd_chg_title" id="xwrd_chg_title" title="<?php _e( 'Only Add The Distinct Page Title Please!! (Change Password) No /(SLASHES!!)', 'csds_userRegAide' );?>" value="<?php echo $options['xwrd_chng_title']; ?>" /><br/>
+						</td>
+						
+					</tr>
+					<tr>
+						<td width="50%"><label for="xwrd_chg_ssl" title="<?php _e( 'Requires SSL Certificate on Website Server To Use SSL!', 'csds_userRegAide' );?>"><?php _e('Use SSL(HTTPS://) Secure Page For Password Change Page: ', 'csds_userRegAide');?></label>
+						<span title="<?php _e('Select this option to require SSL for Custom Password Change Page! NOTE: REQUIRES SSL CERTIFICATE ON WEBSITE!', 'csds_userRegAide');?>">
+						<input type="radio" name="xwrd_chg_ssl" id="xwrd_chg_ssl" value="1" <?php
+						if ($options['xwrd_change_ssl'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+						<span title="<?php _e('Select this option to not use SSL on Custom Password Change Page! No Certificate Required, Use This Option if YOu Have No SSL Certificate!',  'csds_userRegAide');?>">
+						<input type="radio" name="xwrd_chg_ssl" id="xwrd_chg_ssl" value="2" <?php
+						if ($options['xwrd_change_ssl'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+						</td>
+						
+						<td width="50%"><label for="xwrd_reset" title="<?php _e( 'This will not include Administrators!', 'csds_userRegAide' );?>"><?php _e('Allow Lost Password Reset for Non-Admins: ', 'csds_userRegAide');?></label>
+						<span title="<?php _e('Select this option to allow users to reset passwords with the lost password link on login page', 'csds_userRegAide');?>">
+						<input type="radio" name="xwrd_reset" id="xwrd_reset" value="1" <?php
+						if ($options['allow_xwrd_reset'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+						<span title="<?php _e('Select this option to not allow users to reset passwords with the lost password link on login page',  'csds_userRegAide');?>">
+						<input type="radio" name="xwrd_reset" id="xwrd_reset" value="2" <?php
+						if ($options['allow_xwrd_reset'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+						</td>
+						
+					</tr>
+					<tr>
+						<td colspan="2"><label for="show_xwrd_fields" title="<?php _e( 'This will not include Administrators!', 'csds_userRegAide' );?>"><?php _e('Show Password Fields on Profile/User Edit Page<b> (NOTE: WILL NOT UTILIZE PASSWORD STRENGTH OR PASSWORD CHANGE REQUIREMENTS!): ', 'csds_userRegAide');?></label>
+						<span title="<?php _e('Select this option to allow users to change passwords on the user profile/edit page. NOTE: Will not enforce password strength or password change requirements!!!', 'csds_userRegAide');?>">
+						<input type="radio" name="show_xwrd_fields" id="show_xwrd_fields" value="1" <?php
+						if ($options['show_password_fields'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
+						<span title="<?php _e('Select this option to not allow users to change passwords user profile/edit page',  'csds_userRegAide');?>">
+						<input type="radio" name="show_xwrd_fields" id="show_xwrd_fields" value="2" <?php
+						if ($options['show_password_fields'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+						<div class="submit">
+						<input type="submit" class="button-primary" name="updt_pwrd_chgd_options" id="updt_pwrd_chgd_options" value="<?php _e( 'Update Password Change Options', 'csds_userRegAide' );?>" />
+						</div>
+					</tr>
+				</table>
+			<?php
 			do_action( 'end_mini_wrap' );
-			do_action( 'start_mini_wrap', $span ); ?>	
-				<table class="regForm" width="100%">
-				<tr> <?php // Password Change Options ?>
-					<td width="50%"><?php _e('Require Password Change After User Registers and Gets Password From Email: ', 'csds_userRegAide');?>
-					<br/>
-					<span title="<?php _e('Select this option to require new users who have registered for your site and received their Password from the default WordPress Email to change their password before logging in', 'csds_userRegAide');?>">
-					<input type="radio" name="newUser_xwrdChange" id="newUser_xwrdChange" value="1" <?php
-					if ($options['xwrd_change_on_signup'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
-					<span title="<?php _e('Select this option not to require new users to change their password before logging in',  'csds_userRegAide');?>">
-					<input type="radio" name="newUser_xwrdChange" id="newUser_xwrdChange" value="2" <?php
-					if ($options['xwrd_change_on_signup'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
-					</td>
-					<?php // Require existing users to change passwords at selected intervals ?>
-					<td width="50%"><?php _e('Require Existing Users to Change Passwords After Specified Time Period: ', 'csds_userRegAide');?>
-					<span title="<?php _e('Select this option to require current users to change passwords at selected intervals', 'csds_userRegAide');?>">
-					<input type="radio" name="xwrd_chg_curUsers" id="xwrd_chg_curUsers" value="1" <?php
-					if ($options['xwrd_require_change'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
-					<span title="<?php _e('Select this option not to require current users to change passwords at selected intervals',  'csds_userRegAide');?>">
-					<input type="radio" name="xwrd_chg_curUsers" id="xwrd_chg_curUsers" value="2" <?php
-					if ($options['xwrd_require_change'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
-					</td>
-				</tr>
-				<tr>
-					<?php // Custom Password Strength Requirements Option Yes/No ?>
-					<td width="50%"><?php _e('Maximum Time Allowed in Days Between Password Change Dates: ', 'csds_userRegAide');?>
-					<span title="<?php _e('Enter the amount of time in days between users having to change their passwords, the defaults are every 30 days up to one year. It is good security practice to require a password change at least every 6 months, or 180 days!', 'csds_userRegAide');?>">
-					<select name="password_change_interval[]" id="password_changed_interval" title="<?php _e('You can select the maximum time allowed in days here before users are required to change their passwords. Good security practices call for 180 days', 'csds_userRegAide');?>"  size="8" style="height:40px">
-					<?php
-					$interval = trim( $options['xwrd_change_interval'] );
-					for( $days = 30; $days <= 360; $days += 30 ){
-					/* testing
-					for( $days = 1; $days <= 30; $days += 1 ){ */
-						if( $days == $interval ){
-							$selected = "selected=\"selected\"";
-						}else{
-							$selected = NULL;
-						}
-						
-						echo "<option value=\"$days\" $selected >$days</option>";
-					}
-					?>
-					</select>
-					</td>
-					<?php // Custom Password Strength Requirements Option Yes/No ?>
-					<td width="50%"><?php _e('Maximum Password Changes Before Duplicates Allowed: ', 'csds_userRegAide');?>
-					<span title="<?php _e('Enter the number of times checked for password duplicates before allowing a duplicate password. For instance, a user has changed password 6 times before allowing duplicates would mean that on the 7th password change, the user could duplicate the first password they entered of those 6 passwords. This is useful to prevent users from entering the same 1 or 2 passwords over and over again making it easier to hack their accounts and your site!', 'csds_userRegAide');?>">
-					<select name="dup_password_change_times[]" id="max_dup_xword_change_times" title="<?php _e('You can select the number of password changes allowed before a user can enter a duplicate password. Useful for those users that use the same passwords over and over again which makes it easy to hack their accounts and your site! This option will eliminate that problem for the most part in addition to strong password strength requirements!', 'csds_userRegAide');?>"  size="8" style="height:40px">
-					<?php
-					$dup_times = trim( $options['xwrd_duplicate_times'] );
-					for( $times = 1; $times <= 9; $times += 1 ){
-						if( $times == $dup_times ){
-							$selected = "selected=\"selected\"";
-						}else{
-							$selected = NULL;
-						}
-						
-						echo "<option value=\"$times\" $selected >$times</option>";
-					}
-					?>
-					</select>
-					</td>
-					
-				</tr>
-				<tr>
-					<td width="50%"><label for="xwrd_chg_url" title="<?php _e( 'Only Add The Distinct Page Name Please!! ( EXAMPLE: change-password for page titled Change Password) No /( FORWARD SLASHES!!)', 'csds_userRegAide' );?>"><?php _e('Password Change Shortcode Page Name: ', 'csds_userRegAide');?></label>/
-					<input type="text" name="xwrd_chg_url" id="xwrd_chg_url" title="<?php _e( 'Only Add The Distinct Page Name Please!! ( EXAMPLE: change-password for page titled Change Password) No /( FORWARD SLASHES!!)', 'csds_userRegAide' );?>" value="<?php echo $options['xwrd_change_name']; ?>" />/<br/>
-					</td>
-					
-					<?php // Password Change Post Title -- ?>
-					<td width="50%"><label for="xwrd_chg_title" title="<?php _e( 'Only Add The Distinct Page Title!!', 'csds_userRegAide' );?>"><?php _e('Password Change Shortcode Page Title: ', 'csds_userRegAide');?></label>
-					<input type="text" name="xwrd_chg_title" id="xwrd_chg_title" title="<?php _e( 'Only Add The Distinct Page Title Please!! (Change Password) No /(SLASHES!!)', 'csds_userRegAide' );?>" value="<?php echo $options['xwrd_chng_title']; ?>" /><br/>
-					</td>
-					
-				</tr>
-				<tr>
-					<td width="50%"><label for="xwrd_chg_ssl" title="<?php _e( 'Requires SSL Certificate on Website Server To Use SSL!', 'csds_userRegAide' );?>"><?php _e('Use SSL(HTTPS://) Secure Page For Password Change Page: ', 'csds_userRegAide');?></label>
-					<span title="<?php _e('Select this option to require SSL for Custom Password Change Page! NOTE: REQUIRES SSL CERTIFICATE ON WEBSITE!', 'csds_userRegAide');?>">
-					<input type="radio" name="xwrd_chg_ssl" id="xwrd_chg_ssl" value="1" <?php
-					if ($options['xwrd_change_ssl'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
-					<span title="<?php _e('Select this option to not use SSL on Custom Password Change Page! No Certificate Required, Use This Option if YOu Have No SSL Certificate!',  'csds_userRegAide');?>">
-					<input type="radio" name="xwrd_chg_ssl" id="xwrd_chg_ssl" value="2" <?php
-					if ($options['xwrd_change_ssl'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
-					</td>
-					
-					<td width="50%"><label for="xwrd_reset" title="<?php _e( 'This will not include Administrators!', 'csds_userRegAide' );?>"><?php _e('Allow Lost Password Reset for Non-Admins: ', 'csds_userRegAide');?></label>
-					<span title="<?php _e('Select this option to allow users to reset passwords with the lost password link on login page', 'csds_userRegAide');?>">
-					<input type="radio" name="xwrd_reset" id="xwrd_reset" value="1" <?php
-					if ($options['allow_xwrd_reset'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
-					<span title="<?php _e('Select this option to not allow users to reset passwords with the lost password link on login page',  'csds_userRegAide');?>">
-					<input type="radio" name="xwrd_reset" id="xwrd_reset" value="2" <?php
-					if ($options['allow_xwrd_reset'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
-					</td>
-					
-				</tr>
-				<tr>
-					<td colspan="2"><label for="show_xwrd_fields" title="<?php _e( 'This will not include Administrators!', 'csds_userRegAide' );?>"><?php _e('Show Password Fields on Profile/User Edit Page<b> (NOTE: WILL NOT UTILIZE PASSWORD STRENGTH OR PASSWORD CHANGE REQUIREMENTS!): ', 'csds_userRegAide');?></label>
-					<span title="<?php _e('Select this option to allow users to change passwords on the user profile/edit page. NOTE: Will not enforce password strength or password change requirements!!!', 'csds_userRegAide');?>">
-					<input type="radio" name="show_xwrd_fields" id="show_xwrd_fields" value="1" <?php
-					if ($options['show_password_fields'] == 1) echo 'checked' ;?> /> <?php _e('Yes', 'csds_userRegAide');?></span>
-					<span title="<?php _e('Select this option to not allow users to change passwords user profile/edit page',  'csds_userRegAide');?>">
-					<input type="radio" name="show_xwrd_fields" id="show_xwrd_fields" value="2" <?php
-					if ($options['show_password_fields'] == 2) echo 'checked' ;?> /> <?php _e('No', 'csds_userRegAide'); ?></span>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-					<div class="submit">
-					<input type="submit" class="button-primary" name="updt_pwrd_chgd_options" id="updt_pwrd_chgd_options" value="<?php _e( 'Update Password Change Options', 'csds_userRegAide' );?>" />
-					</div>
-				</tr>
-			</table>
-		<?php
-		do_action( 'end_mini_wrap' );
+		}
 	}
 	
 	/**
@@ -604,7 +618,7 @@ class PASSWORD_FUNCTIONS
 	 * @since 1.5.0.0
 	 * @updated 1.5.0.0
 	 * @access public
-	 * @returns string $ip_address
+	 * @returns array $results of error count and WP_ERRORS
 	 * @author Brian Novotny
 	 * @website http://creative-software-design-solutions.com
 	*/
@@ -733,7 +747,7 @@ class PASSWORD_FUNCTIONS
 		$options = get_option('csds_userRegAide_Options');
 		$redirect = $options['redirect_login'];
 		$redirect_url = $options['login_redirect_url'];
-		echo $redirect_to;
+		//echo $redirect_to;
 		if( $redirect == 1 ){
 			if ( isset( $user->roles ) && is_array( $user->roles ) ) {
 				//check for admins
@@ -861,12 +875,12 @@ class PASSWORD_FUNCTIONS
 	}
 	
 	/**
-	 * Checks user for last password change on authentication - if need password change * redirects to password change page
+	 * Returns Post ID for checking if page is Password Change Page
 	 * @since 1.5.0.0
 	 * @updated 1.5.0.0
 	 * @access public
 	 * @param accept object WP_Post $post
-	 * @param return int $titleid post_id
+	 * @param return int $titleid WordPress post_id
 	 * @author Brian Novotny
 	 * @website http://creative-software-design-solutions.com
 	*/

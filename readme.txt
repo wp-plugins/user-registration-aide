@@ -6,9 +6,9 @@ Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registr
 Tags: user, registration, field, register, Facebook, extra fields, profile, anti-spam, login message, login image, custom login css, admin, user management, membership, members, password change, password strength, password
 Requires at least: 3.2
 Tested up to: 4.0
-Stable tag: 1.5.0.1
+Stable tag: 1.5.0.2
 
-Adds new fields and requites new users to register additional fields (such as first name and last name) or any new field you wish to add.
+Adds new fields and requires new users to register additional fields (such as first name and last name) or any new field you wish to add.
 
 Note: WordPress 3.2 or higher is required due to new error handling procedures.
 
@@ -46,6 +46,7 @@ Plugin Features:
 	Anti-Spam Math Problem
 	Password Strength Meter
 	Custom Password Strength Options to Create Your Own Password Strength Definition
+	Choose custom display name fields for users by roles or for all users
 	Force New Users to change password after getting password from email
 	Force Existing Users to change password after specified amount of time
 	Not allow same password to be used for specified number of times
@@ -100,6 +101,12 @@ Then, if you don't know where it is the registration form is on the login form, 
 6. Admin Page 4 Registration Form Messages & CSS Options
 
 == Changelog ==
+
+1.5.0.2
+
+a) Added nonce to Password Change Page
+
+b) Removed url display at top if page (From testing)
 
 1.5.0.1
 
