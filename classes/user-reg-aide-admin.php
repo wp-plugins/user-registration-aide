@@ -137,19 +137,24 @@ class CSDS_URA_ADMIN_SETTINGS
 			// Handles adding fields to registration form
 		// checking nonce
 		
-		if (isset($_POST['dash_widget_display_option'])){
+		if( isset( $_POST['dash_widget_display_option'] ) ){
 			if( wp_verify_nonce( $_POST['wp_nonce_csds-regFieldsAdmin'], 'csds-regFieldsAdmin' ) ){	
 				do_action('update_dw_display_options'); // handles updates to dashboard widget options line 244 user-registration-aide.php
 			}
-		}elseif (isset($_POST['dash_widget_fields_update'])){
+		}elseif( isset( $_POST['dash_widget_fields_update'] ) ){
 			if( wp_verify_nonce( $_POST['wp_nonce_csds-regFieldsAdmin'], 'csds-regFieldsAdmin' ) ){	
 				do_action('update_dw_field_options'); // handles updates to dashboard widget options line 244 user-registration-aide.php
 			}
-		}elseif (isset($_POST['dash_widget_field_order_update'])){
+		}elseif( isset( $_POST['dash_widget_field_order_update'] ) ){
 			if( wp_verify_nonce( $_POST['wp_nonce_csds-regFieldsAdmin'], 'csds-regFieldsAdmin' ) ){				
 				do_action('update_dw_field_order'); // handles updates to dashboard widget options line 244 user-registration-aide.php
 			}
-		}elseif (isset($_POST['reg_fields_update'])){
+		}elseif( isset( $_POST['selectNone'] ) ){ // unselect all fields for registration form
+			$registratrionFields = array();
+			update_option( "csds_userRegAide_registrationFields", $registratrionFields );
+			$optional_fields = array();
+			update_option( 'csds_ura_optionalFields', $optional_fields );
+		}elseif( isset( $_POST['reg_fields_update'] ) ){
 			if( wp_verify_nonce( $_POST['wp_nonce_csds-regFieldsAdmin'], 'csds-regFieldsAdmin' ) ){	
 				$options = array();
 				$options = get_option('csds_userRegAide_Options');
@@ -158,37 +163,37 @@ class CSDS_URA_ADMIN_SETTINGS
 				$registratrionFields = array();
 				
 				$xwrd = 2;
-				if(current_user_can('activate_plugins', $current_user->ID)){
-					if(!empty($_POST['additionalFields'])){
+				if( current_user_can( 'activate_plugins', $current_user->ID ) ){
+					if( !empty( $_POST['additionalFields'] ) ){
 						$results2 =  $_POST['additionalFields'];
-							if(!empty($results2)){
-								foreach($results2 as $key => $value){
-									if(!empty($knownFields)){
-										foreach($knownFields as $key1 => $value1){
-											if($value == $key1){
+							if( !empty( $results2 ) ){
+								foreach( $results2 as $key => $value ){
+									if( !empty( $knownFields ) ){
+										foreach( $knownFields as $key1 => $value1 ){
+											if( $value == $key1 ){
 												$registratrionFields[$key1] = $value1;
-												if($key1 != 'user_pass'){
+												if( $key1 != 'user_pass' ){
 													$xwrd = 0;
 													$options['password'] = $xwrd;
 													$options['user_password'] = $xwrd;
 													update_option("csds_userRegAide_Options", $options);
-												}elseif($key1 == 'user_pass'){
+												}elseif( $key1 == 'user_pass' ){
 													$xwrd = 1;
 													$options['password'] = $xwrd;
 													$options['user_password'] = $xwrd;
-													update_option("csds_userRegAide_Options", $options);
+													update_option( "csds_userRegAide_Options", $options );
 												}
 												$registratrionFields = $registratrionFields;
-												update_option("csds_userRegAide_registrationFields", $registratrionFields);
+												update_option( "csds_userRegAide_registrationFields", $registratrionFields );
 											}	
 										}
 									}
-									if(!empty($newFields)){
-										foreach($newFields as $key2 => $value2){
-											if($value == $key2){
+									if( !empty( $newFields ) ){
+										foreach( $newFields as $key2 => $value2 ){
+											if( $value == $key2 ){
 												$registratrionFields[$key2] = $value2;
 												$registratrionFields = $registratrionFields;
-												update_option("csds_userRegAide_registrationFields", $registratrionFields);
+												update_option( "csds_userRegAide_registrationFields", $registratrionFields );
 											}		
 										}
 									}
@@ -196,12 +201,12 @@ class CSDS_URA_ADMIN_SETTINGS
 							}else{
 								$selected = '';
 								$registratrionFields = array();
-								update_option("csds_userRegAide_registrationFields", $registratrionFields);
+								update_option( "csds_userRegAide_registrationFields", $registratrionFields );
 							}
 					}else{
 						$selected = '';
 						$registratrionFields = array();
-						update_option("csds_userRegAide_registrationFields", $registratrionFields);
+						update_option( "csds_userRegAide_registrationFields", $registratrionFields );
 					}
 					echo '<div id="message" class="updated fade"><p class="my_message">'. __('Registration Form Add New Field Options Updated Successfully!', 'csds_userRegAide') .'</p></div>';					//Report to the user that the data has been updated successfully
 				}else{
@@ -209,10 +214,90 @@ class CSDS_URA_ADMIN_SETTINGS
 					exit();
 				}
 			}
+		}elseif( isset($_POST['selectNoOptions'] ) ){
+			$optional_fields = array();
+			update_option( 'csds_ura_optionalFields', $optional_fields );
+		}elseif( isset($_POST['reg_fields_optional_update'] ) ){
+			if( wp_verify_nonce( $_POST['wp_nonce_csds-regFieldsAdmin'], 'csds-regFieldsAdmin' ) ){	
+				$options = array();
+				$options = get_option('csds_userRegAide_Options');
 				
+				$registrationFields = get_option('csds_userRegAide_registrationFields');
+				$optional_fields = array();
+				$xwrd = 2;
+				$msg = ( string ) '';
+				$class = ( string ) '';
+				if( current_user_can( 'activate_plugins', $current_user->ID ) ){
+					if( !empty( $_POST['additionalFieldsOptional'] ) ){
+						$results2 =  $_POST['additionalFieldsOptional'];
+						if( $results2 != 'no_registration_fields' ){
+							if( !empty( $results2 ) ){
+								foreach( $results2 as $key => $value ){
+									if( !empty( $registrationFields ) ){
+										foreach( $registrationFields as $key1 => $value1 ){
+											if( $value == $key1 ){
+												if( $key1 != 'user_pass' ){
+													$xwrd = 0;
+													$options['password'] = $xwrd;
+													$options['user_password'] = $xwrd;
+													update_option("csds_userRegAide_Options", $options);
+													$optional_fields[$key1] = $value1;
+												}elseif( $key1 == 'user_pass' ){
+													$xwrd = 1;
+													$options['password'] = $xwrd;
+													$options['user_password'] = $xwrd;
+													update_option( "csds_userRegAide_Options", $options );
+												}
+												
+											}	
+										}
+										$optional_fields = $optional_fields;
+										update_option( "csds_ura_optionalFields", $optional_fields );
+										$msg = 'Registration Form Optional Fields Successfully Updated!';
+										$class = 'updated fade';
+									}else{
+										$msg = 'No Registration Form Fields Exist, Select Some Registration Form Fields First!';
+										$class = 'updated fade';
+									}
+									
+								}
+							}else{
+								$msg = __( 'No Optional Registration Form Fields Selected, Cannot Add Optional Field!', 'csds_userRegAide' );
+								$class = 'error';
+								$selected = '';
+								$optional_fields = array();
+								update_option( "csds_ura_optionalFields", $optional_fields );
+							}
+						}else{
+							$msg = __( 'No Registration Form Fields Selected, Cannot Add Optional Field!', 'csds_userRegAide' );
+							$class = 'error';
+							$selected = '';
+							$optional_fields = array();
+							update_option( "csds_ura_optionalFields", $optional_fields );
+						}
+					}else{
+						$msg = __( 'No Optional Registration Form Fields Selected, Cannot Add Optional Field!', 'csds_userRegAide' );
+						$class = 'error';
+						$selected = '';
+						$optional_fields = array();
+						update_option( "csds_ura_optionalFields", $optional_fields );
+					}
+					echo '<div id="message" class="'.$class.'"><p class="my_message">'. __( $msg, 'csds_userRegAide' ) .'</p></div>';					//Report to the user that the data has been updated successfully
+				}else{
+					echo '<div id="message" class="error"><p class="my_message">'. __('You do not have adequate permissions to edit this plugin! Please check with Administrator to get additional permissions.', 'csds_userRegAide') .'</p></div>';
+					exit();
+				}
+			}
+		// handles required fields asterisk update
+		}elseif( isset( $_POST['update-asterisk'] ) ){ 
+			if( isset( $_POST['use_asterisk'] ) ){
+				$options['designate_required_fields'] = $_POST['use_asterisk'];
+			}
+			update_option( "csds_userRegAide_Options", $options );
+			echo '<div id="message" class="updated fade"><p class="my_message">'. __( 'Asterisk Options Updated Successfully!', 'csds_userRegAide' ) .'</p></div>'; //Report to the user that the data has been updated successfully
 		// Handles adding new fields to database for user profiles and registration
 		
-		}elseif(isset($_POST['new_fields_update'])){
+		}elseif( isset( $_POST['new_fields_update'] ) ){
 			if( wp_verify_nonce( $_POST['wp_nonce_csds-regFieldsAdmin'], 'csds-regFieldsAdmin' ) ){	
 				// Updating Arrays from options db
 			
@@ -228,49 +313,49 @@ class CSDS_URA_ADMIN_SETTINGS
 				$duplicate = (int) 0;
 			
 			// Checking for blank fields
-				if($_POST['csds_userRegAide_newFieldKey'] == '' && $_POST['csds_userRegAide_newField'] == ''){
+				if( $_POST['csds_userRegAide_newFieldKey'] == '' && $_POST['csds_userRegAide_newField'] == ''){
 					$seperator = " & ";
 					$csds_userRegMod_fields_missing = ' New Field Key ' . $seperator . ' New Field Name ';
 					$number_fields = 2;
 					
-				}elseif($_POST['csds_userRegAide_newFieldKey'] == '') {
+				}elseif( $_POST['csds_userRegAide_newFieldKey'] == '' ) {
 					$csds_userRegMod_fields_missing1 = " New Field Key ";
 					$csds_userRegAide_newField = esc_attr(stripslashes(trim($_POST['csds_userRegAide_newField'])));
 					$csds_userRegMod_fields_missing = $csds_userRegMod_fields_missing1;
 					$field_missing = esc_attr(stripslashes($_POST['csds_userRegAide_newField']));
 					$duplicate = $this->duplicate_fields($field_missing);
 					$number_fields = 1;
-				}elseif($_POST['csds_userRegAide_newField'] == ''){
+				}elseif( $_POST['csds_userRegAide_newField'] == '' ){
 					$csds_userRegMod_fields_missing2 = " New Field Name ";
 					$csds_userRegAide_newFieldKey = esc_attr(stripslashes(trim($_POST['csds_userRegAide_newFieldKey'])));
 					$csds_userRegMod_fields_missing = $csds_userRegMod_fields_missing2;
-					$field_missing = esc_attr(stripslashes($_POST['csds_userRegAide_newFieldKey']));
-					$duplicate = $this->duplicate_fields($field_missing);
+					$field_missing = esc_attr( stripslashes( $_POST['csds_userRegAide_newFieldKey'] ) );
+					$duplicate = $this->duplicate_fields( $field_missing );
 					$number_fields = 1;
 				}else{
 					$csds_userRegMod_fields_missing = '';
 				}
-				if($csds_userRegMod_fields_missing != '' && $number_fields == 2 && $duplicate == 0){
+				if( $csds_userRegMod_fields_missing != '' && $number_fields == 2 && $duplicate == 0 ){
 					echo '<div id="message" class="updated fade"><p class="my_message">'. __('***Add New Field Options not updated successfully. Missing both fields for: '.$csds_userRegMod_fields_missing.'***', 'csds_userRegAide') .'</p></div>';
-				}elseif($csds_userRegMod_fields_missing != '' && $number_fields == 1  && $duplicate == 0){
+				}elseif( $csds_userRegMod_fields_missing != '' && $number_fields == 1  && $duplicate == 0 ){
 					echo '<div id="message" class="updated fade"><p class="my_message">'. __('***Add New Field Options not updated successfully. Missing following field for: '.$field_missing.': '.$csds_userRegMod_fields_missing.'***', 'csds_userRegAide') .'</p></div>';
-				}elseif($csds_userRegMod_fields_missing != '' && $number_fields == 1  && $duplicate == 1){
+				}elseif( $csds_userRegMod_fields_missing != '' && $number_fields == 1  && $duplicate == 1 ){
 					echo '<div id="message" class="updated fade"><p class="my_message">'. __('***Add New Field Options not updated successfully. Following field already exists: '.$field_missing.' and you are missing the following field: '.$csds_userRegMod_fields_missing.'***', 'csds_userRegAide') .'</p></div>';
 				}else{
-					$results = esc_attr(stripslashes($_POST['csds_userRegAide_newFieldKey']));
-					$new_field = esc_attr(stripslashes($_POST['csds_userRegAide_newField']));
+					$results = esc_attr( stripslashes( $_POST['csds_userRegAide_newFieldKey'] ) );
+					$new_field = esc_attr( stripslashes( $_POST['csds_userRegAide_newField'] ) );
 					
 					// Checking for duplicate field in new fields
 				
-					if(!empty($newFields)){
-						foreach($newFields as $key => $field){
-							if($key != $results && $field != $new_field){
+					if( !empty( $newFields ) ){
+						foreach( $newFields as $key => $field ){
+							if( $key != $results && $field != $new_field ){
 								$msg = '<div id="message" class="updated fade"><p class="my_message">'. __('Add New Field '.$new_field.' option updated successfully!', 'csds_userRegAide').' </p></div>';
-							}elseif($key == $results){
+							}elseif( $key == $results ){
 								$msg = '<div id="message" class="updated fade"><p class="my_message">'. __('***Cannot add duplicate fields, '. $results . ' is already included in the extra fields!***', 'csds_userRegAide') .'</p></div>';
 								break;
 								
-							}elseif($field == $new_field){
+							}elseif( $field == $new_field ){
 								$msg = '<div id="message" class="updated fade"><p class="my_message">'. __('***Cannot add duplicate fields, '. $new_field . ' is already included in the extra fields!***', 'csds_userRegAide') .'</p></div>';
 								break;
 							}else{
@@ -281,13 +366,13 @@ class CSDS_URA_ADMIN_SETTINGS
 					
 						// Checking for duplicate fields in known fields
 					
-						foreach($knownFields as $key => $field){
-							if($key != $results && $field != $new_field){
+						foreach( $knownFields as $key => $field ){
+							if( $key != $results && $field != $new_field ){
 								$msg = '<div id="message" class="updated fade"><p class="my_message">'. __('Add New Field '.$new_field.' option updated successfully!', 'csds_userRegAide').'</p></div>';
-							}elseif($key == $results){
+							}elseif( $key == $results ){
 								$msg = '<div id="message" class="updated fade"><p class="my_message">'. __('***Cannot add duplicate fields, '. $results . ' is already included in the extra fields!***', 'csds_userRegAide') .'</p></div>';
 								break;
-							}elseif($field == $new_field){
+							}elseif( $field == $new_field ){
 								$msg = '<div id="message" class="updated fade"><p class="my_message">'. __('***Cannot add duplicate fields, '. $new_field . ' is already included in the extra fields!***', 'csds_userRegAide') .'</p></div>';
 								break;
 							}else{
@@ -298,25 +383,25 @@ class CSDS_URA_ADMIN_SETTINGS
 					
 					// Updating arrays and database options
 					
-					if(current_user_can('activate_plugins', $current_user->ID)){
-						if(function_exists('csds_add_field_to_users_meta')){
-							csds_add_field_to_users_meta($results);
+					if( current_user_can( 'activate_plugins', $current_user->ID ) ){
+						if( function_exists( 'csds_add_field_to_users_meta' ) ){
+							csds_add_field_to_users_meta( $results );
 						}
 						$all_fields = array();
-						$all_fields = get_option('csds_userRegAideFields');
+						$all_fields = get_option( 'csds_userRegAideFields' );
 						$newFields[$results] = $new_field;
 						$all_fields[$results] = $new_field;
-						update_option('csds_userRegAide_NewFields', $newFields);
-						$newFields = get_option('csds_userRegAide_NewFields');
+						update_option( 'csds_userRegAide_NewFields', $newFields );
+						$newFields = get_option( 'csds_userRegAide_NewFields' );
 						$ura_fields = array();
 						$ura_fields = $all_fields + $newFields;
-						update_option('csds_userRegAideFields', $ura_fields);
-						$cnt = count($newFields);
+						update_option( 'csds_userRegAideFields', $ura_fields );
+						$cnt = count( $newFields );
 						$fieldOrder[$results] = $cnt;
-						update_option("csds_userRegAide_fieldOrder", $fieldOrder);
+						update_option( "csds_userRegAide_fieldOrder", $fieldOrder );
 						echo $msg;
 					}else{
-						echo '<div id="message" class="updated fade"><p class="my_message">'. __('You do not have adequate permissions to edit this plugin! Please check with Administrator to get additional permissions.', 'csds_userRegAide') .'</p></div>';
+						echo '<div id="message" class="updated fade"><p class="my_message">'. __( 'You do not have adequate permissions to edit this plugin! Please check with Administrator to get additional permissions.', 'csds_userRegAide' ) .'</p></div>';
 						exit();
 					}
 				}
@@ -324,11 +409,11 @@ class CSDS_URA_ADMIN_SETTINGS
 			
 		// Handles showing support for plugin
 		
-		}elseif (isset($_POST['csds_userRegAide_support_submit'])){
+		}elseif( isset( $_POST['csds_userRegAide_support_submit'] ) ){
 			if( wp_verify_nonce( $_POST['wp_nonce_csds-regFieldsAdmin'], 'csds-regFieldsAdmin' ) ){	
 				$update = array();
-				$update = get_option('csds_userRegAide_Options');
-				$update['show_support'] = esc_attr(stripslashes($_POST['csds_userRegAide_support']));
+				$update = get_option( 'csds_userRegAide_Options' );
+				$update['show_support'] = esc_attr( stripslashes( $_POST['csds_userRegAide_support'] ) );
 				update_option("csds_userRegAide_Options", $update);
 				echo '<div id="message" class="updated fade"><p class="my_message">'. __('Support Options updated successfully.', 'csds_userRegAide') .'</p></div>'; //Report to the user that the data has been updated successfully
 			}
@@ -343,12 +428,12 @@ class CSDS_URA_ADMIN_SETTINGS
 		}
 						
 		// Making sure all arrays for page are fully loaded from options before page loads
-		$csds_userRegAide_getOptions = get_option('csds_userRegAide');
+		$csds_userRegAide_getOptions = get_option( 'csds_userRegAide' );
 		$registratrionFields = get_option('csds_userRegAide_registrationFields');
-		$knownFields = get_option('csds_userRegAide_knownFields');
-		$newFields = get_option('csds_userRegAide_NewFields');
-		$fieldOrder = get_option('csds_userRegAide_fieldOrder');
-		$options = get_option('csds_userRegAide_Options');
+		$knownFields = get_option( 'csds_userRegAide_knownFields' );
+		$newFields = get_option( 'csds_userRegAide_NewFields' );
+		$fieldOrder = get_option( 'csds_userRegAide_fieldOrder' );
+		$options = get_option( 'csds_userRegAide_Options' );
 				
 		// Checks to make sure known fields are correct and up to date
 		$cnt1 = count($knownFields);
@@ -361,6 +446,11 @@ class CSDS_URA_ADMIN_SETTINGS
 		if(!empty($knownFields)){
 			$ura_options->csds_userRegAide_fill_known_fields(); // Line 229 user-reg-aide-options.php
 		}
+		
+		if( $options['csds_userRegAide_db_Version'] != '1.5.0.9' ){
+			//exit( 'UPDATE OPTIONS' );
+			do_action( 'update_options' );
+		}
 					
 		// Shows Aministration Page 
 		$current_user = wp_get_current_user();
@@ -372,7 +462,7 @@ class CSDS_URA_ADMIN_SETTINGS
 			$nonce = array( 'csds-regFieldsAdmin', 'wp_nonce_csds-regFieldsAdmin' );
 			do_action( 'start_wrapper',  $tab, $form, $h2, $span, $nonce );
 		
-			do_action('display_dw_options'); // handles updates to dashboard widget options line 243 user-registration-aide.php
+			do_action( 'display_dw_options' ); // handles updates to dashboard widget options line 243 user-registration-aide.php
 			?>
 			<br />
 			<?php
@@ -380,13 +470,13 @@ class CSDS_URA_ADMIN_SETTINGS
 			?>
 			
 				<?php //Form for selecting fields to add to registration form 
-				$span = array( 'regForm', 'Add Existing Fields To Registration Form or Create New Fields Here:', 'csds_userRegAide');
+				$span = array( 'regForm', 'Add Existing Fields To Registration Form or Create New Fields Here:', 'csds_userRegAide' );
 				do_action( 'start_mini_wrap', $span ); ?>
 					
 				<table class="adminPage">
 					<tr>
-						<th class="adminPage"><?php _e('Add Additional Fields to Registration Form', 'csds_userRegAide');?> </th>
-						<th class="adminPage"><?php _e('Add New Field', 'csds_userRegAide');?> </th>
+						<th class="adminPage"><?php _e( 'Add Additional Fields to Registration Form', 'csds_userRegAide' );?> </th>
+						<th class="adminPage"><?php _e( 'Add New Field', 'csds_userRegAide' );?> </th>
 					</tr>
 					<tr>
 						<td width="50%"><?php
@@ -470,8 +560,9 @@ class CSDS_URA_ADMIN_SETTINGS
 						}
 													
 						echo '</select></p>';
-						echo '<p class="adminPage"><b>'. __('Hold down "Ctrl" button on keyboard to select or unselect multiple options!', 'csds_userRegAide') .'</b></p>';
-					?><input type="button" name="selectNone" class="button-primary" value="<?php _e('Select None', 'csds_userRegAide'); ?>" onClick="document.getElementById('csds_userRegMod_Select').options.selectedIndex=-1;"/>
+						echo '<p class="adminPage"><b>'. __( 'Hold down "Ctrl" button on keyboard to select or unselect multiple options!', 'csds_userRegAide' ) .'</b></p>';
+					?>
+					<input type="submit" name="selectNone" class="button-primary" value="<?php _e('Select None', 'csds_userRegAide'); ?>" onClick="document.getElementById('csds_userRegMod_Select').options.selectedIndex=-1;"/>
 					<div class="submit"><input type="submit" class="button-primary" name="reg_fields_update" value="<?php _e('Update Options', 'csds_userRegAide');?>"/></div>
 					</td>
 					<?php
@@ -489,22 +580,94 @@ class CSDS_URA_ADMIN_SETTINGS
 							</tr>
 							<tr>
 							<?php
-							echo '<td><input  style="width: 100%;" type="text" title="'.__('Enter the database name for your field here, like dob for Date of Birth or full_name, use lower case letters and _ (underscores) ONLY! Keep it short and simple and relative to the field you are creating!', 'csds_userRegAide') . '" value="'. $csds_userRegAide_newFieldKey . '" name="csds_userRegAide_newFieldKey" id="csds_userRegAide_newFieldKey" /></td>';
-							echo '<td><input  style="width: 100%;" type="text" title="'.__('Enter the user friendly name for your field here, like Date of Birth for dob, ect. Keep it short & simple and relative to the field you are creating!', 'csds_userRegAide') . '" value="'. $csds_userRegAide_newField . '" name="csds_userRegAide_newField" id="csds_userRegAide_newField" /></td>';
+							echo '<td><input  style="width: 100%;" type="text" title="'.__( 'Enter the database name for your field here, like dob for Date of Birth or full_name, use lower case letters and _ (underscores) ONLY! Keep it short and simple and relative to the field you are creating!', 'csds_userRegAide' ) . '" value="'. $csds_userRegAide_newFieldKey . '" name="csds_userRegAide_newFieldKey" id="csds_userRegAide_newFieldKey" /></td>';
+							echo '<td><input  style="width: 100%;" type="text" title="'.__( 'Enter the user friendly name for your field here, like Date of Birth for dob, ect. Keep it short & simple and relative to the field you are creating!', 'csds_userRegAide' ) . '" value="'. $csds_userRegAide_newField . '" name="csds_userRegAide_newField" id="csds_userRegAide_newField" /></td>';
 							?>
 							</tr>
 						</table>
 				<br/>
 				<?php
-				echo '<input type="submit" class="button-primary" name="new_fields_update" value="'. __('Add Field', 'csds_userRegAide').'" />';
+				echo '<input type="submit" class="button-primary" name="new_fields_update" value="'. __( 'Add Field', 'csds_userRegAide' ).'" />';
 				?>
 						</td>
+					
+				<?php
+					// form for selecting registration form optional fields
+					?>
+				
+					<tr>
+						<th colspan="2" class="adminPage"><?php _e( 'Select Fields to make Optional ( Not Required ) for Registration Form', 'csds_userRegAide' );?> </th>
+					</tr>
+					<tr>
+						<td colspan="2"><?php
+						echo '<p class="adminPage">' . __( 'Select Fields here that will be optional for the registration form, that is they are not required to be filled in by the user when they register.', 'csds_userRegAide' );
+						echo '<br/><b>' . __( 'Note: Any fields selected here will NOT be a required field on the registration form but will be on the registration form as optional', 'csds_userRegAide' ) .'</b>';
+						echo '<br/>'. __( 'Select Fields that are optional on Registration Form:', 'csds_userRegAide' );
+						echo '<br/><select name="additionalFieldsOptional[]" id="csds_userRegMod_SelectOptions" title="'.__( 'You can select as many fields here as you want, just hold down the control key while selecting multiple fields. These fields will not be required and are optional on the registration form!', 'csds_userRegAide' ).'" size="8" multiple style="height:100px">';
+						$registratrionFields = get_option( 'csds_userRegAide_registrationFields' );
+						$optional_fields = get_option( 'csds_ura_optionalFields' );
+						$knownFields = get_option( 'csds_userRegAide_knownFields' );
+						$newFields = get_option( 'csds_userRegAide_NewFields' );
+						$reqdFields = get_option ( 'csds_userRegAide_requiredFields' );
+						$regFields = $registratrionFields;
+						if( !empty( $registratrionFields ) ){
+							if( is_array( $regFields ) ){
+								foreach( $registratrionFields as $key1 => $value1 ){
+									if( $key1 != 'user_pass' ){
+										if( !empty( $regFields ) ){
+											if( in_array( "$value1", $optional_fields ) ){
+												$selected = "selected=\"selected\"";
+											}else{
+												$selected = NULL;
+											}
+										}else{
+										$selected = NULL;
+										}
+										
+										echo "<option value=\"$key1\" $selected >$value1</option>";
+									}
+									
+								}
+								
+							}else{
+								exit();
+							}
+						}else{
+							echo '<option value="no_registration_fields" >No Fields Selected for Registration Form!</option>';
+						}
+													
+						echo '</select>';
+						echo '<br/><b>'. __( 'Hold down "Ctrl" button on keyboard to select or unselect multiple options!', 'csds_userRegAide' ) .'</b>';
+					?>
+					<br/>
+					<input type="submit" name="selectNoOptions" class="button-primary" value="<?php _e( 'Select no Optional Fields', 'csds_userRegAide' ); ?>" onClick="document.getElementById('csds_userRegMod_SelectOptions').options.selectedIndex=-1;"/>
+					<?php _e( ' - - - - - ', 'csds_userRegAide' ); ?>
+					<input type="submit" class="button-primary" name="reg_fields_optional_update" value="<?php _e('Update Optional Fields', 'csds_userRegAide' );?>"/>
+					</p>
+					<?php // option to use * asterick for required fields or not
+					$options = get_option( 'csds_userRegAide_Options' );
+					?>
+					<p class="adminPage">
+					<?php _e( 'Use the * ( Asterisk ) on the Registration Form to Designate a Field is Required', 'csds_userRegAide' );?>
+					<span title="<?php _e( 'Select this option to use the * ( Asterisk ) to Designate a Required Field on the Registration Form', 'csds_userRegAide' );?>">
+					<input type="radio" name="use_asterisk" id="use_asterisk" value="1" <?php
+					
+					if ( $options['designate_required_fields'] == 1 ) echo 'checked' ;?> /> <?php _e( 'Yes', 'csds_userRegAide' );?></span>
+					<span title="<?php _e('Select this option not to use the * ( Asterisk ) to Designate a Required Field on the Registration Form',  'csds_userRegAide' );?>">
+					<input type="radio" name="use_asterisk" id="use_asterisk" value="2" <?php
+					if ( $options['designate_required_fields'] == 2 ) echo 'checked' ;?> /> <?php _e( 'No', 'csds_userRegAide' ); ?></span>
+					<br/>
+					<input type="submit" class="button-primary" name="update-asterisk" value="<?php _e( 'Update Asterisk Option', 'csds_userRegAide' );?>"/>
+					</p>
+					
+					</td>
 					</tr>
 				</table>
+			</table>
 				<?php
 			do_action( 'end_wrapper' );
 		}else{
-			wp_die(__('You do not have permissions to activate this plugin, sorry, check with site administrator to resolve this issue please!', 'csds_userRegAide'));
+			wp_die( __( 'You do not have permissions to activate this plugin, sorry, check with site administrator to resolve this issue please!', 'csds_userRegAide' ) );
 		}
 	}
 	
@@ -518,15 +681,15 @@ class CSDS_URA_ADMIN_SETTINGS
 	* @website http://creative-software-design-solutions.com
 	*/
 	
-	function duplicate_fields($field){
-		$fields = get_option('csds_userRegAideFields');
-		$duplicate = (int) 0;
-		foreach($fields as $key => $value){
-			if($field == $key){
+	function duplicate_fields( $field ){
+		$fields = get_option( 'csds_userRegAideFields' );
+		$duplicate = ( int ) 0;
+		foreach( $fields as $key => $value ){
+			if( $field == $key ){
 				$duplicate = 1;
 				return $duplicate;
 				break;
-			}elseif($field == $value){
+			}elseif( $field == $value ){
 				$duplicate = 1;
 				return $duplicate;
 				break;

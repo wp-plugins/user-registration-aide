@@ -283,6 +283,7 @@ class CSDS_URA_ACTIONS
 			echo '</ul>';
 			echo '</td>';
 			echo '<td>';
+			echo '<h2 class="support">'.__('Coming Soon 1.6.0.0 Lots of New Features!', 'csds_userRegAide').'</h2>';
 			echo '<h2 class="support">'.__('Check Official Website', 'csds_userRegAide').'</h2>';
 			echo '<ul>';
 			echo '<li><a href="http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/" target="_blank">Check official website for live demo</a></li></ul></td>';?>

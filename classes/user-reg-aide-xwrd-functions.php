@@ -589,8 +589,11 @@ class PASSWORD_FUNCTIONS
 	
 	function remove_xwrd_reset_text( $text ){
 		$options = get_option('csds_userRegAide_Options');
-		$reset = $options['allow_xwrd_reset'];
-		
+		if( array_key_exists( 'allow_xwrd_reset', $options ) ){
+			$reset = $options['allow_xwrd_reset'];
+		}else{
+			$reset = 1;
+		}
 		if( $reset == 2 ){
 			if( is_page( 'login_url' ) ){
 				$user_login = $_POST['user_login'];

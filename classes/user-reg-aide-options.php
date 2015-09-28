@@ -59,10 +59,10 @@ class URA_OPTIONS
 		$dw_fields = array();
 		$options = get_option('csds_userRegAide_Options');
 		
-		if(empty($options)){
+		if( empty( $options ) ){
 		
 			$options = $this->csds_userRegAide_defaultOptionsArray();
-			update_option("csds_userRegAide_Options", $options);
+			update_option( "csds_userRegAide_Options", $options );
 			
 			// For updates from older versions
 			
@@ -110,6 +110,7 @@ class URA_OPTIONS
 		}
 		$csds_userRegAide_Options = array(
 			"csds_userRegAide_db_Version"	=> "1.5.0.0",
+			"database_updated"				=> "2",
 			"select_pass_message" 			=> "2",
 			"password"						=> "2",
 			"registration_form_message" 	=> "You can use the password you entered here to log in right away, and for your reference, your registration details will be emailed after signup",
@@ -239,9 +240,13 @@ class URA_OPTIONS
 			"border-spacing"				=>	"5px",
 			"border-collapse"				=>	"separate",
 			"div_stuffbox_bckgrd_color"		=>	"#CCCCFF",
-			"tbl_padding"					=>	"5px"
-			
-				
+			"tbl_padding"					=>	"5px",
+			"math_num1"						=>	"0",
+			"math_num2"						=>	"0",
+			"math_oper"						=>	"eee",
+			"math_answer"					=>	"gssad3aqwet",
+			"designate_required_fields"		=>	"1"
+		
 		);
 		return $csds_userRegAide_Options;
 	}
@@ -251,7 +256,7 @@ class URA_OPTIONS
 	 *
 	 
 	 * @since 1.0.0
-	 * @updated 1.3.0
+	 * @updated 1.5.0.4
 	 * @handles action 'init' Line 135 user-registration-aide.php and multiple calls 
 	 * @access private
 	 * @author Brian Novotny
@@ -263,40 +268,40 @@ class URA_OPTIONS
 		$csds_userRegAide_knownFields = get_option('csds_userRegAide_knownFields');
 		$csds_userRegAideFields = get_option('csds_userRegAide_knownFields'); 
 		$new_fields = get_option('csds_userRegAide_NewFields'); 
-		if(!empty($csds_userRegAide_knownFields) && !empty($csds_userRegAideFields)){
+		if( !empty( $csds_userRegAide_knownFields ) && !empty( $csds_userRegAideFields ) ){
 			$csds_userRegAide_knownFields = array();
 			$csds_userRegAideFields = array();
 		}
 		
 		$csds_userRegAide_knownFields = array(
-		"first_name"	=> "First Name",
-		"last_name"		=> "Last Name",
-		"nickname"		=> "Nickname",
-		"user_url"		=> "Website",
-		"aim"			=> "AIM",
-		"yim"			=> "Yahoo IM",
-		"jabber"		=> "Jabber / Google Talk",
-		"description"   => "Biographical Info",
-		"user_pass"		=> "Password"
+			'first_name'	=> __( 'First Name' ),
+			'last_name'		=> __( 'Last Name' ),
+			'nickname'		=> __( 'Nickname' ),
+			'user_url'		=> __( 'Website' ),
+			'aim'			=> __( 'AIM' ),
+			'yim'			=> __( 'Yahoo IM' ),
+			'jabber'		=> __( 'Jabber / Google Talk' ),
+			'description'   => __( 'Biographical Info' ),
+			'user_pass'		=> __( 'Password' )
 		);
 		
-		if(empty($csds_userRegAideFields)){
-			if(empty($new_fields)){
-				update_option("csds_userRegAideFields", $csds_userRegAide_knownFields);
+		if( empty( $csds_userRegAideFields ) ){
+			if( empty( $new_fields ) ){
+				update_option( "csds_userRegAideFields", $csds_userRegAide_knownFields );
 			}else{
 				$all_fields = array();
 				$all_fields = $csds_userRegAide_knownFields + $new_fields;
-				update_option("csds_userRegAideFields", $all_fields);
+				update_option( "csds_userRegAideFields", $all_fields );
 			}
 		}else{
 		 
 		}
-		update_option("csds_userRegAide_knownFields", $csds_userRegAide_knownFields);
+		update_option( "csds_userRegAide_knownFields", $csds_userRegAide_knownFields );
 		
-		if(!empty($csds_userRegAide_NewFields)){
-			foreach($csds_userRegAideFields as $key1 => $field1){
-				foreach($csds_userRegAide_NewFields as $key => $field){
-					if(!$key1 == $key){
+		if( !empty( $csds_userRegAide_NewFields ) ){
+			foreach( $csds_userRegAideFields as $key1 => $field1 ){
+				foreach( $csds_userRegAide_NewFields as $key => $field ){
+					if( !$key1 == $key ){
 						$csds_userRegAideFields[$key] = $field;
 					}
 				}
@@ -306,14 +311,88 @@ class URA_OPTIONS
 				
 		// Updates the field order set to default by order entered into program
 		
-		if(empty($csds_userRegAide_fieldOrder) && !empty($csds_userRegAide_NewFields)){
+		if( empty( $csds_userRegAide_fieldOrder ) && !empty( $csds_userRegAide_NewFields ) ){
 			$this->csds_userRegAide_update_field_order();
 		}
 		
-		if(empty($csds_userRegAide_registrationFields)){
+		if( empty( $csds_userRegAide_registrationFields ) ){
 			$this->csds_userRegAide_updateRegistrationFields();
 		}
 				
+	}
+	
+	/**
+	 * Updates array of known fields to new version
+	 *	 
+	 * @since 1.5.0.4
+	 * @updated 1.5.0.4
+	 * 
+	 * @access public
+	 * @author Brian Novotny
+	 * @website http://creative-software-design-solutions.com
+	*/
+
+	function csds_userRegAide_update_known_fields(){
+	
+		$csds_userRegAide_knownFields = get_option( 'csds_userRegAide_knownFields' );
+		$csds_userRegAideFields = get_option( 'csds_userRegAide_knownFields' ); 
+		$new_fields = get_option( 'csds_userRegAide_NewFields' ); 
+		if( !empty( $csds_userRegAide_knownFields ) && !empty( $csds_userRegAideFields )){
+			$csds_userRegAide_knownFields = array();
+			$csds_userRegAideFields = array();
+		}
+		
+		$csds_userRegAide_knownFields = array(
+			'first_name'	=> __( 'First Name' ),
+			'last_name'		=> __( 'Last Name' ),
+			'nickname'		=> __( 'Nickname' ),
+			'user_url'		=> __( 'Website' ),
+			'aim'			=> __( 'AIM' ),
+			'yim'			=> __( 'Yahoo IM' ),
+			'jabber'		=> __( 'Jabber / Google Talk' ),
+			'description'   => __( 'Biographical Info' ),
+			'user_pass'		=> __( 'Password' )
+		);
+		
+		if( empty( $csds_userRegAideFields ) ){
+			if( empty( $new_fields ) ){
+				update_option( "csds_userRegAideFields", $csds_userRegAide_knownFields );
+			}else{
+				$all_fields = array();
+				$all_fields = $csds_userRegAide_knownFields + $new_fields;
+				update_option( "csds_userRegAideFields", $all_fields );
+			}
+		}else{
+			$all_fields = array();
+			$all_fields = $csds_userRegAide_knownFields + $new_fields;
+			update_option( "csds_userRegAideFields", $all_fields );
+		}
+		
+		update_option( "csds_userRegAide_knownFields", $csds_userRegAide_knownFields );
+		
+		if( !empty( $csds_userRegAide_NewFields ) ){
+			foreach( $csds_userRegAideFields as $key1 => $field1 ){
+				foreach( $csds_userRegAide_NewFields as $key => $field ){
+					if( !$key1 == $key ){
+						$csds_userRegAideFields[$key] = $field;
+					}
+				}
+			}
+		}
+		
+				
+		// Updates the field order set to default by order entered into program
+		
+		if( empty( $csds_userRegAide_fieldOrder ) && !empty( $csds_userRegAide_NewFields ) ){
+			$this->csds_userRegAide_update_field_order();
+		}
+		
+		if( empty( $csds_userRegAide_registrationFields ) ){
+			$this->csds_userRegAide_updateRegistrationFields();
+		}
+		
+		return true;
+		
 	}
 
 
@@ -433,47 +512,77 @@ class URA_OPTIONS
 	*/
 
 	function csds_userRegAide_updateOptions(){
-		$csds_userRegAide_oldOptions = array();
-		$csds_userRegAide_oldOptions = get_option('csds_userRegAide_Options');
-		$csds_userRegAide_defOptions = array();
-		$csds_userRegAide_defOptions = $this->csds_userRegAide_defaultOptionsArray();
-		
-		//$security_questions = array();
-		//$security_questions = get_option('csds_userRegAide_SecurityQuestions');
+		$exist_options = array();
+		$exist_options = get_option('csds_userRegAide_Options');
 		$update = array();
-		if(empty($csds_userRegAide_oldOptions)){
+		$update = get_option('csds_userRegAide_Options');
+		$default_options = array();
+		$default_options = $this->csds_userRegAide_defaultOptionsArray();
+		
+		$return = ( boolean ) false;
+		if( empty( $exist_options ) ){
 			$this->csds_userRegAide_DefaultOptions();
+			$exist_options = get_option('csds_userRegAide_Options');
 		}else{
-			foreach($csds_userRegAide_defOptions as $key => $value){
-				foreach($csds_userRegAide_oldOptions as $key1 => $value1){
-				
-					if($key == $key1){
-						if(!empty($value1)){
-							if($key1 == 'csds_userRegAide_db_Version'){
-								$update[$key1] = "1.5.0.0";
-							}elseif($key1 == 'updated'){
-								$update[$key1] = "1";
+			foreach( $default_options as $key => $value ){
+				foreach( $exist_options as $key1 => $value1 ){
+					if( !array_key_exists( $key, $exist_options ) ){
+						if( $key == 'database_updated' ){
+							$exist_options[$key] = "1";
+						}else{
+							//exit( 'EXIST OPTIONS' );
+							$exist_options[$key] = $value;
+						}
+					}
+					if( $key == $key1 ){
+						if( !empty( $value1 ) ){
+							if( $key1 == 'csds_userRegAide_db_Version' ){
+								if( $value1 == "1.5.0.0" ){
+									$return = $this->csds_userRegAide_update_known_fields();
+								}
+								if( $return == true ){
+									$exist_options[$key1] = "1.5.0.7";
+								}
+							}elseif( $key = 'database_updated' ){
+								$exist_options['database_updated'] = "1"; 
+							}elseif( $key1 == 'updated' ){
+								$exist_options[$key1] = "1";
 							}else{
 								if($value1 != $value){
-									$update[$key1] = $value1;
+									$exist_options[$key1] = $value1;
 								}else{
-									$update[$key1] = $value1;
+									$exist_options[$key1] = $value1;
 								}
 							}
 						}else{
 							
-							$update[$key1] = $value1;	//$update[$key] = $value;
+							$exist_options[$key1] = $value1;	//$update[$key] = $value;
 							
 						}
-					}
-				
-					if(!array_key_exists($key, $csds_userRegAide_oldOptions)){
-						$update[$key] = $value;
+					}else{
+						if( !array_key_exists( $key, $exist_options ) ){
+							$exist_options[$key] = $value;
+						}
 					}
 					
 				}
 			}
-			update_option("csds_userRegAide_Options", $update);
+			update_option( "csds_userRegAide_Options", $exist_options );
+		}
+	}
+	
+	function update_database(){
+		$options = get_option('csds_userRegAide_Options');
+		if( array_key_exists( 'csds_userRegAide_db_Version', $options ) ){
+			if( $options['csds_userRegAide_db_Version'] != '1.5.0.7' ){
+				do_action( 'update_options' );
+			}
+		}else{
+			$options['csds_userRegAide_db_Version'] = '1.5.0.0';
+			update_option( "csds_userRegAide_Options", $options );
+		}
+		if( !array_key_exists( 'database_updated', $options ) ){
+			do_action( 'update_options' );
 		}
 	}
 	
@@ -488,13 +597,21 @@ class URA_OPTIONS
 	function check_options_table(){
 		$default_options = $this->csds_userRegAide_defaultOptionsArray();
 		$options = get_option('csds_userRegAide_Options');
-		$default_count = count($default_options);
-		$options_count = count($options);
-		//$a_diff = array_diff($default_options, $options);
-		if($options_count < $default_count){
-			$this->csds_userRegAide_updateOptions();
-		}elseif($options['updated'] == 2){
-			$this->csds_userRegAide_updateOptions();
+		$default_count = count( $default_options );
+		$options_count = count( $options );
+		if( $options_count < $default_count ){
+			do_action( 'update_options' );
+		}elseif( $options['updated'] == 2 ){
+			do_action( 'update_options' );
+		}elseif( $options['csds_userRegAide_db_Version'] != '1.5.0.7' ){
+			do_action( 'update_options' );
+		}
+		if( !array_key_exists( 'database_updated', $options ) ){
+			do_action( 'update_options' );
+		}elseif( array_key_exists( 'database_updated', $options ) ){
+			if( $options['database_updated'] == 0 ||  $options['database_updated'] == 2 ){
+				do_action( 'update_options' );
+			}
 		}
 	}
 	

@@ -55,7 +55,12 @@ class URA_DASHBOARD_WIDGET
 	
 	function ura_dashboard_widget_action(){
 		$options = get_option('csds_userRegAide_Options');
-		if($options['show_dashboard_widget'] == 1){
+		if( array_key_exists( 'show_dashboard_widget', $options ) ){
+			$show_widget = $options['show_dashboard_widget'];
+		}else{
+			$show_widget = 2;
+		}
+		if( $show_widget == 1){
 			wp_add_dashboard_widget('csds_ura_dash_widget', '<a class="ura-dash-widget" href="http://creative-software-design-solutions.com">Creative Software Design Solutions</a><b> User Registration Aide</b>', array(&$this, 'ura_dashboard_widget_display'));
 		}
 	}

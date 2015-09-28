@@ -25,6 +25,7 @@
 		delete_option('csds_display_link');
 		delete_option('csds_display_name');
 		delete_option('csds_userRegAide_fieldOrder');
+		delete_option('csds_ura_optionalFields');
 		
 		$table_name = $wpdb->prefix . "ura_xwrd_change";
 		$sql = "DROP TABLE IF EXISTS $table_name;";

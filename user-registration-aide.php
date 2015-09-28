@@ -4,14 +4,14 @@ Plugin Name: User Registration Aide
 Plugin URI: http://creative-software-design-solutions.com/wordpress-user-registration-aide-force-add-new-user-fields-on-registration-form/
 Description: Forces new users to register additional fields with the option to add additional fields other than those supplied with the default WordPress Installation. We have kept it simple in this version for those of you whom aren't familiar with handling multiple users or websites. We also are currently working on expanding this project with a paid version which will contain a lot more features and options for those of you who wish to get more control over users and user access to your site.
 
-Version: 1.5.0.2
+Version: 1.5.0.7
 Author: Brian Novotny
 Author URI: http://creative-software-design-solutions.com/
 Text Domain: csds_userRegAide
 
 User Registration Aide Requires & Adds More Fields to User Registration & Profile - Forces new users to register additional fields on registration form, and gives you the option to add additional fields at your discretion. Gives you more control over who registers, and allows you to manage users easier!
 
-Copyright ©  2012 - 2014 Brian Novotny
+Copyright ©  2012 - 2015 Brian Novotny
 
 Users Registration Helper - Forces new users to register additional fields
 
@@ -126,7 +126,7 @@ class CSDS_USER_REG_AIDE
 		// Actions and Filters
 		
 		// Adds widget to wp admin page dashboard
-		add_action('wp_dashboard_setup', array(&$dashWidget, 'ura_dashboard_widget_action'));  // Line 59 user-reg-aide-dashWidget.php
+		add_action( 'wp_dashboard_setup', array(&$dashWidget, 'ura_dashboard_widget_action' ));  // Line 59 user-reg-aide-dashWidget.php
 		
 		// Checks to make sure options are up to date
 		add_action( 'admin_init',  array(&$ura_options, 'check_options_table' )); // Line 
@@ -158,9 +158,9 @@ class CSDS_USER_REG_AIDE
 		}
 		
 		// Filling default User Registration Aide options db
-		if(isset($_GET['action']) && $_GET['action'] == 'admin_init'){
-			if(!empty($options)){
-				add_action( 'init', array(&$ura_options, 'csds_userRegAide_DefaultOptions' )); // Line 59 user-reg-aide-options.php
+		if( isset( $_GET['action'] ) && $_GET['action'] == 'admin_init' ){
+			if( !empty( $options ) ){
+				add_action( 'init', array( &$ura_options, 'csds_userRegAide_DefaultOptions' ) ); // Line 59 user-reg-aide-options.php
 			}
 		}
 		
@@ -196,6 +196,12 @@ class CSDS_USER_REG_AIDE
 			
 			add_filter('registration_errors', array(&$regForm, 'csds_userRegAide_checkFields'), 1, 3 ); // Line 219 &$regForm (Params: array $errors, str $username, str $email)
 			add_filter('registration_redirect', array(&$this, 'ura_registration_redirect'), 1, 1); // Line 417 &$this (Params: string $redirect_to)
+			add_action( 'password_input', array( &$regForm, 'display_password_fields' ) );
+			add_action( 'fields_input', array( &$regForm, 'display_other_fields' ), 1, 3 );
+			add_action( 'tml_fields_input', array( &$regForm, 'display_other_fields_theme_my_login' ), 1, 3 );
+			add_action( 'ta_input', array( &$regForm, 'display_text_area_fields' ), 1, 3 );
+			add_action( 'tml_ta_input', array( &$regForm, 'display__text_area_fields_theme_my_login' ), 1, 3 );
+			
 			unset( $regForm );
 		}
 		
@@ -228,16 +234,16 @@ class CSDS_USER_REG_AIDE
 		add_action('admin_print_styles', array(&$dashWidget, 'csds_dashboard_widget_style')); // Line 655 &$dashWidget
 					
 		// Sets new password if user can enter own password on registration
-		add_filter('random_password',  array(&$this, 'csds_userRegAide_createNewPassword'), 0, 1); // Line 874 &$this (Params: str $password)
+		add_filter( 'random_password',  array( &$this, 'csds_userRegAide_createNewPassword' ), 0, 1 ); // Line 874 &$this (Params: str $password)
 		
 		// Administration Pages
 		
 		// Single Site Administration Menus
-		add_action('admin_menu', array(&$this, 'csds_userRegAide_optionsPage')); // Line 646 &$this
-		add_action('admin_menu', array(&$this, 'csds_userRegAide_editNewFields_optionsPage')); // Line 712 &$this
-		add_action('admin_menu', array(&$this, 'csds_userRegAide_regFormOptionsPage')); // Line 669 &$this
-		add_action('admin_menu', array(&$this, 'csds_userRegAide_regFormCSSOptionsPage')); // Line 690 &$this
-		add_action('admin_menu', array(&$this, 'csds_userRegAide_customOptionsPage')); // Line 690 &$this
+		add_action( 'admin_menu', array( &$this, 'csds_userRegAide_optionsPage' ) ); // Line 646 &$this
+		add_action( 'admin_menu', array( &$this, 'csds_userRegAide_editNewFields_optionsPage' ) ); // Line 712 &$this
+		add_action( 'admin_menu', array( &$this, 'csds_userRegAide_regFormOptionsPage' ) ); // Line 669 &$this
+		add_action( 'admin_menu', array( &$this, 'csds_userRegAide_regFormCSSOptionsPage' ) ); // Line 690 &$this
+		add_action( 'admin_menu', array( &$this, 'csds_userRegAide_customOptionsPage' ) ); // Line 690 &$this
 		
 		
 				// custom actions for this plugin
@@ -245,12 +251,14 @@ class CSDS_USER_REG_AIDE
 		add_action('show_support', array(&$actions, 'show_support_section')); // Line 141 user-reg-aide-actions.php
 		add_action('update_field_order', array($ura_options, 'csds_userRegAide_update_field_order')); // Line 331 &$ura_options
 		add_action('delete_usermeta_field', array(&$this, 'csds_delete_field_from_users_meta'), 10, 1); // Line 1206 &$this
-		add_action('update_options', array($ura_options, 'csds_userRegAide_updateOptions')); // Line 402 &$ura_options
+		add_action( 'update_options', array( $ura_options, 'csds_userRegAide_updateOptions' ) ); // Line 402 &$ura_options
 		add_action('display_dw_options', array($dashWidget, 'dashboard_widget_options')); // Displays dashboard widget options on URA admin page, $admin line	364	
 		add_action('update_dw_display_options', array($dashWidget, 'update_dashboard_widget_options')); // Update dashboard widget options from admin page, $admin line 479
 		add_action('update_dw_field_options', array($dashWidget, 'update_dashboard_widget_fields')); // Update dashboard widget options from admin page, $admin line 497
 		add_action('update_dw_field_order', array($dashWidget, 'update_dashboard_widget_field_order')); // Update dashboard widget options from admin page, $admin line 600
+		
 		unset( $dashWidget, $ura_options );
+		
 				// Handles user profiles and extra fields
 		add_action('show_user_profile', array(&$userProfile, 'csds_show_user_profile'), 0, 1); // Line 59 &$userProfile (Params: str $user)
 		add_action('edit_user_profile', array(&$userProfile, 'csds_show_user_profile'), 0, 1); // Line 59 &$userProfile (Params: str $user)
@@ -341,7 +349,8 @@ class CSDS_USER_REG_AIDE
 		add_filter( 'allow_password_reset', array( &$xwrd, 'xwrd_reset_disable' ) );
 		
 		// login check for users needing to change password
-		add_action( 'wp_authenticate' , array( &$xwrd, 'xwrd_change_login_check' ), 1 );
+		add_action( 'wp_authenticate', array( &$xwrd, 'xwrd_change_login_check' ), 1 );
+		
 		unset( $xwrd, $css );
 		
 	}
@@ -1259,14 +1268,34 @@ class CSDS_USER_REG_AIDE
  * Emails registration confirmation to new user
  *
  * @since 1.0.0
- * @updated 1.3.0
+ * @updated 1.5.0.6
  * @access private
  * @accepts $user_id, $plaintext_pass
  * @author Brian Novotny
  * @website http://creative-software-design-solutions.com
 */
 if( !function_exists( 'wp_new_user_notification' ) ){
-	function wp_new_user_notification( $user_id, $plaintext_pass = '' ) {
+	function wp_new_user_notification( $user_id, $deprecated = null, $notify = '' ) {
+		if ( $deprecated !== null ) {
+			_deprecated_argument( __FUNCTION__, '4.3.1' );
+		}
+
+		global $wpdb, $wp_hasher;
+		$user = get_userdata( $user_id );
+
+		// The blogname option is escaped with esc_html on the way into the database in sanitize_option
+		// we want to reverse this for the plain text arena of emails.
+		$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+
+		$message  = sprintf(__('New user registration on your site %s:'), $blogname) . "\r\n\r\n";
+		$message .= sprintf(__('Username: %s'), $user->user_login) . "\r\n\r\n";
+		$message .= sprintf(__('E-mail: %s'), $user->user_email) . "\r\n";
+
+		@wp_mail(get_option('admin_email'), sprintf(__('[%s] New User Registration'), $blogname), $message);
+
+		if ( 'admin' === $notify || empty( $notify ) ) {
+			return;
+		}
 		
 		$options = get_option('csds_userRegAide_Options');
 		$user = new WP_User( $user_id );
@@ -1283,30 +1312,33 @@ if( !function_exists( 'wp_new_user_notification' ) ){
 			$login_url = wp_login_url() . "\r\n";
 		}
 
-		// The blogname option is escaped with esc_html on the way into the database in sanitize_option
-	 
-		// we want to reverse this for the plain text arena of emails.
-	 
-		$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
-	 
-		$message  = sprintf( __( 'A new user has registered on your site %s:' ), $blogname ) . "\r\n\r\n";
-		$message .= sprintf( __( 'Username: %s'), $user_login ) . "\r\n\r\n";
-		$message .= sprintf( __( 'E-mail: %s'), $user_email ) . "\r\n";
-	 
-		@wp_mail( get_option( 'admin_email' ), sprintf( __( '[%s] New User Registration Alert' ), $blogname ), $message );
-	 
-		if ( empty( $plaintext_pass ) ){
-			return;
-		}
+				
 		$xwrd = 'User Entered';
 		$message = sprintf( __( 'Thank you for registering with %s!' ), $blogname ) . "\r\n\n";
 		$message .= sprintf( __( 'Here are your new login credentials for %s:' ), $blogname ) . "\r\n\n";
 		//$message = sprintf(__($options['wp_user_notification_message'])); not using dont want to confuse users 
-		$message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n";
-		if(in_array('Password', $fields)){
+		
+		if( in_array( 'Password', $fields ) ){
+			$message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n";
 			$message .= sprintf( __( 'Password: %s' ), $xwrd ) . "\r\n";
 		}elseif( !in_array( 'Password', $fields ) ){
-			$message .= sprintf( __( 'Password: %s' ), $plaintext_pass ) . "\r\n";
+			// Generate something random for a password reset key.
+			$key = wp_generate_password( 20, false );
+
+			/** This action is documented in wp-login.php */
+			do_action( 'retrieve_password_key', $user->user_login, $key );
+
+			// Now insert the key, hashed, into the DB.
+			if ( empty( $wp_hasher ) ) {
+				require_once ABSPATH . WPINC . '/class-phpass.php';
+				$wp_hasher = new PasswordHash( 8, true );
+			}
+			$hashed = time() . ':' . $wp_hasher->HashPassword( $key );
+			$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user->user_login ) );
+
+			$message .= sprintf(__('Username: %s'), $user->user_login) . "\r\n\r\n";
+			$message .= __('To set your password, visit the following address:') . "\r\n\r\n";
+			$message .= '<' . network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user->user_login), 'login') . ">\r\n\r\n";
 		}
 		$message .= $login_url;
 		 
