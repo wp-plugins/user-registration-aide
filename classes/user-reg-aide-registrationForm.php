@@ -64,8 +64,16 @@ class URA_REGISTRATION_FORM
 		$label = ( string ) '';
 		$optional_fields = get_option( 'csds_ura_optionalFields' );
 		$options = get_option('csds_userRegAide_Options');
-		if( array_key_exists( $fieldKey, $optional_fields ) ){
-			$label = $fieldName.':';
+		if( !empty( $optional_fields ) && is_array( $optional_fields ) ){
+			if( array_key_exists( $fieldKey, $optional_fields ) ){
+				$label = $fieldName.':';
+			}else{
+				if ( $options['designate_required_fields'] == 1 ){
+					$label = $fieldName.'*:';
+				}else{
+					$label = $fieldName.':';
+				}
+			}
 		}else{
 			if ( $options['designate_required_fields'] == 1 ){
 				$label = $fieldName.'*:';
@@ -85,8 +93,16 @@ class URA_REGISTRATION_FORM
 		$label = ( string ) '';
 		$optional_fields = get_option( 'csds_ura_optionalFields' );
 		$options = get_option('csds_userRegAide_Options');
-		if( array_key_exists( $fieldKey, $optional_fields ) ){
-			$label = $fieldName.':';
+		if( !empty( $optional_fields ) && is_array( $optional_fields ) ){
+			if( array_key_exists( $fieldKey, $optional_fields ) ){
+				$label = $fieldName.':';
+			}else{
+				if ( $options['designate_required_fields'] == 1 ){
+					$label = $fieldName.'*:';
+				}else{
+					$label = $fieldName.':';
+				}
+			}
 		}else{
 			if ( $options['designate_required_fields'] == 1 ){
 				$label = $fieldName.'*:';
@@ -106,8 +122,16 @@ class URA_REGISTRATION_FORM
 		$label = ( string ) '';
 		$optional_fields = get_option( 'csds_ura_optionalFields' );
 		$options = get_option('csds_userRegAide_Options');
-		if( array_key_exists( $fieldKey, $optional_fields ) ){
-			$label = $fieldName.':';
+		if( !empty( $optional_fields ) && is_array( $optional_fields ) ){
+			if( array_key_exists( $fieldKey, $optional_fields ) ){
+				$label = $fieldName.':';
+			}else{
+				if ( $options['designate_required_fields'] == 1 ){
+					$label = $fieldName.'*:';
+				}else{
+					$label = $fieldName.':';
+				}
+			}
 		}else{
 			if ( $options['designate_required_fields'] == 1 ){
 				$label = $fieldName.'*:';
@@ -128,8 +152,16 @@ class URA_REGISTRATION_FORM
 		$label = ( string ) '';
 		$optional_fields = get_option( 'csds_ura_optionalFields' );
 		$options = get_option('csds_userRegAide_Options');
-		if( array_key_exists( $fieldKey, $optional_fields ) ){
-			$label = $fieldName.':';
+		if( !empty( $optional_fields ) && is_array( $optional_fields ) ){
+			if( array_key_exists( $fieldKey, $optional_fields ) ){
+				$label = $fieldName.':';
+			}else{
+				if ( $options['designate_required_fields'] == 1 ){
+					$label = $fieldName.'*:';
+				}else{
+					$label = $fieldName.':';
+				}
+			}
 		}else{
 			if ( $options['designate_required_fields'] == 1 ){
 				$label = $fieldName.'*:';
