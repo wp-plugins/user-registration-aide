@@ -482,7 +482,24 @@ class URA_REGISTRATION_FORM
 		if( !empty( $csds_userRegAide_registrationFields ) ){
 			foreach( $csds_userRegAide_registrationFields as $thisValue => $fieldName1 ){
 				if( $thisValue != "user_pass" ){
-					if( !array_key_exists( $thisValue, $optional_fields ) ){
+					if( !empty( $optional_fields ) && is_array( $optional_fields ) ){
+						if( !array_key_exists( $thisValue, $optional_fields ) ){
+							if( $_POST[$thisValue] == '' ) {
+								$errors->add('empty_'.$thisValue , __("<strong>ERROR</strong>: Please type your ".$csds_userRegAide_registrationFields[$thisValue].".",'csds_userRegAide'));
+								$error ++;
+							}else{ // checking for duplicate entries to weed out spammers
+								foreach($csds_userRegAide_registrationFields as $thisValue1 => $fieldName2){
+									if($thisValue1 != "user_pass"){
+										if($thisValue != $thisValue1){
+											if($_POST[$thisValue] == $_POST[$thisValue1]){
+												$errors->add('duplicate_spam_check'.$thisValue , __("<strong>ERROR</strong>: Your ".$csds_userRegAide_registrationFields[$thisValue]." and ".$csds_userRegAide_registrationFields[$thisValue1]." are the same, please enter different values!",'csds_userRegAide'));
+											}
+										}
+									}
+								}
+							}
+						}
+					}else{
 						if( $_POST[$thisValue] == '' ) {
 							$errors->add('empty_'.$thisValue , __("<strong>ERROR</strong>: Please type your ".$csds_userRegAide_registrationFields[$thisValue].".",'csds_userRegAide'));
 							$error ++;
